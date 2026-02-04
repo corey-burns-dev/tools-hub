@@ -7,13 +7,13 @@ import Layout from "../layouts/Layout.astro";
     <div class="max-w-6xl mx-auto">
       <div class="flex items-center gap-4 mb-8">
         <div
-          class="w-16 h-16 rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 flex items-center justify-center text-4xl shadow-xl shadow-blue-500/20"
+          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center text-4xl shadow-xl shadow-blue-500/20"
         >
           🐸
         </div>
         <div>
-          <h1 class="text-4xl font-bold text-main mb-2">Meme Generator</h1>
-          <p class="text-muted">
+          <h1 class="text-4xl font-bold text-white mb-2">Meme Generator</h1>
+          <p class="text-slate-400">
             Create meme masterpieces with custom text overlays.
           </p>
         </div>
@@ -21,17 +21,19 @@ import Layout from "../layouts/Layout.astro";
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         <!-- Preview Area -->
-        <div class="card-glass p-0 overflow-hidden sticky top-8">
+        <div
+          class="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-0 overflow-hidden sticky top-8 shadow-2xl"
+        >
           <div
             class="p-4 border-b border-white/10 flex items-center justify-between"
           >
-            <h2 class="text-lg font-bold text-main">Preview</h2>
+            <h2 class="text-lg font-bold text-white">Preview</h2>
             <div class="flex gap-2">
               <button
                 id="download-btn"
-                class="px-4 py-2 bg-primary hover:opacity-90 text-slate-900 rounded-lg text-sm font-bold transition-all shadow-lg"
+                class="px-4 py-2 bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600 text-white rounded-lg text-sm font-bold transition-all shadow-lg"
               >
-                Download Meme
+                💾 Download
               </button>
             </div>
           </div>
@@ -46,17 +48,20 @@ import Layout from "../layouts/Layout.astro";
 
         <!-- Controls Area -->
         <div class="space-y-6">
-          <div class="card-glass p-6">
+          <!-- Image Source -->
+          <div
+            class="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 shadow-2xl"
+          >
             <h3
-              class="text-lg font-bold text-main mb-4 flex items-center gap-2"
+              class="text-lg font-bold text-white mb-4 flex items-center gap-2"
             >
               <span>🖼️</span> Image Source
             </h3>
             <div class="space-y-4">
               <label class="block">
                 <span
-                  class="text-sm font-semibold text-muted uppercase tracking-wider mb-2 block"
-                  >Upload Image</span
+                  class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2 block"
+                  >Upload Your Own Image</span
                 >
                 <input
                   type="file"
@@ -66,68 +71,92 @@ import Layout from "../layouts/Layout.astro";
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-full file:border-0
                     file:text-sm file:font-bold
-                    file:bg-primary file:text-slate-900
-                    hover:file:opacity-90 cursor-pointer"
+                    file:bg-gradient-to-r file:from-blue-500 file:to-violet-500
+                    file:text-white hover:file:opacity-90 cursor-pointer"
                 />
               </label>
 
               <div class="pt-4 border-t border-white/5">
-                <span
-                  class="text-sm font-semibold text-muted uppercase tracking-wider mb-3 block"
-                  >Templates</span
+                <div class="flex items-center justify-between mb-3">
+                  <span
+                    class="text-sm font-semibold text-slate-400 uppercase tracking-wider"
+                    >Popular Meme Templates</span
+                  >
+                  <button
+                    id="refresh-memes"
+                    class="text-xs px-3 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded-full transition-all"
+                  >
+                    🔄 Refresh
+                  </button>
+                </div>
+
+                <!-- Search Box -->
+                <input
+                  type="text"
+                  id="meme-search"
+                  placeholder="Search memes..."
+                  class="w-full mb-3 bg-slate-900/50 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                />
+
+                <!-- Loading State -->
+                <div id="memes-loading" class="text-center py-8">
+                  <div
+                    class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"
+                  >
+                  </div>
+                  <p class="text-slate-400 text-sm mt-2">Loading memes...</p>
+                </div>
+
+                <!-- Memes Grid -->
+                <div
+                  id="memes-grid"
+                  class="grid grid-cols-3 gap-2 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar hidden"
                 >
-                <div class="grid grid-cols-4 gap-2">
-                  {
-                    ["🔥", "🐶", "🐈", "🤔"].map((emoji) => (
-                      <button
-                        class="template-btn aspect-square rounded-xl glass hover:glass-hover flex items-center justify-center text-2xl transition-all"
-                        data-emoji={emoji}
-                      >
-                        {emoji}
-                      </button>
-                    ))
-                  }
+                  <!-- Memes will be loaded here -->
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="card-glass p-6">
+          <!-- Text Customization -->
+          <div
+            class="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 shadow-2xl"
+          >
             <h3
-              class="text-lg font-bold text-main mb-4 flex items-center gap-2"
+              class="text-lg font-bold text-white mb-4 flex items-center gap-2"
             >
               <span>✍️</span> Text Customization
             </h3>
             <div class="space-y-4">
               <div>
                 <label
-                  class="text-sm font-semibold text-muted uppercase tracking-wider mb-2 block"
+                  class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2 block"
                   >Top Text</label
                 >
                 <input
                   type="text"
                   id="top-text"
                   placeholder="TOP TEXT"
-                  class="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all uppercase"
+                  class="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all uppercase"
                 />
               </div>
               <div>
                 <label
-                  class="text-sm font-semibold text-muted uppercase tracking-wider mb-2 block"
+                  class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2 block"
                   >Bottom Text</label
                 >
                 <input
                   type="text"
                   id="bottom-text"
                   placeholder="BOTTOM TEXT"
-                  class="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all uppercase"
+                  class="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all uppercase"
                 />
               </div>
 
               <div class="grid grid-cols-2 gap-4 pt-2">
                 <div>
                   <label
-                    class="text-sm font-semibold text-muted uppercase tracking-wider mb-2 block"
+                    class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2 block"
                     >Font Size</label
                   >
                   <input
@@ -136,21 +165,42 @@ import Layout from "../layouts/Layout.astro";
                     min="20"
                     max="100"
                     value="40"
-                    class="w-full accent-primary"
+                    class="w-full accent-blue-500"
                   />
+                  <span id="font-size-value" class="text-xs text-slate-500"
+                    >40px</span
+                  >
                 </div>
                 <div>
                   <label
-                    class="text-sm font-semibold text-muted uppercase tracking-wider mb-2 block"
+                    class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2 block"
                     >Text Color</label
                   >
                   <input
                     type="color"
                     id="text-color"
                     value="#ffffff"
-                    class="w-full h-10 bg-transparent border-none rounded cursor-pointer"
+                    class="w-full h-10 bg-transparent border border-white/10 rounded cursor-pointer"
                   />
                 </div>
+              </div>
+
+              <div class="pt-2">
+                <label
+                  class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2 block"
+                  >Stroke Width</label
+                >
+                <input
+                  type="range"
+                  id="stroke-width"
+                  min="0"
+                  max="10"
+                  value="3"
+                  class="w-full accent-blue-500"
+                />
+                <span id="stroke-width-value" class="text-xs text-slate-500"
+                  >3px</span
+                >
               </div>
             </div>
           </div>
@@ -158,6 +208,67 @@ import Layout from "../layouts/Layout.astro";
       </div>
     </div>
   </div>
+
+  <style>
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.5);
+      border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.7);
+    }
+
+    .meme-template {
+      transition: all 0.2s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .meme-template:hover {
+      transform: scale(1.05);
+      z-index: 10;
+    }
+
+    .meme-template.selected {
+      ring: 2px;
+      ring-color: rgb(59, 130, 246);
+    }
+
+    .meme-template img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .meme-name {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+      padding: 8px 4px 4px;
+      font-size: 0.65rem;
+      color: white;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .meme-template:hover .meme-name {
+      opacity: 1;
+    }
+  </style>
 
   <script>
     const canvas = document.getElementById("meme-canvas") as HTMLCanvasElement;
@@ -174,13 +285,123 @@ import Layout from "../layouts/Layout.astro";
     const fontSizeInput = document.getElementById(
       "font-size",
     ) as HTMLInputElement;
+    const fontSizeValue = document.getElementById("font-size-value");
+    const strokeWidthInput = document.getElementById(
+      "stroke-width",
+    ) as HTMLInputElement;
+    const strokeWidthValue = document.getElementById("stroke-width-value");
     const textColorInput = document.getElementById(
       "text-color",
     ) as HTMLInputElement;
     const downloadBtn = document.getElementById("download-btn");
-    const templateBtns = document.querySelectorAll(".template-btn");
+    const memesGrid = document.getElementById("memes-grid");
+    const memesLoading = document.getElementById("memes-loading");
+    const memeSearch = document.getElementById(
+      "meme-search",
+    ) as HTMLInputElement;
+    const refreshBtn = document.getElementById("refresh-memes");
 
     let currentImg: HTMLImageElement | null = null;
+    let allMemes: any[] = [];
+
+    // Fetch memes from Imgflip API
+    async function fetchMemes() {
+      try {
+        memesLoading?.classList.remove("hidden");
+        memesGrid?.classList.add("hidden");
+
+        const response = await fetch("https://api.imgflip.com/get_memes");
+        const data = await response.json();
+
+        if (data.success) {
+          allMemes = data.data.memes;
+          displayMemes(allMemes);
+        }
+      } catch (error) {
+        console.error("Error fetching memes:", error);
+        if (memesGrid) {
+          memesGrid.innerHTML =
+            '<p class="text-slate-400 text-sm col-span-3 text-center py-4">Failed to load memes. Please try again.</p>';
+        }
+      } finally {
+        memesLoading?.classList.add("hidden");
+        memesGrid?.classList.remove("hidden");
+      }
+    }
+
+    // Display memes in grid
+    function displayMemes(memes: any[]) {
+      if (!memesGrid) return;
+
+      // Show top 100 most popular memes
+      const popularMemes = memes.slice(0, 100);
+
+      memesGrid.innerHTML = popularMemes
+        .map(
+          (meme) => `
+        <div class="meme-template aspect-square rounded-lg overflow-hidden bg-slate-700 border border-slate-600 hover:border-blue-500" data-url="${meme.url}" data-name="${meme.name}">
+          <img src="${meme.url}" alt="${meme.name}" loading="lazy" />
+          <div class="meme-name">${meme.name}</div>
+        </div>
+      `,
+        )
+        .join("");
+
+      // Add click handlers
+      document.querySelectorAll(".meme-template").forEach((template) => {
+        template.addEventListener("click", () => {
+          const url = (template as HTMLElement).dataset.url;
+          if (url) {
+            loadMemeTemplate(url);
+
+            // Update selected state
+            document
+              .querySelectorAll(".meme-template")
+              .forEach((t) => t.classList.remove("selected"));
+            template.classList.add("selected");
+          }
+        });
+      });
+    }
+
+    // Search memes
+    memeSearch?.addEventListener("input", (e) => {
+      const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
+
+      if (!searchTerm) {
+        displayMemes(allMemes);
+        return;
+      }
+
+      const filtered = allMemes.filter((meme) =>
+        meme.name.toLowerCase().includes(searchTerm),
+      );
+
+      displayMemes(filtered);
+    });
+
+    // Refresh memes
+    refreshBtn?.addEventListener("click", fetchMemes);
+
+    // Load meme template
+    function loadMemeTemplate(url: string) {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        currentImg = img;
+        drawMeme();
+      };
+      img.onerror = () => {
+        // If CORS fails, try loading without crossOrigin
+        const img2 = new Image();
+        img2.onload = () => {
+          currentImg = img2;
+          drawMeme();
+        };
+        img2.src = url;
+      };
+      img.src = url;
+    }
 
     function drawMeme() {
       if (!ctx || !currentImg) return;
@@ -196,25 +417,38 @@ import Layout from "../layouts/Layout.astro";
 
       // Text Settings
       const fontSize = parseInt(fontSizeInput.value);
+      const strokeWidth = parseInt(strokeWidthInput.value);
       ctx.fillStyle = textColorInput.value;
       ctx.strokeStyle = "black";
-      ctx.lineWidth = fontSize / 8;
+      ctx.lineWidth = strokeWidth;
       ctx.textAlign = "center";
-      ctx.font = `bold ${fontSize}px Impact, Arial, sans-serif`;
+      ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
+      ctx.lineJoin = "round";
 
       // Draw Top Text
       const topText = topTextInput.value.toUpperCase();
-      ctx.textBaseline = "top";
-      ctx.strokeText(topText, canvas.width / 2, 20);
-      ctx.fillText(topText, canvas.width / 2, 20);
+      if (topText) {
+        ctx.textBaseline = "top";
+        // Draw multiple strokes for better outline
+        for (let i = 0; i < 3; i++) {
+          ctx.strokeText(topText, canvas.width / 2, 20);
+        }
+        ctx.fillText(topText, canvas.width / 2, 20);
+      }
 
       // Draw Bottom Text
       const bottomText = bottomTextInput.value.toUpperCase();
-      ctx.textBaseline = "bottom";
-      ctx.strokeText(bottomText, canvas.width / 2, canvas.height - 20);
-      ctx.fillText(bottomText, canvas.width / 2, canvas.height - 20);
+      if (bottomText) {
+        ctx.textBaseline = "bottom";
+        // Draw multiple strokes for better outline
+        for (let i = 0; i < 3; i++) {
+          ctx.strokeText(bottomText, canvas.width / 2, canvas.height - 20);
+        }
+        ctx.fillText(bottomText, canvas.width / 2, canvas.height - 20);
+      }
     }
 
+    // Image upload handler
     imageUpload.addEventListener("change", (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
@@ -225,53 +459,50 @@ import Layout from "../layouts/Layout.astro";
         img.onload = () => {
           currentImg = img;
           drawMeme();
+
+          // Clear selected template
+          document
+            .querySelectorAll(".meme-template")
+            .forEach((t) => t.classList.remove("selected"));
         };
         img.src = event.target?.result as string;
       };
       reader.readAsDataURL(file);
     });
 
-    [topTextInput, bottomTextInput, fontSizeInput, textColorInput].forEach(
-      (el) => {
-        el.addEventListener("input", drawMeme);
-      },
-    );
+    // Text input handlers
+    [
+      topTextInput,
+      bottomTextInput,
+      fontSizeInput,
+      strokeWidthInput,
+      textColorInput,
+    ].forEach((el) => {
+      el.addEventListener("input", () => {
+        drawMeme();
 
-    templateBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const emoji = (btn as HTMLElement).dataset.emoji;
-        const tempCanvas = document.createElement("canvas");
-        tempCanvas.width = 600;
-        tempCanvas.height = 600;
-        const tCtx = tempCanvas.getContext("2d");
-        if (tCtx) {
-          tCtx.fillStyle = "#1e293b";
-          tCtx.fillRect(0, 0, 600, 600);
-          tCtx.font = "300px serif";
-          tCtx.textAlign = "center";
-          tCtx.textBaseline = "middle";
-          tCtx.fillText(emoji || "🐸", 300, 300);
-
-          const img = new Image();
-          img.onload = () => {
-            currentImg = img;
-            drawMeme();
-          };
-          img.src = tempCanvas.toDataURL();
+        // Update value displays
+        if (el === fontSizeInput && fontSizeValue) {
+          fontSizeValue.textContent = `${fontSizeInput.value}px`;
+        }
+        if (el === strokeWidthInput && strokeWidthValue) {
+          strokeWidthValue.textContent = `${strokeWidthInput.value}px`;
         }
       });
     });
 
+    // Download handler
     downloadBtn?.addEventListener("click", () => {
       const link = document.createElement("a");
-      link.download = "meme.png";
+      const timestamp = new Date().getTime();
+      link.download = `meme-${timestamp}.png`;
       link.href = canvas.toDataURL();
       link.click();
     });
 
-    // Default template
+    // Initialize - Load memes on page load
     window.addEventListener("load", () => {
-      (templateBtns[0] as HTMLElement).click();
+      fetchMemes();
     });
   </script>
 </Layout>
