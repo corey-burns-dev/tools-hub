@@ -13,7 +13,7 @@ const themes = [
 ];
 ---
 
-<div class="relative group z-50">
+<div class="relative z-50">
   <button
     id="theme-btn"
     class="flex items-center gap-2 px-3 py-2 rounded-xl glass hover:glass-hover transition-all justify-center min-w-[40px]"
@@ -24,7 +24,8 @@ const themes = [
 
   <!-- Dropdown -->
   <div
-    class="absolute top-full right-0 mt-2 w-48 p-2 rounded-xl bg-slate-950 border border-white/10 shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right z-50"
+    id="theme-dropdown"
+    class="absolute top-full right-0 mt-2 w-48 p-2 rounded-xl bg-slate-950 border border-white/10 shadow-2xl opacity-0 invisible transition-all duration-300 transform origin-top-right z-50 scale-95"
   >
     <div class="space-y-1">
       {
@@ -46,6 +47,42 @@ const themes = [
 </div>
 
 <script>
+  const themeBtn = document.getElementById("theme-btn");
+  const themeDropdown = document.getElementById("theme-dropdown");
+
+  // Toggle Dropdown
+  themeBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isOpen = !themeDropdown?.classList.contains("invisible");
+
+    if (isOpen) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
+  });
+
+  function openDropdown() {
+    themeDropdown?.classList.remove("opacity-0", "invisible", "scale-95");
+    themeDropdown?.classList.add("opacity-100", "visible", "scale-100");
+  }
+
+  function closeDropdown() {
+    themeDropdown?.classList.add("opacity-0", "invisible", "scale-95");
+    themeDropdown?.classList.remove("opacity-100", "visible", "scale-100");
+  }
+
+  // Close on click outside
+  document.addEventListener("click", (e) => {
+    if (
+      themeDropdown &&
+      !themeDropdown.contains(e.target as Node) &&
+      !themeBtn?.contains(e.target as Node)
+    ) {
+      closeDropdown();
+    }
+  });
+
   // Theme Logic
   const initTheme = () => {
     const savedTheme = localStorage.getItem("theme") || "neon";
@@ -55,11 +92,13 @@ const themes = [
   const setTheme = (themeId: string) => {
     document.documentElement.setAttribute("data-theme", themeId);
     localStorage.setItem("theme", themeId);
+    closeDropdown();
   };
 
   // Event Listeners
   document.querySelectorAll(".theme-option").forEach((btn) => {
     btn.addEventListener("click", (e) => {
+      e.stopPropagation();
       const theme = (e.currentTarget as HTMLElement).dataset.theme;
       if (theme) setTheme(theme);
     });

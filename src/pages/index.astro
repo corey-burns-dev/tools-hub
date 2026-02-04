@@ -138,6 +138,22 @@ const tools = [
           Explore the Collection
         </div>
 
+        <!-- Bug Smasher Button -->
+        <button
+          id="start-debug"
+          class="absolute top-0 right-0 md:right-[-120px] bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-mono border border-red-500/20 transition-all opacity-50 hover:opacity-100"
+          title="Found a bug? Smash it!"
+        >
+          🪲 Debug Mode
+        </button>
+
+        <!-- Bug Container -->
+        <div
+          id="bug-container"
+          class="fixed inset-0 pointer-events-none z-50 overflow-hidden hidden"
+        >
+        </div>
+
         <h1
           class="text-6xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-violet-400 mb-6 pb-2 tracking-tight drop-shadow-sm"
         >
@@ -280,5 +296,87 @@ const tools = [
         searchInput.focus();
       }
     });
+  }
+  // Bug Smasher Game
+  const startDebugBtn = document.getElementById("start-debug");
+  const bugContainer = document.getElementById("bug-container");
+  let score = 0;
+  let gameActive = false;
+
+  if (startDebugBtn && bugContainer) {
+    startDebugBtn.addEventListener("click", () => {
+      if (gameActive) return;
+      gameActive = true;
+      score = 0;
+      bugContainer.classList.remove("hidden");
+      startDebugBtn.textContent = "Debugging... Score: 0";
+      startDebugBtn.classList.add("bg-red-500", "text-white");
+
+      const spawnInterval = setInterval(spawnBug, 800);
+
+      // Auto-stop after 30 seconds
+      setTimeout(() => {
+        clearInterval(spawnInterval);
+        gameActive = false;
+        alert(`Debugging Complete! You squashed ${score} bugs! 🐛`);
+        bugContainer.innerHTML = "";
+        bugContainer.classList.add("hidden");
+        startDebugBtn.textContent = "🪲 Debug Mode";
+        startDebugBtn.classList.remove("bg-red-500", "text-white");
+      }, 30000);
+    });
+
+    function spawnBug() {
+      if (!gameActive) return;
+
+      const bug = document.createElement("div");
+      bug.textContent = "🪲";
+      bug.style.position = "absolute";
+      bug.style.fontSize = "24px";
+      bug.style.cursor = "pointer";
+      bug.style.pointerEvents = "auto";
+      bug.style.userSelect = "none";
+      bug.style.transition = "transform 0.1s";
+
+      // Random start position (left or right)
+      const startSide = Math.random() > 0.5 ? "left" : "right";
+      const startY = Math.random() * (window.innerHeight - 100) + 50;
+
+      bug.style.top = `${startY}px`;
+      bug.style[startSide] = "-50px";
+
+      bugContainer?.appendChild(bug);
+
+      // Animate movement
+      let pos = -50;
+      const speed = Math.random() * 3 + 2;
+      const wobble = Math.random() * 50;
+
+      const moveInterval = setInterval(() => {
+        if (!gameActive) return clearInterval(moveInterval);
+
+        pos += speed;
+        bug.style[startSide] = `${pos}px`;
+        bug.style.transform = `translateY(${Math.sin(pos / 50) * wobble}px) rotate(${startSide === "left" ? 90 : -90}deg)`;
+
+        if (pos > window.innerWidth) {
+          clearInterval(moveInterval);
+          bug.remove();
+        }
+      }, 20);
+
+      // Click handler
+      bug.addEventListener("click", () => {
+        score++;
+        if (startDebugBtn)
+          startDebugBtn.textContent = `Debugging... Score: ${score}`;
+
+        // Splat effect
+        clearInterval(moveInterval);
+        bug.textContent = "💥";
+        bug.style.transform = "scale(1.5)";
+        setTimeout(() => bug.remove(), 500);
+      });
+    }
   }
 </script>
