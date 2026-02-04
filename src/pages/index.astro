@@ -123,13 +123,13 @@ const tools = [
     </div>
 
     <div
-      class="container mx-auto px-4 h-full flex flex-col items-center justify-center relative overflow-hidden"
+      class="flex-1 w-full min-h-[calc(100vh-2rem)] flex flex-col items-center justify-center relative overflow-hidden"
       id="game-area"
     >
       <!-- Big Scoreboard -->
       <div
         id="scoreboard"
-        class="absolute top-10 left-1/2 -translate-x-1/2 text-center opacity-0 transition-opacity duration-500 pointer-events-none z-10"
+        class="fixed top-4 left-1/2 -translate-x-1/2 text-center opacity-0 transition-opacity duration-500 pointer-events-none z-[60]"
       >
         <div
           class="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-blue-400 to-violet-600 drop-shadow-2xl"
@@ -198,12 +198,12 @@ const tools = [
 <style>
   .custom-cursor {
     cursor:
-      url("/flyswatter.svg") 16 16,
+      url("/cursor-swatter-optimized.png") 16 16,
       auto;
   }
   .custom-cursor:active {
     cursor:
-      url("/flyswatter.svg") 16 16,
+      url("/cursor-swatter-optimized.png") 16 16,
       auto;
     animation: swat 0.1s;
   }
@@ -293,7 +293,7 @@ const tools = [
       bug.style.display = "flex";
       bug.style.alignItems = "center";
       bug.style.justifyContent = "center";
-      bug.style.cursor = "url('/flyswatter.svg') 16 16, auto"; // Maintain cursor on hover
+      bug.style.cursor = "url('/cursor-swatter-optimized.png') 16 16, auto"; // Use optimized cursor
       bug.style.pointerEvents = "auto";
       bug.style.userSelect = "none";
       bug.style.transition = "transform 0.1s linear";
