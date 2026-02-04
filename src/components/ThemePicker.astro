@@ -46,65 +46,58 @@ const themes = [
   </div>
 </div>
 
-<script>
-  const themeBtn = document.getElementById("theme-btn");
-  const themeDropdown = document.getElementById("theme-dropdown");
-
-  // Toggle Dropdown
-  themeBtn?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const isOpen = !themeDropdown?.classList.contains("invisible");
-
-    if (isOpen) {
-      closeDropdown();
-    } else {
-      openDropdown();
-    }
-  });
-
-  function openDropdown() {
-    themeDropdown?.classList.remove("opacity-0", "invisible", "scale-95");
-    themeDropdown?.classList.add("opacity-100", "visible", "scale-100");
-  }
-
-  function closeDropdown() {
-    themeDropdown?.classList.add("opacity-0", "invisible", "scale-95");
-    themeDropdown?.classList.remove("opacity-100", "visible", "scale-100");
-  }
-
-  // Close on click outside
+<script is:inline>
+  // Robust Theme Picker Logic using Event Delegation
   document.addEventListener("click", (e) => {
-    if (
-      themeDropdown &&
-      !themeDropdown.contains(e.target as Node) &&
-      !themeBtn?.contains(e.target as Node)
-    ) {
-      closeDropdown();
+    const target = e.target;
+    const themeBtn = target.closest("#theme-btn");
+    const themeDropdown = document.getElementById("theme-dropdown");
+    const themeOption = target.closest(".theme-option");
+
+    if (!themeDropdown) return;
+
+    // Toggle Dropdown
+    if (themeBtn) {
+      e.stopPropagation();
+      const isHidden = themeDropdown.classList.contains("invisible");
+      if (isHidden) {
+        themeDropdown.classList.remove("opacity-0", "invisible", "scale-95");
+        themeDropdown.classList.add("opacity-100", "visible", "scale-100");
+      } else {
+        themeDropdown.classList.add("opacity-0", "invisible", "scale-95");
+        themeDropdown.classList.remove("opacity-100", "visible", "scale-100");
+      }
+      return;
+    }
+
+    // Select Theme
+    if (themeOption) {
+      e.stopPropagation();
+      const theme = themeOption.dataset.theme;
+      if (theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+      }
+      // Close dropdown
+      themeDropdown.classList.add("opacity-0", "invisible", "scale-95");
+      themeDropdown.classList.remove("opacity-100", "visible", "scale-100");
+      return;
+    }
+
+    // Close if clicking outside
+    if (!themeDropdown.contains(target)) {
+      themeDropdown.classList.add("opacity-0", "invisible", "scale-95");
+      themeDropdown.classList.remove("opacity-100", "visible", "scale-100");
     }
   });
 
-  // Theme Logic
-  const initTheme = () => {
+  // Initial Theme Load
+  const savedTheme = localStorage.getItem("theme") || "neon";
+  document.documentElement.setAttribute("data-theme", savedTheme);
+
+  // Re-apply on view transitions
+  document.addEventListener("astro:after-swap", () => {
     const savedTheme = localStorage.getItem("theme") || "neon";
     document.documentElement.setAttribute("data-theme", savedTheme);
-  };
-
-  const setTheme = (themeId: string) => {
-    document.documentElement.setAttribute("data-theme", themeId);
-    localStorage.setItem("theme", themeId);
-    closeDropdown();
-  };
-
-  // Event Listeners
-  document.querySelectorAll(".theme-option").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const theme = (e.currentTarget as HTMLElement).dataset.theme;
-      if (theme) setTheme(theme);
-    });
   });
-
-  // Run on load
-  initTheme();
-  document.addEventListener("astro:after-swap", initTheme); // For Astro ViewTransitions if enabled
 </script>
