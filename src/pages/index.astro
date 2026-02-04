@@ -1,11 +1,169 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="DevTools Premium">
+	<main class="container mx-auto px-4 py-12 min-h-screen">
+		<!-- Hero Section -->
+		<div class="text-center mb-24 relative">
+			<div
+				class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/20 rounded-full blur-[100px] -z-10 animate-pulse"
+			>
+			</div>
+
+			<div
+				class="inline-block mb-6 px-4 py-1.5 rounded-full glass border-blue-500/30 text-blue-300 text-sm font-medium animate-float"
+			>
+				✨ v2.0 Now Available
+			</div>
+
+			<h1 class="text-7xl font-bold mb-8 tracking-tight">
+				<span class="text-gradient">Professional Tools</span><br />
+				<span class="text-white">for Modern Developers</span>
+			</h1>
+
+			<p class="text-xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
+				A curated suite of powerful utilities designed to boost your productivity. Featuring
+				a premium glassmorphism UI, smooth animations, and developer-focused functionality.
+			</p>
+
+			<div class="flex gap-4 justify-center">
+				<a
+					href="#tools"
+					class="btn-primary"
+					>Explore Tools</a
+				>
+				<a
+					href="https://github.com"
+					target="_blank"
+					class="btn-secondary"
+					>View on GitHub</a
+				>
+			</div>
+		</div>
+
+		<!-- Stats Section -->
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24 max-w-4xl mx-auto">
+			<div class="glass p-6 text-center">
+				<div class="text-4xl font-bold text-blue-400 mb-2">12+</div>
+				<div class="text-slate-400">Premium Tools</div>
+			</div>
+			<div class="glass p-6 text-center">
+				<div class="text-4xl font-bold text-violet-400 mb-2">100%</div>
+				<div class="text-slate-400">Open Source</div>
+			</div>
+			<div class="glass p-6 text-center">
+				<div class="text-4xl font-bold text-fuchsia-400 mb-2">Fast</div>
+				<div class="text-slate-400">Performance</div>
+			</div>
+		</div>
+
+		<!-- Tools Grid -->
+		<div
+			id="tools"
+			class="mb-12"
+		>
+			<h2 class="text-3xl font-bold mb-12 text-center">Available Utilities</h2>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				<!-- JSON Ninja -->
+				<a
+					href="/json-ninja"
+					class="card-glass group"
+				>
+					<div
+						class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform"
+					>
+						🚀
+					</div>
+					<h3 class="text-xl font-bold mb-2 text-white">JSON Ninja</h3>
+					<p class="text-slate-400">
+						Format, validate, and query JSON data with ease. Includes safe-mode and diff
+						viewer.
+					</p>
+				</a>
+
+				<!-- Regex Master -->
+				<a
+					href="/regex-master"
+					class="card-glass group"
+				>
+					<div
+						class="w-12 h-12 rounded-lg bg-violet-500/20 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform"
+					>
+						⚡
+					</div>
+					<h3 class="text-xl font-bold mb-2 text-white">Regex Master</h3>
+					<p class="text-slate-400">
+						Test and debug regular expressions in real-time with explanation helper.
+					</p>
+				</a>
+
+				<!-- Color Canvas -->
+				<a
+					href="/color-canvas"
+					class="card-glass group"
+				>
+					<div
+						class="w-12 h-12 rounded-lg bg-fuchsia-500/20 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform"
+					>
+						🎨
+					</div>
+					<h3 class="text-xl font-bold mb-2 text-white">Color Canvas</h3>
+					<p class="text-slate-400">
+						Advanced color picker, palette generator, and accessibility contrast
+						checker.
+					</p>
+				</a>
+
+				<!-- Code Forge -->
+				<a
+					href="/code-forge"
+					class="card-glass group"
+				>
+					<div
+						class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform"
+					>
+						🛡️
+					</div>
+					<h3 class="text-xl font-bold mb-2 text-white">Code Forge</h3>
+					<p class="text-slate-400">
+						Generate secure passwords, hashes, and UUIDs instantly.
+					</p>
+				</a>
+
+				<!-- Time Travel -->
+				<a
+					href="/time-travel"
+					class="card-glass group"
+				>
+					<div
+						class="w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform"
+					>
+						⏰
+					</div>
+					<h3 class="text-xl font-bold mb-2 text-white">Time Travel</h3>
+					<p class="text-slate-400">
+						Convert timestamps, differencing, and world clock utilities.
+					</p>
+				</a>
+
+				<!-- Data Craft -->
+				<a
+					href="/data-craft"
+					class="card-glass group"
+				>
+					<div
+						class="w-12 h-12 rounded-lg bg-indigo-500/20 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform"
+					>
+						📊
+					</div>
+					<h3 class="text-xl font-bold mb-2 text-white">Data Craft</h3>
+					<p class="text-slate-400">
+						CSV to JSON converter, mock data generator, and basic charts.
+					</p>
+				</a>
+			</div>
+		</div>
+	</main>
 </Layout>

@@ -1,0 +1,99 @@
+{
+  "lotteries": [
+    {
+      "id": "lotto_max",
+      "name": "Lotto Max",
+      "picks": 7,
+      "range": 50,
+      "bonus": {
+        "count": 1,
+        "range": 50
+      }
+    },
+    {
+      "id": "lotto_649",
+      "name": "Lotto 6/49",
+      "picks": 6,
+      "range": 49,
+      "bonus": {
+        "count": 1,
+        "range": 49
+      }
+    },
+    {
+      "id": "lottario",
+      "name": "Lottario",
+      "picks": 6,
+      "range": 45,
+      "bonus": {
+        "count": 1,
+        "range": 45
+      }
+    },
+    {
+      "id": "ontario_49",
+      "name": "Ontario 49",
+      "picks": 6,
+      "range": 49,
+      "bonus": {
+        "count": 1,
+        "range": 49
+      }
+    },
+    {
+      "id": "daily_grand",
+      "name": "Daily Grand",
+      "picks": 5,
+      "range": 49,
+      "special": {
+        "name": "grand_number",
+        "count": 1,
+        "range": 7
+      }
+    },
+    {
+      "id": "lightning_lotto",
+      "name": "Lightning Lotto",
+      "picks": 5,
+      "range": 49
+    },
+    {
+      "id": "keno",
+      "name": "Keno",
+      "picks_min": 1,
+      "picks_max": 10,
+      "range": 70,
+      "drawn": 20
+    },
+    {
+      "id": "pick2",
+      "name": "Pick 2",
+      "digits": 2,
+      "range": 9
+    },
+    {
+      "id": "pick3",
+      "name": "Pick 3",
+      "digits": 3,
+      "range": 9
+    },
+    {
+      "id": "pick4",
+      "name": "Pick 4",
+      "digits": 4,
+      "range": 9
+    },
+    {
+      "id": "poker_lotto",
+      "name": "Poker Lotto",
+      "cards": 5,
+      "deck": 52
+    },
+    {
+      "id": "encore",
+      "name": "Encore",
+      "digits": 7,
+      "range": 9
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title='Color Canvas'>
+	<h1
+		class='text-5xl font-bold mb-8 bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'
+	>
+		Color Canvas
+	</h1>
+
+	<div class='card-glass w-full h-96 flex flex-col md:flex-row gap-8'>
+		<div class='md:w-1/2 flex items-center justify-center'>
+			<img
+				src='https://images.unsplash.com/photo-1589519160732-57fc498494f8?w=500&h=400&fit=crop'
+				alt='Color Canvas'
+				class='rounded-2xl object-cover w-full h-full'
+			/>
+		</div>
+		<div class='md:w-1/2 flex flex-col justify-center'>
+			<p class='text-lg leading-relaxed'>
+				Color Canvas is your creative palette for designing beautiful color schemes. Generate
+				harmonious palettes, convert between color formats, and explore endless creative
+				possibilities with color theory at your fingertips.
+			</p>
+		</div>
+	</div>
+</Layout>
