@@ -11,7 +11,8 @@
     "format": "biome format . --write",
     "lint-staged": "lint-staged",
     "check": "astro check",
-    "prepare": "husky"
+    "prepare": "husky",
+    "deploy": "wrangler pages deploy dist"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,cjs,mjs,json}": "biome check --write --no-errors-on-unmatched"
