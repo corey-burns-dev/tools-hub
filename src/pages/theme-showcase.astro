@@ -1,0 +1,179 @@
+---
+import Button from "../components/Button.astro";
+import Card from "../components/Card.astro";
+import ThemePicker from "../components/ThemePicker.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Theme Showcase">
+  <div class="container mx-auto px-6 py-12 max-w-6xl">
+    <div
+      class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6"
+    >
+      <div>
+        <h1 class="text-4xl font-extrabold text-gradient mb-2">
+          Theme Showcase
+        </h1>
+        <p class="text-muted text-lg">
+          Explore our design system and component library.
+        </p>
+      </div>
+      <div class="glass p-4 rounded-2xl flex items-center gap-4 relative z-50">
+        <span class="text-sm font-semibold uppercase tracking-wider text-muted"
+          >Active Theme:</span
+        >
+        <ThemePicker />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      <!-- Typography Section -->
+      <section class="space-y-6">
+        <h2
+          class="text-2xl font-bold text-main border-b border-white/10 pb-4 mb-6"
+        >
+          Typography
+        </h2>
+        <div class="card-glass space-y-4">
+          <h1 class="text-4xl font-extrabold text-main">Heading 1</h1>
+          <h2 class="text-3xl font-bold text-main">Heading 2</h2>
+          <h3 class="text-2xl font-bold text-main">Heading 3</h3>
+          <p class="text-main leading-relaxed">
+            This is a standard paragraph using the <code
+              class="bg-white/10 px-1 py-0.5 rounded text-sm">text-main</code
+            > color. It should be highly legible against the current background. The
+            design system uses fluid typography and modern sans-serif fonts for optimal
+            readability.
+          </p>
+          <p class="text-muted text-sm leading-relaxed">
+            This is muted text using <code
+              class="bg-white/10 px-1 py-0.5 rounded text-sm">text-muted</code
+            >. It's perfect for secondary information, captions, or less
+            critical content.
+          </p>
+        </div>
+      </section>
+
+      <!-- Buttons Section -->
+      <section class="space-y-6">
+        <h2
+          class="text-2xl font-bold text-main border-b border-white/10 pb-4 mb-6"
+        >
+          Interactive Elements
+        </h2>
+        <div class="card-glass space-y-8">
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-main mb-4">Buttons</h3>
+            <div class="flex flex-wrap gap-4">
+              <Button href="#">Primary Action</Button>
+              <Button href="#" variant="secondary">Secondary Action</Button>
+              <Button href="#" variant="ghost">Ghost Button</Button>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold text-main mb-4">Input Fields</h3>
+            <div class="space-y-3">
+              <input
+                type="text"
+                placeholder="Standard Input..."
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-main placeholder-white/30 focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all"
+              />
+              <div class="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  id="demo-check"
+                  class="w-5 h-5 rounded border-white/20 bg-white/5 text-blue-500 focus:ring-blue-500/40"
+                  checked
+                />
+                <label for="demo-check" class="text-main">Checkbox Option</label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Cards Section -->
+    <section>
+      <h2
+        class="text-2xl font-bold text-main border-b border-white/10 pb-4 mb-8"
+      >
+        Card Variants
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card href="#" title="Standard Card" class="h-full">
+          <div class="p-2">
+            <div class="text-4xl mb-4">✨</div>
+            <h3 class="text-xl font-bold text-main mb-2">Glass Card</h3>
+            <p class="text-muted">
+              Our standard glass card component with hover lift, light
+              reflection, and smooth transition.
+            </p>
+          </div>
+        </Card>
+
+        <Card title="Interactive Card" href="#" class="h-full">
+          <div class="p-2">
+            <div class="text-4xl mb-4">🚀</div>
+            <h3 class="text-xl font-bold text-main mb-2">Interactive</h3>
+            <p class="text-muted">
+              Fully clickable card that acts as a link. Notice the scale effect
+              and glow on hover.
+            </p>
+          </div>
+        </Card>
+
+        <div class="card-glass relative overflow-hidden group">
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          >
+          </div>
+          <div class="relative z-10 p-2">
+            <div class="text-4xl mb-4">🎨</div>
+            <h3 class="text-xl font-bold text-main mb-2">Gradient Overlay</h3>
+            <p class="text-muted">
+              A standard div using the <code>card-glass</code> utility class with
+              a custom gradient hover effect.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Palette Reference -->
+    <section class="mt-16 pt-8 border-t border-white/5">
+      <h2 class="text-xl font-bold text-muted uppercase tracking-widest mb-8">
+        Theme Palette
+      </h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="space-y-2">
+          <div class="h-20 rounded-xl bg-[var(--color-primary)] shadow-lg">
+          </div>
+          <p class="text-xs text-center text-muted font-mono">
+            --color-primary
+          </p>
+        </div>
+        <div class="space-y-2">
+          <div class="h-20 rounded-xl bg-[var(--color-secondary)] shadow-lg">
+          </div>
+          <p class="text-xs text-center text-muted font-mono">
+            --color-secondary
+          </p>
+        </div>
+        <div class="space-y-2">
+          <div class="h-20 rounded-xl bg-[var(--color-accent)] shadow-lg"></div>
+          <p class="text-xs text-center text-muted font-mono">--color-accent</p>
+        </div>
+        <div class="space-y-2">
+          <div
+            class="h-20 rounded-xl bg-[var(--bg-main)] border border-white/10 shadow-lg"
+          >
+          </div>
+          <p class="text-xs text-center text-muted font-mono">--bg-main</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

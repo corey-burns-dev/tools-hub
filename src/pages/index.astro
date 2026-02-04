@@ -1,169 +1,284 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Button from "../components/Button.astro";
+import Card from "../components/Card.astro";
+import Layout from "../layouts/Layout.astro";
+
+const tools = [
+  {
+    name: "Username Generator",
+    icon: "👤",
+    path: "/username-generator",
+    desc: "Create unique identifiers for any platform.",
+    category: "Identity",
+  },
+  {
+    name: "Password Generator",
+    icon: "🔐",
+    path: "/password-generator",
+    desc: "Generate secure, uncrackable passwords.",
+    category: "Security",
+  },
+  {
+    name: "Lottery Generator",
+    icon: "🎰",
+    path: "/lottery-generator",
+    desc: "Test your luck with random numbers.",
+    category: "Fun",
+  },
+  {
+    name: "Coin & Dice",
+    icon: "🎲",
+    path: "/coin-dice",
+    desc: "Flip a coin or roll the dice instantly.",
+    category: "Fun",
+  },
+  {
+    name: "Food Picker",
+    icon: "🍔",
+    path: "/food-picker",
+    desc: "Can't decide? Let fate choose your meal.",
+    category: "Life",
+  },
+  {
+    name: "Currency Converter",
+    icon: "💱",
+    path: "/currency-converter",
+    desc: "Real-time exchange rates at a glance.",
+    category: "Utility",
+  },
+  {
+    name: "Measure Converter",
+    icon: "📏",
+    path: "/measurement-converter",
+    desc: "Convert units of measurement easily.",
+    category: "Utility",
+  },
+  {
+    name: "Habit Tracker",
+    icon: "📈",
+    path: "/habit-tracker",
+    desc: "Build better habits and track progress.",
+    category: "Productivity",
+  },
+  {
+    name: "Focus Noise",
+    icon: "🎧",
+    path: "/focus-noise",
+    desc: "Ambient sounds to improve concentration.",
+    category: "Productivity",
+  },
+  {
+    name: "ASCII Art",
+    icon: "🎨",
+    path: "/ascii-art",
+    desc: "Turn text into beautiful ASCII masterpieces.",
+    category: "Creative",
+  },
+  {
+    name: "Meme Generator",
+    icon: "🐸",
+    path: "/meme-generator",
+    desc: "Create viral memes in seconds.",
+    category: "Creative",
+  },
+  {
+    name: "Hangman",
+    icon: "😵",
+    path: "/hangman",
+    desc: "Classic word guessing game.",
+    category: "Game",
+  },
+  {
+    name: "Hash Generator",
+    icon: "##",
+    path: "/hash-generator",
+    desc: "Create cryptographic hashes (MD5, SHA).",
+    category: "Security",
+  },
+  {
+    name: "Base64 Tool",
+    icon: "64",
+    path: "/base64-tool",
+    desc: "Encode and decode Base64 strings.",
+    category: "Dev",
+  },
+];
 ---
 
-<Layout title="DevTools Premium">
-	<main class="container mx-auto px-4 py-12 min-h-screen">
-		<!-- Hero Section -->
-		<div class="text-center mb-24 relative">
-			<div
-				class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/20 rounded-full blur-[100px] -z-10 animate-pulse"
-			>
-			</div>
+<Layout title="Discovery Hub">
+  <div class="relative min-h-screen pb-12">
+    <!-- Background Decor -->
+    <div
+      class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none"
+    >
+      <div
+        class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse"
+      >
+      </div>
+      <div
+        class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-600/10 rounded-full blur-[120px] animate-pulse"
+        style="animation-delay: 2s;"
+      >
+      </div>
+    </div>
 
-			<div
-				class="inline-block mb-6 px-4 py-1.5 rounded-full glass border-blue-500/30 text-blue-300 text-sm font-medium animate-float"
-			>
-				✨ v2.0 Now Available
-			</div>
+    <div class="container mx-auto px-4 pt-16 pb-8">
+      <!-- Hero Section -->
+      <div class="text-center mb-16 max-w-3xl mx-auto relative z-10">
+        <div
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm text-blue-300 mb-6 backdrop-blur-sm animate-float"
+        >
+          <span class="flex h-2 w-2 relative">
+            <span
+              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"
+            ></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"
+            ></span>
+          </span>
+          Explore the Collection
+        </div>
 
-			<h1 class="text-7xl font-bold mb-8 tracking-tight">
-				<span class="text-gradient">Professional Tools</span><br />
-				<span class="text-white">for Modern Developers</span>
-			</h1>
+        <h1
+          class="text-6xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-violet-400 mb-6 pb-2 tracking-tight drop-shadow-sm"
+        >
+          Tools & Stuff
+        </h1>
+        <p class="text-xl text-slate-400 mb-10 leading-relaxed">
+          A premium suite of developer utilities and lifestyle tools. <br
+            class="hidden md:block"
+          />
+          Beautifully designed, open source, and free to use.
+        </p>
 
-			<p class="text-xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
-				A curated suite of powerful utilities designed to boost your productivity. Featuring
-				a premium glassmorphism UI, smooth animations, and developer-focused functionality.
-			</p>
+        <!-- Search Bar -->
+        <div class="max-w-xl mx-auto relative group">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-blue-500 to-violet-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity duration-300"
+          >
+          </div>
+          <div
+            class="relative flex items-center bg-slate-900/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl overflow-hidden focus-within:border-blue-500/50 transition-colors"
+          >
+            <span class="pl-6 text-slate-400 text-xl">🔍</span>
+            <input
+              type="text"
+              id="tool-search"
+              placeholder="Find a tool..."
+              class="w-full bg-transparent border-none px-4 py-4 text-lg text-white placeholder-slate-500 focus:ring-0 outline-none"
+            />
+            <div class="pr-2">
+              <span
+                class="px-2 py-1 rounded-md bg-white/5 text-xs text-slate-500 font-mono border border-white/5"
+                >/</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
 
-			<div class="flex gap-4 justify-center">
-				<a
-					href="#tools"
-					class="btn-primary"
-					>Explore Tools</a
-				>
-				<a
-					href="https://github.com"
-					target="_blank"
-					class="btn-secondary"
-					>View on GitHub</a
-				>
-			</div>
-		</div>
+      <!-- Categories System (Optional Future) -->
+      <!-- <div class="flex gap-2 justify-center mb-12 flex-wrap" id="categories">
+        {['All', 'Dev', 'Security', 'Fun', 'Productivity'].map(cat => (
+          <button class="px-4 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/5 text-sm text-slate-300 transition-colors">
+            {cat}
+          </button>
+        ))}
+      </div> -->
 
-		<!-- Stats Section -->
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24 max-w-4xl mx-auto">
-			<div class="glass p-6 text-center">
-				<div class="text-4xl font-bold text-blue-400 mb-2">12+</div>
-				<div class="text-slate-400">Premium Tools</div>
-			</div>
-			<div class="glass p-6 text-center">
-				<div class="text-4xl font-bold text-violet-400 mb-2">100%</div>
-				<div class="text-slate-400">Open Source</div>
-			</div>
-			<div class="glass p-6 text-center">
-				<div class="text-4xl font-bold text-fuchsia-400 mb-2">Fast</div>
-				<div class="text-slate-400">Performance</div>
-			</div>
-		</div>
+      <!-- Tools Grid -->
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        id="tools-grid"
+      >
+        {
+          tools.map((tool) => (
+            <Card
+              href={tool.path}
+              class="group h-full flex flex-col tool-card"
+              data-name={tool.name}
+              data-category={tool.category}
+            >
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/10 to-violet-500/10 flex items-center justify-center text-3xl group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 border border-white/5 shadow-inner">
+                  {tool.icon}
+                </div>
+                <div class="px-2 py-1 rounded-md bg-white/5 text-[10px] uppercase tracking-wider font-semibold text-slate-400 border border-white/5">
+                  {tool.category}
+                </div>
+              </div>
 
-		<!-- Tools Grid -->
-		<div
-			id="tools"
-			class="mb-12"
-		>
-			<h2 class="text-3xl font-bold mb-12 text-center">Available Utilities</h2>
+              <h2 class="text-2xl font-bold mb-2 text-white group-hover:text-blue-300 transition-colors">
+                {tool.name}
+              </h2>
+              <p class="text-slate-400 leading-relaxed flex-1">{tool.desc}</p>
 
-			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-				<!-- JSON Ninja -->
-				<a
-					href="/json-ninja"
-					class="card-glass group"
-				>
-					<div
-						class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform"
-					>
-						🚀
-					</div>
-					<h3 class="text-xl font-bold mb-2 text-white">JSON Ninja</h3>
-					<p class="text-slate-400">
-						Format, validate, and query JSON data with ease. Includes safe-mode and diff
-						viewer.
-					</p>
-				</a>
+              <div class="mt-6 flex items-center text-sm font-medium text-blue-400 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+                Launch Tool{" "}
+                <span class="ml-1 transition-transform group-hover:translate-x-1">
+                  →
+                </span>
+              </div>
+            </Card>
+          ))
+        }
+      </div>
 
-				<!-- Regex Master -->
-				<a
-					href="/regex-master"
-					class="card-glass group"
-				>
-					<div
-						class="w-12 h-12 rounded-lg bg-violet-500/20 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform"
-					>
-						⚡
-					</div>
-					<h3 class="text-xl font-bold mb-2 text-white">Regex Master</h3>
-					<p class="text-slate-400">
-						Test and debug regular expressions in real-time with explanation helper.
-					</p>
-				</a>
-
-				<!-- Color Canvas -->
-				<a
-					href="/color-canvas"
-					class="card-glass group"
-				>
-					<div
-						class="w-12 h-12 rounded-lg bg-fuchsia-500/20 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform"
-					>
-						🎨
-					</div>
-					<h3 class="text-xl font-bold mb-2 text-white">Color Canvas</h3>
-					<p class="text-slate-400">
-						Advanced color picker, palette generator, and accessibility contrast
-						checker.
-					</p>
-				</a>
-
-				<!-- Code Forge -->
-				<a
-					href="/code-forge"
-					class="card-glass group"
-				>
-					<div
-						class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform"
-					>
-						🛡️
-					</div>
-					<h3 class="text-xl font-bold mb-2 text-white">Code Forge</h3>
-					<p class="text-slate-400">
-						Generate secure passwords, hashes, and UUIDs instantly.
-					</p>
-				</a>
-
-				<!-- Time Travel -->
-				<a
-					href="/time-travel"
-					class="card-glass group"
-				>
-					<div
-						class="w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform"
-					>
-						⏰
-					</div>
-					<h3 class="text-xl font-bold mb-2 text-white">Time Travel</h3>
-					<p class="text-slate-400">
-						Convert timestamps, differencing, and world clock utilities.
-					</p>
-				</a>
-
-				<!-- Data Craft -->
-				<a
-					href="/data-craft"
-					class="card-glass group"
-				>
-					<div
-						class="w-12 h-12 rounded-lg bg-indigo-500/20 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform"
-					>
-						📊
-					</div>
-					<h3 class="text-xl font-bold mb-2 text-white">Data Craft</h3>
-					<p class="text-slate-400">
-						CSV to JSON converter, mock data generator, and basic charts.
-					</p>
-				</a>
-			</div>
-		</div>
-	</main>
+      <!-- Footer CTA -->
+      <div class="mt-24 text-center">
+        <div
+          class="inline-block p-[2px] rounded-2xl bg-gradient-to-r from-blue-500/50 via-violet-500/50 to-fuchsia-500/50"
+        >
+          <div class="bg-black/80 rounded-2xl p-8 backdrop-blur-xl max-w-2xl">
+            <h3 class="text-2xl font-bold mb-4 text-white">
+              Missing something?
+            </h3>
+            <p class="text-slate-400 mb-6">
+              Have an idea for a cool tool? Contribute to the project on GitHub.
+            </p>
+            <Button
+              variant="secondary"
+              href="https://github.com/corey-burns/tools-n-stuff"
+            >
+              <span class="mr-2">⭐</span> Star on GitHub
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </Layout>
+
+<script>
+  // Simple search functionality
+  const searchInput = document.getElementById(
+    "tool-search",
+  ) as HTMLInputElement;
+  const toolsGrid = document.getElementById("tools-grid");
+  const cards = toolsGrid?.querySelectorAll(".tool-card");
+
+  if (searchInput && cards) {
+    searchInput.addEventListener("input", (e) => {
+      const term = (e.target as HTMLInputElement).value.toLowerCase();
+
+      cards.forEach((card) => {
+        const name = card.getAttribute("data-name")?.toLowerCase() || "";
+        const category =
+          card.getAttribute("data-category")?.toLowerCase() || "";
+
+        if (name.includes(term) || category.includes(term)) {
+          (card as HTMLElement).style.display = "flex";
+        } else {
+          (card as HTMLElement).style.display = "none";
+        }
+      });
+    });
+
+    // Slash key focus
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "/" && document.activeElement !== searchInput) {
+        e.preventDefault();
+        searchInput.focus();
+      }
+    });
+  }
+</script>
