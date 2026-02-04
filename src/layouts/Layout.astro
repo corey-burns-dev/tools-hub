@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import ThemePicker from "../components/ThemePicker.astro";
 
 interface Props {
   title: string;
@@ -54,7 +55,10 @@ const tools = [
             >
               🛠️
             </div>
-            <h1 class="text-xl font-bold text-gradient">DevTools</h1>
+            <h1 class="text-xl font-bold text-gradient flex-1">DevTools</h1>
+            <div class="scale-75 origin-right">
+              <ThemePicker />
+            </div>
           </a>
         </div>
 
