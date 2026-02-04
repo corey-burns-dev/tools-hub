@@ -1,31 +1,277 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Meme Generator">
-	<div class="container mx-auto px-4 py-8">
-		<div class="max-w-4xl mx-auto">
-			<div class="flex items-center gap-4 mb-8">
-				<div
-					class="w-16 h-16 rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 flex items-center justify-center text-4xl shadow-xl shadow-blue-500/20"
-				>
-					🐸
-				</div>
-				<div>
-					<h1 class="text-4xl font-bold text-white mb-2">Meme Generator</h1>
-					<p class="text-slate-400">
-						Create meme masterpieces with custom text overlays.
-					</p>
-				</div>
-			</div>
+  <div class="container mx-auto px-4 py-8">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-center gap-4 mb-8">
+        <div
+          class="w-16 h-16 rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 flex items-center justify-center text-4xl shadow-xl shadow-blue-500/20"
+        >
+          🐸
+        </div>
+        <div>
+          <h1 class="text-4xl font-bold text-main mb-2">Meme Generator</h1>
+          <p class="text-muted">
+            Create meme masterpieces with custom text overlays.
+          </p>
+        </div>
+      </div>
 
-			<div class="card-glass min-h-[400px] flex items-center justify-center">
-				<div class="text-center">
-					<div class="text-6xl mb-4 animate-bounce">🚧</div>
-					<h2 class="text-2xl font-bold text-white mb-2">Coming Soon</h2>
-					<p class="text-slate-400">This tool is currently under construction.</p>
-				</div>
-			</div>
-		</div>
-	</div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <!-- Preview Area -->
+        <div class="card-glass p-0 overflow-hidden sticky top-8">
+          <div
+            class="p-4 border-b border-white/10 flex items-center justify-between"
+          >
+            <h2 class="text-lg font-bold text-main">Preview</h2>
+            <div class="flex gap-2">
+              <button
+                id="download-btn"
+                class="px-4 py-2 bg-primary hover:opacity-90 text-slate-900 rounded-lg text-sm font-bold transition-all shadow-lg"
+              >
+                Download Meme
+              </button>
+            </div>
+          </div>
+          <div
+            class="aspect-square bg-slate-900/50 flex items-center justify-center p-4"
+          >
+            <canvas
+              id="meme-canvas"
+              class="max-w-full max-h-full rounded-lg shadow-2xl"></canvas>
+          </div>
+        </div>
+
+        <!-- Controls Area -->
+        <div class="space-y-6">
+          <div class="card-glass p-6">
+            <h3
+              class="text-lg font-bold text-main mb-4 flex items-center gap-2"
+            >
+              <span>🖼️</span> Image Source
+            </h3>
+            <div class="space-y-4">
+              <label class="block">
+                <span
+                  class="text-sm font-semibold text-muted uppercase tracking-wider mb-2 block"
+                  >Upload Image</span
+                >
+                <input
+                  type="file"
+                  id="image-upload"
+                  accept="image/*"
+                  class="block w-full text-sm text-slate-400
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-bold
+                    file:bg-primary file:text-slate-900
+                    hover:file:opacity-90 cursor-pointer"
+                />
+              </label>
+
+              <div class="pt-4 border-t border-white/5">
+                <span
+                  class="text-sm font-semibold text-muted uppercase tracking-wider mb-3 block"
+                  >Templates</span
+                >
+                <div class="grid grid-cols-4 gap-2">
+                  {
+                    ["🔥", "🐶", "🐈", "🤔"].map((emoji) => (
+                      <button
+                        class="template-btn aspect-square rounded-xl glass hover:glass-hover flex items-center justify-center text-2xl transition-all"
+                        data-emoji={emoji}
+                      >
+                        {emoji}
+                      </button>
+                    ))
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-glass p-6">
+            <h3
+              class="text-lg font-bold text-main mb-4 flex items-center gap-2"
+            >
+              <span>✍️</span> Text Customization
+            </h3>
+            <div class="space-y-4">
+              <div>
+                <label
+                  class="text-sm font-semibold text-muted uppercase tracking-wider mb-2 block"
+                  >Top Text</label
+                >
+                <input
+                  type="text"
+                  id="top-text"
+                  placeholder="TOP TEXT"
+                  class="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all uppercase"
+                />
+              </div>
+              <div>
+                <label
+                  class="text-sm font-semibold text-muted uppercase tracking-wider mb-2 block"
+                  >Bottom Text</label
+                >
+                <input
+                  type="text"
+                  id="bottom-text"
+                  placeholder="BOTTOM TEXT"
+                  class="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all uppercase"
+                />
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 pt-2">
+                <div>
+                  <label
+                    class="text-sm font-semibold text-muted uppercase tracking-wider mb-2 block"
+                    >Font Size</label
+                  >
+                  <input
+                    type="range"
+                    id="font-size"
+                    min="20"
+                    max="100"
+                    value="40"
+                    class="w-full accent-primary"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="text-sm font-semibold text-muted uppercase tracking-wider mb-2 block"
+                    >Text Color</label
+                  >
+                  <input
+                    type="color"
+                    id="text-color"
+                    value="#ffffff"
+                    class="w-full h-10 bg-transparent border-none rounded cursor-pointer"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("meme-canvas") as HTMLCanvasElement;
+    const ctx = canvas.getContext("2d");
+    const imageUpload = document.getElementById(
+      "image-upload",
+    ) as HTMLInputElement;
+    const topTextInput = document.getElementById(
+      "top-text",
+    ) as HTMLInputElement;
+    const bottomTextInput = document.getElementById(
+      "bottom-text",
+    ) as HTMLInputElement;
+    const fontSizeInput = document.getElementById(
+      "font-size",
+    ) as HTMLInputElement;
+    const textColorInput = document.getElementById(
+      "text-color",
+    ) as HTMLInputElement;
+    const downloadBtn = document.getElementById("download-btn");
+    const templateBtns = document.querySelectorAll(".template-btn");
+
+    let currentImg: HTMLImageElement | null = null;
+
+    function drawMeme() {
+      if (!ctx || !currentImg) return;
+
+      // Set canvas size to match image size or constrained area
+      const maxWidth = 800;
+      const ratio = currentImg.width / currentImg.height;
+      canvas.width = Math.min(currentImg.width, maxWidth);
+      canvas.height = canvas.width / ratio;
+
+      // Draw Image
+      ctx.drawImage(currentImg, 0, 0, canvas.width, canvas.height);
+
+      // Text Settings
+      const fontSize = parseInt(fontSizeInput.value);
+      ctx.fillStyle = textColorInput.value;
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = fontSize / 8;
+      ctx.textAlign = "center";
+      ctx.font = `bold ${fontSize}px Impact, Arial, sans-serif`;
+
+      // Draw Top Text
+      const topText = topTextInput.value.toUpperCase();
+      ctx.textBaseline = "top";
+      ctx.strokeText(topText, canvas.width / 2, 20);
+      ctx.fillText(topText, canvas.width / 2, 20);
+
+      // Draw Bottom Text
+      const bottomText = bottomTextInput.value.toUpperCase();
+      ctx.textBaseline = "bottom";
+      ctx.strokeText(bottomText, canvas.width / 2, canvas.height - 20);
+      ctx.fillText(bottomText, canvas.width / 2, canvas.height - 20);
+    }
+
+    imageUpload.addEventListener("change", (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          currentImg = img;
+          drawMeme();
+        };
+        img.src = event.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    [topTextInput, bottomTextInput, fontSizeInput, textColorInput].forEach(
+      (el) => {
+        el.addEventListener("input", drawMeme);
+      },
+    );
+
+    templateBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const emoji = (btn as HTMLElement).dataset.emoji;
+        const tempCanvas = document.createElement("canvas");
+        tempCanvas.width = 600;
+        tempCanvas.height = 600;
+        const tCtx = tempCanvas.getContext("2d");
+        if (tCtx) {
+          tCtx.fillStyle = "#1e293b";
+          tCtx.fillRect(0, 0, 600, 600);
+          tCtx.font = "300px serif";
+          tCtx.textAlign = "center";
+          tCtx.textBaseline = "middle";
+          tCtx.fillText(emoji || "🐸", 300, 300);
+
+          const img = new Image();
+          img.onload = () => {
+            currentImg = img;
+            drawMeme();
+          };
+          img.src = tempCanvas.toDataURL();
+        }
+      });
+    });
+
+    downloadBtn?.addEventListener("click", () => {
+      const link = document.createElement("a");
+      link.download = "meme.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+
+    // Default template
+    window.addEventListener("load", () => {
+      (templateBtns[0] as HTMLElement).click();
+    });
+  </script>
 </Layout>
