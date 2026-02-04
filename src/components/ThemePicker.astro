@@ -52,7 +52,7 @@ const themes = [
     document.documentElement.setAttribute("data-theme", savedTheme);
   };
 
-  const setTheme = (themeId) => {
+  const setTheme = (themeId: string) => {
     document.documentElement.setAttribute("data-theme", themeId);
     localStorage.setItem("theme", themeId);
   };

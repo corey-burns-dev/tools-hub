@@ -325,7 +325,8 @@ import Layout from "../layouts/Layout.astro";
       const r = Math.random();
 
       // Select random components
-      const getRand = (arr) => arr[Math.floor(Math.random() * arr.length)];
+      const getRand = (arr: any[]) =>
+        arr[Math.floor(Math.random() * arr.length)];
 
       let adj = getRand(adjectives);
       let noun = getRand(nouns);

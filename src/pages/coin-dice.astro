@@ -37,14 +37,14 @@ import Layout from "../layouts/Layout.astro";
               <div id="coin" class="coin-container w-full h-full">
                 <div class="coin-face coin-heads">
                   <div
-                    class="coin-inner bg-gradient-to-br from-amber-400 to-amber-600 rounded-full w-full h-full flex items-center justify-center shadow-2xl border-4 border-amber-300"
+                    class="coin-inner bg-linear-to-br from-amber-400 to-amber-600 rounded-full w-full h-full flex items-center justify-center shadow-2xl border-4 border-amber-300"
                   >
                     <span class="text-6xl font-bold text-amber-900">H</span>
                   </div>
                 </div>
                 <div class="coin-face coin-tails">
                   <div
-                    class="coin-inner bg-gradient-to-br from-amber-500 to-amber-700 rounded-full w-full h-full flex items-center justify-center shadow-2xl border-4 border-amber-400"
+                    class="coin-inner bg-linear-to-br from-amber-500 to-amber-700 rounded-full w-full h-full flex items-center justify-center shadow-2xl border-4 border-amber-400"
                   >
                     <span class="text-6xl font-bold text-amber-950">T</span>
                   </div>
@@ -65,7 +65,7 @@ import Layout from "../layouts/Layout.astro";
             <div class="flex flex-col gap-3 w-full">
               <button
                 id="flip-coin"
-                class="w-full px-6 py-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                class="w-full px-6 py-4 bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 Flip Coin
               </button>
@@ -190,7 +190,7 @@ import Layout from "../layouts/Layout.astro";
 
               <button
                 id="roll-dice"
-                class="w-full px-6 py-4 bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                class="w-full px-6 py-4 bg-linear-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 Roll Dice
               </button>
@@ -340,9 +340,13 @@ import Layout from "../layouts/Layout.astro";
 
   const coin = document.getElementById("coin");
   const coinResult = document.getElementById("coin-result");
-  const flipButton = document.getElementById("flip-coin");
-  const flipMultipleButton = document.getElementById("flip-multiple");
-  const flipTenButton = document.getElementById("flip-ten");
+  const flipButton = document.getElementById("flip-coin") as HTMLButtonElement;
+  const flipMultipleButton = document.getElementById(
+    "flip-multiple",
+  ) as HTMLButtonElement;
+  const flipTenButton = document.getElementById(
+    "flip-ten",
+  ) as HTMLButtonElement;
   const headsCountEl = document.getElementById("heads-count");
   const tailsCountEl = document.getElementById("tails-count");
   const coinTotalEl = document.getElementById("coin-total");
@@ -411,7 +415,7 @@ import Layout from "../layouts/Layout.astro";
   const diceContainer = document.getElementById("dice-container");
   const diceResult = document.getElementById("dice-result");
   const diceSum = document.getElementById("dice-sum");
-  const rollButton = document.getElementById("roll-dice");
+  const rollButton = document.getElementById("roll-dice") as HTMLButtonElement;
   const diceHistoryEl = document.getElementById("dice-history");
 
   function renderDice(values?: number[]) {
