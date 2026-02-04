@@ -183,6 +183,14 @@ const tools = [
       <!-- Bug Container -->
       <div id="bug-container" class="fixed inset-0 pointer-events-none z-50">
       </div>
+
+      <!-- Stop Button -->
+      <button
+        id="stop-debug"
+        class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-red-600 hover:bg-red-700 text-white px-12 py-6 rounded-full text-4xl font-black border-4 border-white shadow-2xl hover:scale-105 active:scale-95 transition-all z-[100] hidden"
+      >
+        STOP GAME
+      </button>
     </div>
   </div>
 </Layout>
@@ -190,12 +198,12 @@ const tools = [
 <style>
   .custom-cursor {
     cursor:
-      url("/cursor-swatter.png") 16 128,
+      url("/flyswatter.svg") 16 16,
       auto;
   }
   .custom-cursor:active {
     cursor:
-      url("/cursor-swatter.png") 16 128,
+      url("/flyswatter.svg") 16 16,
       auto;
     animation: swat 0.1s;
   }
@@ -215,19 +223,19 @@ const tools = [
 <script>
   // Bug Smasher V2
   const startBtn = document.getElementById("start-debug");
+  const stopBtn = document.getElementById("stop-debug");
   const startScreen = document.getElementById("start-screen");
   const scoreboard = document.getElementById("scoreboard");
   const scoreVal = document.getElementById("score-val");
   const bugContainer = document.getElementById("bug-container");
-  const gameArea = document.getElementById("game-area");
 
   let score = 0;
   let gameActive = false;
+  let spawnInterval: number | undefined;
 
-  if (startBtn && bugContainer) {
-    startBtn.addEventListener("click", () => {
-      startGame();
-    });
+  if (startBtn && bugContainer && stopBtn) {
+    startBtn.addEventListener("click", startGame);
+    stopBtn.addEventListener("click", stopGame);
 
     function startGame() {
       if (gameActive) return;
@@ -240,13 +248,33 @@ const tools = [
       setTimeout(() => startScreen?.classList.add("hidden"), 300);
 
       scoreboard?.classList.remove("opacity-0");
+      stopBtn?.classList.remove("hidden");
       document.body.classList.add("custom-cursor");
 
       // Spawn Loop
-      const spawnInterval = setInterval(spawnBug, 600);
+      spawnInterval = setInterval(spawnBug, 600);
+    }
 
-      // Game Over after 60s (or simplify to endless for now)
-      // For now, endless fun
+    function stopGame() {
+      gameActive = false;
+      if (spawnInterval) clearInterval(spawnInterval);
+
+      // Clear bugs
+      if (bugContainer) bugContainer.innerHTML = "";
+
+      // UI Reset
+      stopBtn?.classList.add("hidden");
+      scoreboard?.classList.add("opacity-0");
+      document.body.classList.remove("custom-cursor");
+
+      // Show Start Screen
+      if (startScreen) {
+        startScreen.classList.remove("hidden");
+        // tiny delay to allow display:block to apply before transition
+        requestAnimationFrame(() => {
+          startScreen.classList.remove("scale-y-0", "opacity-0");
+        });
+      }
     }
 
     function updateScore(newScore: number) {
@@ -259,13 +287,13 @@ const tools = [
       const bug = document.createElement("div");
       bug.textContent = "🪲";
       bug.style.position = "absolute";
-      bug.style.fontSize = "40px"; // Bigger bugs
-      bug.style.width = "80px"; // Bigger hitbox
-      bug.style.height = "80px";
+      bug.style.fontSize = "60px"; // Even Bigger bugs
+      bug.style.width = "100px"; // Even Bigger hitbox
+      bug.style.height = "100px";
       bug.style.display = "flex";
       bug.style.alignItems = "center";
       bug.style.justifyContent = "center";
-      bug.style.cursor = "url('/cursor-swatter.png') 16 128, auto"; // Maintain cursor on hover
+      bug.style.cursor = "url('/flyswatter.svg') 16 16, auto"; // Maintain cursor on hover
       bug.style.pointerEvents = "auto";
       bug.style.userSelect = "none";
       bug.style.transition = "transform 0.1s linear";
@@ -282,7 +310,7 @@ const tools = [
 
       // Movement Logic
       let pos = -100;
-      const speed = Math.random() * 4 + 3; // Faster
+      const speed = Math.random() * 5 + 4; // Faster
       const wobbleSpeed = Math.random() * 0.1 + 0.05;
       const wobbleAmp = Math.random() * 60 + 20;
 
@@ -306,7 +334,7 @@ const tools = [
       // Smash Logic
       bug.addEventListener("click", (e) => {
         e.stopPropagation(); // Prevent clicks falling through
-        score++;
+        score += 10; // Big points
         updateScore(score);
 
         // Splat Visuals
@@ -315,11 +343,8 @@ const tools = [
         bug.style.transform = "scale(2) rotate(Math.random() * 360deg)";
         bug.style.pointerEvents = "none"; // Cant click again
 
-        // Sound effect (optional, maybe later)
-
         setTimeout(() => {
           bug.style.opacity = "0";
-          bug.style.transition = "opacity 0.5s";
           setTimeout(() => bug.remove(), 500);
         }, 500);
       });
