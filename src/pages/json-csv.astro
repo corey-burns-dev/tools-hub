@@ -100,7 +100,7 @@ import Layout from "../layouts/Layout.astro";
             Object.keys(item as Record<string, unknown>).forEach((key) => set.add(key));
           }
           return set;
-        }, new Set())
+        }, new Set<string>())
       );
 
       if (!headers.length) {
