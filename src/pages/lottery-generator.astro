@@ -1,13 +1,17 @@
 ---
+import lotteryData from "../data/lottery.json";
 import Layout from "../layouts/Layout.astro";
+
+// Filter out encore as a separate game
+const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
 ---
 
 <Layout title="Ontario Lottery Generator">
   <div class="container mx-auto px-4 py-8">
-    <div class="mx-auto max-w-4xl">
+    <div class="mx-auto max-w-6xl">
       <div class="mb-8 flex items-center gap-4">
         <div
-          class="flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-xl shadow-blue-500/20"
+          class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-violet-500 text-4xl shadow-xl shadow-blue-500/20"
         >
           🎰
         </div>
@@ -17,13 +21,365 @@ import Layout from "../layouts/Layout.astro";
         </div>
       </div>
 
-      <div class="card-glass flex min-h-[400px] items-center justify-center">
-        <div class="text-center">
-          <div class="mb-4 animate-bounce text-6xl">🚧</div>
-          <h2 class="mb-2 text-2xl font-bold text-white">Coming Soon</h2>
-          <p class="text-slate-400">This tool is currently under construction.</p>
+      <div class="card-glass mb-6 p-6">
+        <label class="mb-4 block text-sm font-medium text-slate-300">Select Your Game</label>
+
+        <!-- Game Capsules -->
+        <div class="mb-6 flex flex-wrap gap-3">
+          {
+            games.map((game, index) => (
+              <button
+                class:list={[
+                  "game-capsule",
+                  "rounded-full px-6 py-3 font-medium text-white transition-all duration-300",
+                  "border-2 border-slate-600 bg-slate-800/30 hover:scale-105 hover:border-blue-500 hover:bg-slate-700/50 hover:shadow-lg hover:shadow-blue-500/20",
+                  "active:scale-95",
+                  { selected: index === 0 },
+                ]}
+                data-game-id={game.id}
+              >
+                {game.name}
+              </button>
+            ))
+          }
         </div>
+
+        <!-- Keno Pick Count (only visible for Keno) -->
+        <div id="keno-picks" class="animate-fade-in mb-6 hidden">
+          <label for="keno-count" class="mb-2 block text-sm font-medium text-slate-300"
+            >Number of Picks (1-10)</label
+          >
+          <input
+            type="number"
+            id="keno-count"
+            min="1"
+            max="10"
+            value="5"
+            class="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
+          />
+        </div>
+
+        <!-- Encore Checkbox -->
+        <div id="encore-option" class="animate-fade-in mb-6 hidden">
+          <label class="flex cursor-pointer items-center gap-3">
+            <input
+              type="checkbox"
+              id="encore-checkbox"
+              class="h-5 w-5 cursor-pointer rounded border-slate-600 bg-slate-800/50 text-blue-500 transition-all focus:ring-2 focus:ring-blue-500/50"
+            />
+            <span class="text-sm font-medium text-slate-300">
+              Add Encore <span class="text-slate-500">(7 bonus digits)</span>
+            </span>
+          </label>
+        </div>
+
+        <button
+          id="generate-btn"
+          class="w-full rounded-lg bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-4 text-lg font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/50 active:scale-95"
+        >
+          Generate Numbers
+        </button>
+      </div>
+
+      <!-- Results Container -->
+      <div id="results-container" class="card-glass animate-fade-in hidden p-6">
+        <div class="mb-4 flex items-center justify-between">
+          <h2 class="text-2xl font-bold text-white" id="results-title">Your Numbers</h2>
+          <button
+            id="copy-btn"
+            class="rounded-lg bg-slate-700/50 px-4 py-2 text-sm text-slate-300 transition-all hover:bg-slate-600/50 hover:text-white"
+          >
+            📋 Copy
+          </button>
+        </div>
+
+        <div id="results-content" class="space-y-4"></div>
       </div>
     </div>
   </div>
 </Layout>
+
+<script define:vars={{ games }}>
+  let selectedGameId = games[0].id;
+  const generateBtn = document.getElementById("generate-btn");
+  const resultsContainer = document.getElementById("results-container");
+  const resultsContent = document.getElementById("results-content");
+  const resultsTitle = document.getElementById("results-title");
+  const copyBtn = document.getElementById("copy-btn");
+  const kenoPicks = document.getElementById("keno-picks");
+  const kenoCount = document.getElementById("keno-count");
+  const encoreOption = document.getElementById("encore-option");
+  const encoreCheckbox = document.getElementById("encore-checkbox");
+
+  // Games that support Encore
+  const encoreCompatibleGames = [
+    "keno",
+    "pick2",
+    "pick3",
+    "pick4",
+    "lotto_max",
+    "lotto_649",
+    "ontario_49",
+    "daily_grand",
+    "lottario",
+  ];
+
+  // Handle game capsule selection
+  document.querySelectorAll(".game-capsule").forEach((capsule) => {
+    capsule.addEventListener("click", () => {
+      // Remove selected state from all capsules
+      document.querySelectorAll(".game-capsule").forEach((c) => {
+        c.classList.remove(
+          "selected",
+          "border-blue-500",
+          "bg-blue-500/20",
+          "shadow-lg",
+          "shadow-blue-500/30"
+        );
+        c.classList.add("border-slate-600", "bg-slate-800/30");
+      });
+
+      // Add selected state to clicked capsule
+      capsule.classList.remove("border-slate-600", "bg-slate-800/30");
+      capsule.classList.add(
+        "selected",
+        "border-blue-500",
+        "bg-blue-500/20",
+        "shadow-lg",
+        "shadow-blue-500/30"
+      );
+
+      selectedGameId = capsule.dataset.gameId;
+      const selectedGame = games.find((g) => g.id === selectedGameId);
+
+      // Show/hide Keno picks
+      if (selectedGame.id === "keno") {
+        kenoPicks.classList.remove("hidden");
+      } else {
+        kenoPicks.classList.add("hidden");
+      }
+
+      // Show/hide Encore option
+      if (encoreCompatibleGames.includes(selectedGame.id)) {
+        encoreOption.classList.remove("hidden");
+      } else {
+        encoreOption.classList.add("hidden");
+        encoreCheckbox.checked = false; // Uncheck if switching to incompatible game
+      }
+    });
+  });
+
+  // Initialize first game
+  document.querySelector(".game-capsule").click();
+
+  // Generate random unique numbers
+  function generateUniqueNumbers(count, max) {
+    const numbers = new Set();
+    while (numbers.size < count) {
+      numbers.add(Math.floor(Math.random() * max) + 1);
+    }
+    return Array.from(numbers).sort((a, b) => a - b);
+  }
+
+  // Generate random digits (can repeat)
+  function generateDigits(count) {
+    return Array.from({ length: count }, () => Math.floor(Math.random() * 10));
+  }
+
+  // Generate poker hand
+  function generatePokerHand() {
+    const suits = ["♠", "♥", "♦", "♣"];
+    const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+    const deck = [];
+
+    for (const suit of suits) {
+      for (const rank of ranks) {
+        deck.push({ rank, suit });
+      }
+    }
+
+    // Shuffle and deal 5 cards
+    const shuffled = deck.sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 5);
+  }
+
+  // Render number balls with stagger animation
+  function renderNumbers(numbers, label = "Main Numbers", staggerDelay = 0) {
+    const balls = numbers
+      .map(
+        (num, i) =>
+          `<div class="animate-pop flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-violet-500 text-2xl font-bold text-white shadow-lg shadow-blue-500/30" style="animation-delay: ${staggerDelay + i * 100}ms">${num}</div>`
+      )
+      .join("");
+
+    return `
+      <div>
+        <h3 class="mb-3 text-sm font-medium text-slate-400">${label}</h3>
+        <div class="flex flex-wrap gap-3">${balls}</div>
+      </div>
+    `;
+  }
+
+  // Render digit display with stagger animation
+  function renderDigits(digits, label = "Your Digits", staggerDelay = 0) {
+    const digitBoxes = digits
+      .map(
+        (digit, i) =>
+          `<div class="animate-pop flex h-20 w-16 items-center justify-center rounded-lg border-2 border-blue-500 bg-slate-800/50 text-3xl font-bold text-white shadow-lg shadow-blue-500/20" style="animation-delay: ${staggerDelay + i * 80}ms">${digit}</div>`
+      )
+      .join("");
+
+    return `
+      <div>
+        <h3 class="mb-3 text-sm font-medium text-slate-400">${label}</h3>
+        <div class="flex flex-wrap gap-2">${digitBoxes}</div>
+      </div>
+    `;
+  }
+
+  // Render poker cards with stagger animation
+  function renderPokerCards(cards) {
+    const cardHTML = cards
+      .map((card, i) => {
+        const isRed = card.suit === "♥" || card.suit === "♦";
+        const color = isRed ? "text-red-500" : "text-slate-900";
+        return `
+          <div class="animate-pop flex h-32 w-24 flex-col items-center justify-center rounded-lg bg-white shadow-lg" style="animation-delay: ${i * 100}ms">
+            <div class="text-3xl font-bold ${color}">${card.rank}</div>
+            <div class="text-4xl ${color}">${card.suit}</div>
+          </div>
+        `;
+      })
+      .join("");
+
+    return `
+      <div>
+        <h3 class="mb-3 text-sm font-medium text-slate-400">Your Hand</h3>
+        <div class="flex flex-wrap gap-3">${cardHTML}</div>
+      </div>
+    `;
+  }
+
+  // Generate numbers based on game type
+  generateBtn.addEventListener("click", () => {
+    const selectedGame = games.find((g) => g.id === selectedGameId);
+    const includeEncore = encoreCheckbox.checked;
+    let html = "";
+    let copyText = `${selectedGame.name}: `;
+    let totalDelay = 0;
+
+    // Standard pick games
+    if (selectedGame.picks) {
+      const mainNumbers = generateUniqueNumbers(selectedGame.picks, selectedGame.range);
+      html += renderNumbers(mainNumbers, "Main Numbers", totalDelay);
+      copyText += mainNumbers.join(", ");
+      totalDelay += selectedGame.picks * 100;
+
+      if (selectedGame.bonus) {
+        const bonusNumbers = generateUniqueNumbers(
+          selectedGame.bonus.count,
+          selectedGame.bonus.range
+        );
+        html += renderNumbers(bonusNumbers, "Bonus", totalDelay);
+        copyText += ` | Bonus: ${bonusNumbers.join(", ")}`;
+        totalDelay += selectedGame.bonus.count * 100;
+      }
+
+      if (selectedGame.special) {
+        const specialNumbers = generateUniqueNumbers(
+          selectedGame.special.count,
+          selectedGame.special.range
+        );
+        html += renderNumbers(specialNumbers, "Grand Number", totalDelay);
+        copyText += ` | Grand: ${specialNumbers.join(", ")}`;
+        totalDelay += selectedGame.special.count * 100;
+      }
+    }
+    // Keno
+    else if (selectedGame.id === "keno") {
+      const pickCount = parseInt(kenoCount.value);
+      const picks = generateUniqueNumbers(pickCount, selectedGame.range);
+      html += renderNumbers(picks, `Your ${pickCount} Picks`, totalDelay);
+      copyText += picks.join(", ");
+      totalDelay += pickCount * 100;
+    }
+    // Digit games
+    else if (selectedGame.digits) {
+      const digits = generateDigits(selectedGame.digits);
+      html += renderDigits(digits, "Your Digits", totalDelay);
+      copyText += digits.join("");
+      totalDelay += selectedGame.digits * 80;
+    }
+    // Poker Lotto
+    else if (selectedGame.id === "poker_lotto") {
+      const hand = generatePokerHand();
+      html += renderPokerCards(hand);
+      copyText += hand.map((c) => `${c.rank}${c.suit}`).join(" ");
+      totalDelay += 500;
+    }
+
+    // Add Encore if checked
+    if (includeEncore && encoreCompatibleGames.includes(selectedGame.id)) {
+      const encoreDigits = generateDigits(7);
+      html += renderDigits(encoreDigits, "Encore", totalDelay);
+      copyText += ` | Encore: ${encoreDigits.join("")}`;
+    }
+
+    resultsContent.innerHTML = html;
+    resultsTitle.textContent = selectedGame.name;
+    resultsContainer.classList.remove("hidden");
+
+    // Store for copy function
+    resultsContainer.dataset.copyText = copyText;
+
+    // Smooth scroll to results
+    resultsContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  // Copy to clipboard
+  copyBtn.addEventListener("click", () => {
+    const text = resultsContainer.dataset.copyText;
+    navigator.clipboard.writeText(text).then(() => {
+      copyBtn.textContent = "✅ Copied!";
+      setTimeout(() => {
+        copyBtn.textContent = "📋 Copy";
+      }, 2000);
+    });
+  });
+</script>
+
+<style>
+  @keyframes pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-pop {
+    animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out forwards;
+  }
+</style>
