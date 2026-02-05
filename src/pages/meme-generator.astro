@@ -5,45 +5,41 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Meme Generator">
   <div class="container mx-auto px-4 py-8">
-    <div class="max-w-6xl mx-auto">
-      <div class="flex items-center gap-4 mb-8">
+    <div class="mx-auto max-w-6xl">
+      <div class="mb-8 flex items-center gap-4">
         <div
-          class="w-16 h-16 rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 flex items-center justify-center text-4xl shadow-xl shadow-blue-500/20"
+          class="flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-xl shadow-blue-500/20"
         >
           🐸
         </div>
         <div>
-          <h1 class="text-4xl font-bold text-white mb-2">Meme Generator</h1>
-          <p class="text-slate-400">
-            Create meme masterpieces with custom text overlays.
-          </p>
+          <h1 class="mb-2 text-4xl font-bold text-white">Meme Generator</h1>
+          <p class="text-slate-400">Create meme masterpieces with custom text overlays.</p>
         </div>
       </div>
 
       <div
         id="meme-generator-container"
-        class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start"
+        class="grid grid-cols-1 items-start gap-8 lg:grid-cols-2"
         data-memes={JSON.stringify(memesData)}
       >
         <!-- Preview Area -->
         <div
-          class="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-0 overflow-hidden sticky top-8 shadow-2xl"
+          class="sticky top-8 overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-800/50 p-0 shadow-2xl backdrop-blur-sm"
         >
-          <div
-            class="p-4 border-b border-white/10 flex items-center justify-between"
-          >
+          <div class="flex items-center justify-between border-b border-white/10 p-4">
             <h2 class="text-lg font-bold text-white">Preview</h2>
             <div class="flex gap-2">
               <button
                 id="toggle-edit-mode"
-                class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-bold transition-all"
+                class="rounded-lg bg-slate-700 px-4 py-2 text-sm font-bold text-white transition-all hover:bg-slate-600"
                 title="Toggle text editing on canvas"
               >
                 ✏️ Edit Mode
               </button>
               <button
                 id="download-btn"
-                class="px-4 py-2 bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600 text-white rounded-lg text-sm font-bold transition-all shadow-lg"
+                class="rounded-lg bg-linear-to-r from-blue-500 to-violet-500 px-4 py-2 text-sm font-bold text-white shadow-lg transition-all hover:from-blue-600 hover:to-violet-600"
               >
                 💾 Download
               </button>
@@ -51,15 +47,14 @@ import Layout from "../layouts/Layout.astro";
           </div>
           <div
             id="canvas-wrapper"
-            class="aspect-square bg-slate-900/50 flex items-center justify-center p-4 relative"
+            class="relative flex aspect-square items-center justify-center bg-slate-900/50 p-4"
           >
             <canvas
               id="meme-canvas"
-              class="max-w-full max-h-full rounded-lg shadow-2xl cursor-default"
-            ></canvas>
+              class="max-h-full max-w-full cursor-default rounded-lg shadow-2xl"></canvas>
             <div
               id="edit-hint"
-              class="hidden absolute top-8 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg"
+              class="absolute top-8 left-1/2 hidden -translate-x-1/2 transform rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg"
             >
               Click on text to move it around
             </div>
@@ -70,41 +65,33 @@ import Layout from "../layouts/Layout.astro";
         <div class="space-y-6">
           <!-- Image Source -->
           <div
-            class="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 shadow-2xl"
+            class="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6 shadow-2xl backdrop-blur-sm"
           >
-            <h3
-              class="text-lg font-bold text-white mb-4 flex items-center gap-2"
-            >
+            <h3 class="mb-4 flex items-center gap-2 text-lg font-bold text-white">
               <span>🖼️</span> Image Source
             </h3>
             <div class="space-y-4">
               <label class="block">
                 <span
-                  class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2 block"
+                  class="mb-2 block text-sm font-semibold tracking-wider text-slate-400 uppercase"
                   >Upload Your Own Image</span
                 >
                 <input
                   type="file"
                   id="image-upload"
                   accept="image/*"
-                  class="block w-full text-sm text-slate-400
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-full file:border-0
-                    file:text-sm file:font-bold
-                    file:bg-gradient-to-r file:from-blue-500 file:to-violet-500
-                    file:text-white hover:file:opacity-90 cursor-pointer"
+                  class="block w-full cursor-pointer text-sm text-slate-400 file:mr-4 file:rounded-full file:border-0 file:bg-linear-to-r file:from-blue-500 file:to-violet-500 file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:opacity-90"
                 />
               </label>
 
-              <div class="pt-4 border-t border-white/5">
-                <div class="flex items-center justify-between mb-3">
-                  <span
-                    class="text-sm font-semibold text-slate-400 uppercase tracking-wider"
+              <div class="border-t border-white/5 pt-4">
+                <div class="mb-3 flex items-center justify-between">
+                  <span class="text-sm font-semibold tracking-wider text-slate-400 uppercase"
                     >Popular Meme Templates</span
                   >
                   <button
                     id="refresh-memes"
-                    class="text-xs px-3 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded-full transition-all"
+                    class="rounded-full bg-slate-700 px-3 py-1 text-xs text-white transition-all hover:bg-slate-600"
                   >
                     🔄 Refresh
                   </button>
@@ -115,22 +102,22 @@ import Layout from "../layouts/Layout.astro";
                   type="text"
                   id="meme-search"
                   placeholder="Search memes..."
-                  class="w-full mb-3 bg-slate-900/50 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                  class="mb-3 w-full rounded-lg border border-white/10 bg-slate-900/50 px-3 py-2 text-sm text-white transition-all focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
                 />
 
                 <!-- Loading State -->
-                <div id="memes-loading" class="text-center py-8">
+                <div id="memes-loading" class="py-8 text-center">
                   <div
-                    class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"
+                    class="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500"
                   >
                   </div>
-                  <p class="text-slate-400 text-sm mt-2">Loading memes...</p>
+                  <p class="mt-2 text-sm text-slate-400">Loading memes...</p>
                 </div>
 
                 <!-- Memes Grid -->
                 <div
                   id="memes-grid"
-                  class="grid grid-cols-3 gap-2 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar hidden"
+                  class="custom-scrollbar grid hidden max-h-[500px] grid-cols-3 gap-2 overflow-y-auto pr-2"
                 >
                   <!-- Memes will be loaded here -->
                 </div>
@@ -140,15 +127,15 @@ import Layout from "../layouts/Layout.astro";
 
           <!-- Text Boxes Manager -->
           <div
-            class="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 shadow-2xl"
+            class="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6 shadow-2xl backdrop-blur-sm"
           >
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <div class="mb-4 flex items-center justify-between">
+              <h3 class="flex items-center gap-2 text-lg font-bold text-white">
                 <span>✍️</span> Text Boxes
               </h3>
               <button
                 id="add-text-box"
-                class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all"
+                class="rounded-lg bg-blue-600 px-3 py-1 text-sm font-bold text-white transition-all hover:bg-blue-700"
               >
                 + Add Text
               </button>
@@ -161,18 +148,16 @@ import Layout from "../layouts/Layout.astro";
 
           <!-- Global Text Settings -->
           <div
-            class="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 shadow-2xl"
+            class="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6 shadow-2xl backdrop-blur-sm"
           >
-            <h3
-              class="text-lg font-bold text-white mb-4 flex items-center gap-2"
-            >
+            <h3 class="mb-4 flex items-center gap-2 text-lg font-bold text-white">
               <span>🎨</span> Global Text Settings
             </h3>
             <div class="space-y-4">
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label
-                    class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2 block"
+                    class="mb-2 block text-sm font-semibold tracking-wider text-slate-400 uppercase"
                     >Font Size</label
                   >
                   <input
@@ -183,28 +168,25 @@ import Layout from "../layouts/Layout.astro";
                     value="40"
                     class="w-full accent-blue-500"
                   />
-                  <span
-                    id="global-font-size-value"
-                    class="text-xs text-slate-500">40px</span
-                  >
+                  <span id="global-font-size-value" class="text-xs text-slate-500">40px</span>
                 </div>
                 <div>
                   <label
-                    class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2 block"
+                    class="mb-2 block text-sm font-semibold tracking-wider text-slate-400 uppercase"
                     >Text Color</label
                   >
                   <input
                     type="color"
                     id="global-text-color"
                     value="#ffffff"
-                    class="w-full h-10 bg-transparent border border-white/10 rounded cursor-pointer"
+                    class="h-10 w-full cursor-pointer rounded border border-white/10 bg-transparent"
                   />
                 </div>
               </div>
 
               <div>
                 <label
-                  class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-2 block"
+                  class="mb-2 block text-sm font-semibold tracking-wider text-slate-400 uppercase"
                   >Stroke Width</label
                 >
                 <input
@@ -215,16 +197,13 @@ import Layout from "../layouts/Layout.astro";
                   value="3"
                   class="w-full accent-blue-500"
                 />
-                <span
-                  id="global-stroke-width-value"
-                  class="text-xs text-slate-500">3px</span
-                >
+                <span id="global-stroke-width-value" class="text-xs text-slate-500">3px</span>
               </div>
 
               <div class="pt-2">
                 <button
                   id="reset-positions"
-                  class="w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-bold transition-all"
+                  class="w-full rounded-lg bg-slate-700 px-4 py-2 text-sm font-bold text-white transition-all hover:bg-slate-600"
                 >
                   🔄 Reset All Positions
                 </button>
@@ -316,41 +295,26 @@ import Layout from "../layouts/Layout.astro";
 
     const canvas = document.getElementById("meme-canvas") as HTMLCanvasElement;
     const ctx = canvas.getContext("2d");
-    const canvasWrapper = document.getElementById("canvas-wrapper");
-    const imageUpload = document.getElementById(
-      "image-upload",
-    ) as HTMLInputElement;
+    const imageUpload = document.getElementById("image-upload") as HTMLInputElement;
     const downloadBtn = document.getElementById("download-btn");
     const memesGrid = document.getElementById("memes-grid");
     const memesLoading = document.getElementById("memes-loading");
-    const memeSearch = document.getElementById(
-      "meme-search",
-    ) as HTMLInputElement;
+    const memeSearch = document.getElementById("meme-search") as HTMLInputElement;
     const refreshBtn = document.getElementById("refresh-memes");
     const addTextBoxBtn = document.getElementById("add-text-box");
     const textBoxesContainer = document.getElementById("text-boxes-container");
-    const toggleEditModeBtn = document.getElementById(
-      "toggle-edit-mode",
-    ) as HTMLButtonElement;
+    const toggleEditModeBtn = document.getElementById("toggle-edit-mode") as HTMLButtonElement;
     const editHint = document.getElementById("edit-hint");
     const resetPositionsBtn = document.getElementById("reset-positions");
 
     // Global settings
-    const globalFontSizeInput = document.getElementById(
-      "global-font-size",
-    ) as HTMLInputElement;
-    const globalFontSizeValue = document.getElementById(
-      "global-font-size-value",
-    );
+    const globalFontSizeInput = document.getElementById("global-font-size") as HTMLInputElement;
+    const globalFontSizeValue = document.getElementById("global-font-size-value");
     const globalStrokeWidthInput = document.getElementById(
-      "global-stroke-width",
+      "global-stroke-width"
     ) as HTMLInputElement;
-    const globalStrokeWidthValue = document.getElementById(
-      "global-stroke-width-value",
-    );
-    const globalTextColorInput = document.getElementById(
-      "global-text-color",
-    ) as HTMLInputElement;
+    const globalStrokeWidthValue = document.getElementById("global-stroke-width-value");
+    const globalTextColorInput = document.getElementById("global-text-color") as HTMLInputElement;
 
     let currentImg: HTMLImageElement | null = null;
     const allMemes = memesData;
@@ -549,7 +513,7 @@ import Layout from "../layouts/Layout.astro";
         }));
       } else {
         // Smarter default using the meme metadata box_count
-        const meme = allMemes.find((m: any) => m.id === memeId);
+        const meme = allMemes.find((m: { id: string; box_count?: number }) => m.id === memeId);
         const boxCount = meme?.box_count || 2;
         textBoxes = getDefaultTextBoxes(boxCount);
       }
@@ -583,16 +547,14 @@ import Layout from "../layouts/Layout.astro";
             Position: ${Math.round(box.x)}%, ${Math.round(box.y)}%
           </div>
         </div>
-      `,
+      `
         )
         .join("");
 
       // Add event listeners
       document.querySelectorAll(".text-box-input").forEach((input) => {
         input.addEventListener("input", (e) => {
-          const boxId = parseInt(
-            (e.target as HTMLElement).dataset.boxId || "0",
-          );
+          const boxId = parseInt((e.target as HTMLElement).dataset.boxId || "0");
           const box = textBoxes.find((b) => b.id === boxId);
           if (box) {
             box.text = (e.target as HTMLInputElement).value;
@@ -601,18 +563,14 @@ import Layout from "../layouts/Layout.astro";
         });
 
         input.addEventListener("focus", (e) => {
-          const boxId = parseInt(
-            (e.target as HTMLElement).dataset.boxId || "0",
-          );
+          const boxId = parseInt((e.target as HTMLElement).dataset.boxId || "0");
           highlightTextBox(boxId);
         });
       });
 
       document.querySelectorAll(".remove-text-box").forEach((btn) => {
         btn.addEventListener("click", (e) => {
-          const boxId = parseInt(
-            (e.target as HTMLElement).dataset.boxId || "0",
-          );
+          const boxId = parseInt((e.target as HTMLElement).dataset.boxId || "0");
           removeTextBox(boxId);
         });
       });
@@ -650,7 +608,7 @@ import Layout from "../layouts/Layout.astro";
     displayMemes(allMemes);
 
     // Display memes in grid
-    function displayMemes(memes: any[]) {
+    function displayMemes(memes: { id: string; name: string; url: string; localUrl?: string }[]) {
       if (!memesGrid) return;
 
       // Hide loading, show grid
@@ -666,7 +624,7 @@ import Layout from "../layouts/Layout.astro";
           <img src="${meme.localUrl || meme.url}" alt="${meme.name}" loading="lazy" />
           <div class="meme-name">${meme.name}</div>
         </div>
-      `,
+      `
         )
         .join("");
 
@@ -695,9 +653,7 @@ import Layout from "../layouts/Layout.astro";
         return;
       }
 
-      const filtered = allMemes.filter((meme) =>
-        meme.name.toLowerCase().includes(searchTerm),
-      );
+      const filtered = allMemes.filter((meme) => meme.name.toLowerCase().includes(searchTerm));
 
       displayMemes(filtered);
     });
@@ -736,8 +692,7 @@ import Layout from "../layouts/Layout.astro";
       // Draw all text boxes
       textBoxes.forEach((box) => {
         const fontSize = box.fontSize || parseInt(globalFontSizeInput.value);
-        const strokeWidth =
-          box.strokeWidth || parseInt(globalStrokeWidthInput.value);
+        const strokeWidth = box.strokeWidth || parseInt(globalStrokeWidthInput.value);
         const color = box.color || globalTextColorInput.value;
 
         ctx.fillStyle = color;
@@ -762,16 +717,13 @@ import Layout from "../layouts/Layout.astro";
         if (editMode) {
           ctx.save();
           // Draw bounding box
-          const metrics = ctx.measureText(
-            box.text.toUpperCase() || "TEXT " + box.id,
-          );
+          const metrics = ctx.measureText(box.text.toUpperCase() || "TEXT " + box.id);
           const height = fontSize * 1.2;
           const width = Math.max(metrics.width + 20, 100); // Min width for empty
           const top = y - height / 2;
           const left = x - width / 2;
 
-          ctx.strokeStyle =
-            draggedTextBox?.id === box.id ? "#3b82f6" : "#94a3b8";
+          ctx.strokeStyle = draggedTextBox?.id === box.id ? "#3b82f6" : "#94a3b8";
           ctx.lineWidth = 2;
           ctx.setLineDash([5, 5]);
           ctx.strokeRect(left, top, width, height);
@@ -819,9 +771,7 @@ import Layout from "../layouts/Layout.astro";
 
         // Calculate box dimensions
         ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
-        const metrics = ctx.measureText(
-          box.text.toUpperCase() || "TEXT " + box.id,
-        );
+        const metrics = ctx.measureText(box.text.toUpperCase() || "TEXT " + box.id);
         const height = fontSize * 1.2;
         const width = Math.max(metrics.width + 20, 100);
         const top = y - height / 2;
@@ -832,10 +782,7 @@ import Layout from "../layouts/Layout.astro";
         const handleX = left + width;
         const handleY = top + height;
 
-        if (
-          Math.abs(clickX - handleX) < handleSize &&
-          Math.abs(clickY - handleY) < handleSize
-        ) {
+        if (Math.abs(clickX - handleX) < handleSize && Math.abs(clickY - handleY) < handleSize) {
           resizingTextBox = box;
           highlightTextBox(box.id);
           return;
@@ -851,9 +798,7 @@ import Layout from "../layouts/Layout.astro";
 
         // More accurate hit detection based on text size
         ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
-        const metrics = ctx.measureText(
-          box.text.toUpperCase() || "TEXT " + box.id,
-        );
+        const metrics = ctx.measureText(box.text.toUpperCase() || "TEXT " + box.id);
         const height = fontSize * 1.2;
         const width = Math.max(metrics.width + 20, 100);
 
@@ -886,9 +831,8 @@ import Layout from "../layouts/Layout.astro";
 
       if (resizingTextBox) {
         // Resize logic: distance from center determines font size
-        const fontSize =
-          resizingTextBox.fontSize || parseInt(globalFontSizeInput.value);
-        const x = (resizingTextBox.x / 100) * canvas.width;
+        const _fontSize = resizingTextBox.fontSize || parseInt(globalFontSizeInput.value);
+        const _x = (resizingTextBox.x / 100) * canvas.width;
         const y = (resizingTextBox.y / 100) * canvas.height;
 
         // Calculate new font size based on mouse Y distance from center
@@ -960,19 +904,17 @@ import Layout from "../layouts/Layout.astro";
     });
 
     // Global settings
-    [globalFontSizeInput, globalStrokeWidthInput, globalTextColorInput].forEach(
-      (el) => {
-        el?.addEventListener("input", () => {
-          drawMeme();
-          if (globalFontSizeValue) {
-            globalFontSizeValue.textContent = `${globalFontSizeInput.value}px`;
-          }
-          if (globalStrokeWidthValue) {
-            globalStrokeWidthValue.textContent = `${globalStrokeWidthInput.value}px`;
-          }
-        });
-      },
-    );
+    [globalFontSizeInput, globalStrokeWidthInput, globalTextColorInput].forEach((el) => {
+      el?.addEventListener("input", () => {
+        drawMeme();
+        if (globalFontSizeValue) {
+          globalFontSizeValue.textContent = `${globalFontSizeInput.value}px`;
+        }
+        if (globalStrokeWidthValue) {
+          globalStrokeWidthValue.textContent = `${globalStrokeWidthInput.value}px`;
+        }
+      });
+    });
 
     addTextBoxBtn?.addEventListener("click", addTextBox);
 

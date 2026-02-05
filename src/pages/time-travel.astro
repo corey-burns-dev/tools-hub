@@ -3,26 +3,27 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Time Travel">
-  <h1
-    class="text-5xl font-bold mb-8 bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-  >
-    Time Travel
-  </h1>
+  <div class="container mx-auto px-4 py-8">
+    <div class="mx-auto max-w-4xl">
+      <div class="mb-8 flex items-center gap-4">
+        <div
+          class="flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-xl shadow-blue-500/20"
+        >
+          🕐
+        </div>
+        <div>
+          <h1 class="mb-2 text-4xl font-bold text-white">Time Travel</h1>
+          <p class="text-slate-400">Convert between timezones and manage dates.</p>
+        </div>
+      </div>
 
-  <div class="card-glass w-full h-96 flex flex-col md:flex-row gap-8">
-    <div class="md:w-1/2 flex items-center justify-center">
-      <img
-        src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=400&fit=crop"
-        alt="Time Travel"
-        class="rounded-2xl object-cover w-full h-full"
-      />
-    </div>
-    <div class="md:w-1/2 flex flex-col justify-center">
-      <p class="text-lg leading-relaxed">
-        Time Travel lets you manage dates, times, and timezones effortlessly.
-        Convert between time zones, schedule across different regions, and never
-        miss an important moment with our powerful time management tool.
-      </p>
+      <div class="card-glass flex min-h-[400px] items-center justify-center">
+        <div class="text-center">
+          <div class="mb-4 animate-bounce text-6xl">🚧</div>
+          <h2 class="mb-2 text-2xl font-bold text-white">Coming Soon</h2>
+          <p class="text-slate-400">This tool is currently under construction.</p>
+        </div>
+      </div>
     </div>
   </div>
 </Layout>

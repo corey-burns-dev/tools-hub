@@ -4,15 +4,15 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Username Generator">
-  <div class="container mx-auto px-4 py-12 max-w-4xl">
-    <div class="text-center mb-12 animate-float">
+  <div class="container mx-auto max-w-4xl px-4 py-12">
+    <div class="animate-float mb-12 text-center">
       <div
-        class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-500 text-4xl shadow-lg shadow-blue-500/30 mb-6"
+        class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-lg shadow-blue-500/30"
       >
         👤
       </div>
       <h1
-        class="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-violet-400 to-fuchsia-400"
+        class="mb-4 bg-linear-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-clip-text text-5xl font-bold text-transparent"
       >
         Username Generator
       </h1>
@@ -22,54 +22,50 @@ import Layout from "../layouts/Layout.astro";
     </div>
 
     <!-- Generator Interface -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+    <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-3">
       <!-- Controls -->
-      <div class="lg:col-span-1 space-y-6">
+      <div class="space-y-6 lg:col-span-1">
         <div class="card-glass relative z-10">
-          <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+          <h2 class="mb-4 flex items-center gap-2 text-lg font-bold text-white">
             <span class="text-blue-400">01.</span> Configuration
           </h2>
 
           <div class="space-y-4">
             <div>
-              <label
-                for="base-word"
-                class="block text-sm font-medium text-slate-400 mb-2"
+              <label for="base-word" class="mb-2 block text-sm font-medium text-slate-400"
                 >Base Word (Optional)</label
               >
               <input
                 type="text"
                 id="base-word"
                 placeholder="e.g. Dragon"
-                class="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
+                class="w-full rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-600 transition-all outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-slate-400 mb-2"
-                >Category</label
-              >
+              <label class="mb-2 block text-sm font-medium text-slate-400">Category</label>
               <div class="grid grid-cols-2 gap-2">
                 <button
-                  class="category-btn active px-3 py-2 rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-300 text-sm font-medium hover:bg-blue-600/30 transition-all"
+                  class="category-btn active rounded-lg border border-blue-500/30 bg-blue-600/20 px-3 py-2 text-sm font-medium text-blue-300 transition-all hover:bg-blue-600/30"
                   data-category="all"
                 >
                   All
                 </button>
                 <button
-                  class="category-btn px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 text-sm font-medium hover:bg-white/10 transition-all"
+                  class="category-btn rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-400 transition-all hover:bg-white/10"
                   data-category="gaming"
                 >
                   Gaming
                 </button>
                 <button
-                  class="category-btn px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 text-sm font-medium hover:bg-white/10 transition-all"
+                  class="category-btn rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-400 transition-all hover:bg-white/10"
                   data-category="aesthetic"
                 >
                   Aesthetic
                 </button>
                 <button
-                  class="category-btn px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 text-sm font-medium hover:bg-white/10 transition-all"
+                  class="category-btn rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-400 transition-all hover:bg-white/10"
                   data-category="funny"
                 >
                   Funny
@@ -78,23 +74,21 @@ import Layout from "../layouts/Layout.astro";
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-slate-400 mb-2"
-                >Options</label
-              >
+              <label class="mb-2 block text-sm font-medium text-slate-400">Options</label>
               <label
-                class="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10 cursor-pointer hover:bg-white/10 transition-all"
+                class="flex cursor-pointer items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:bg-white/10"
               >
                 <input
                   type="checkbox"
                   id="use-numbers"
                   checked
-                  class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 bg-slate-800"
+                  class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500"
                 />
                 <span class="text-sm text-slate-300">Include Numbers</span>
               </label>
             </div>
 
-            <Button id="generate-btn" class="w-full mt-4" variant="primary">
+            <Button id="generate-btn" class="mt-4 w-full" variant="primary">
               <span class="mr-2">⚡</span> Generate
             </Button>
           </div>
@@ -103,27 +97,22 @@ import Layout from "../layouts/Layout.astro";
 
       <!-- Results -->
       <div class="lg:col-span-2">
-        <div class="card-glass min-h-[500px] flex flex-col">
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+        <div class="card-glass flex min-h-[500px] flex-col">
+          <div class="mb-6 flex items-center justify-between">
+            <h2 class="flex items-center gap-2 text-lg font-bold text-white">
               <span class="text-violet-400">02.</span> Your Identities
             </h2>
-            <div
-              class="text-xs text-slate-500 font-mono bg-white/5 px-2 py-1 rounded"
-            >
+            <div class="rounded bg-white/5 px-2 py-1 font-mono text-xs text-slate-500">
               Click to copy
             </div>
           </div>
 
-          <div
-            id="results-grid"
-            class="grid grid-cols-1 sm:grid-cols-2 gap-3 content-start flex-1"
-          >
+          <div id="results-grid" class="grid flex-1 grid-cols-1 content-start gap-3 sm:grid-cols-2">
             <!-- Results will be injected here -->
             <div
-              class="sm:col-span-2 flex flex-col items-center justify-center text-slate-600 py-20"
+              class="flex flex-col items-center justify-center py-20 text-slate-600 sm:col-span-2"
             >
-              <div class="text-4xl mb-4 opacity-50">👤</div>
+              <div class="mb-4 text-4xl opacity-50">👤</div>
               <p>Ready to generate awesome usernames</p>
             </div>
           </div>
@@ -312,12 +301,7 @@ import Layout from "../layouts/Layout.astro";
     ],
   };
 
-  function generateUsernames(
-    count = 12,
-    baseWord = "",
-    category = "all",
-    useNumbers = true,
-  ) {
+  function generateUsernames(count = 12, baseWord = "", category = "all", useNumbers = true) {
     const results: string[] = [];
 
     for (let i = 0; i < count; i++) {
@@ -325,18 +309,13 @@ import Layout from "../layouts/Layout.astro";
       const r = Math.random();
 
       // Select random components
-      const getRand = (arr: any[]) =>
-        arr[Math.floor(Math.random() * arr.length)];
+      const getRand = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
 
       let adj = getRand(adjectives);
       let noun = getRand(nouns);
 
-      if (
-        category !== "all" &&
-        categoryData[category as keyof typeof categoryData]
-      ) {
-        if (r > 0.5)
-          noun = getRand(categoryData[category as keyof typeof categoryData]);
+      if (category !== "all" && categoryData[category as keyof typeof categoryData]) {
+        if (r > 0.5) noun = getRand(categoryData[category as keyof typeof categoryData]);
         else adj = getRand(categoryData[category as keyof typeof categoryData]);
       }
 
@@ -367,12 +346,8 @@ import Layout from "../layouts/Layout.astro";
   // UI Interaction
   const generateBtn = document.getElementById("generate-btn");
   const resultsGrid = document.getElementById("results-grid");
-  const baseWordInput = document.getElementById(
-    "base-word",
-  ) as HTMLInputElement;
-  const numbersCheckbox = document.getElementById(
-    "use-numbers",
-  ) as HTMLInputElement;
+  const baseWordInput = document.getElementById("base-word") as HTMLInputElement;
+  const numbersCheckbox = document.getElementById("use-numbers") as HTMLInputElement;
   const categoryBtns = document.querySelectorAll(".category-btn");
 
   let currentCategory = "all";
@@ -382,21 +357,13 @@ import Layout from "../layouts/Layout.astro";
     btn.addEventListener("click", () => {
       // Remove active class from all
       categoryBtns.forEach((b) => {
-        b.classList.remove(
-          "bg-blue-600/20",
-          "border-blue-500/30",
-          "text-blue-300",
-        );
+        b.classList.remove("bg-blue-600/20", "border-blue-500/30", "text-blue-300");
         b.classList.add("bg-white/5", "border-white/10", "text-slate-400");
       });
 
       // Add active to clicked
       btn.classList.remove("bg-white/5", "border-white/10", "text-slate-400");
-      btn.classList.add(
-        "bg-blue-600/20",
-        "border-blue-500/30",
-        "text-blue-300",
-      );
+      btn.classList.add("bg-blue-600/20", "border-blue-500/30", "text-blue-300");
 
       currentCategory = btn.getAttribute("data-category") || "all";
     });

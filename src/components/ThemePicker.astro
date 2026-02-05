@@ -16,7 +16,7 @@ const themes = [
 <div class="relative z-50">
   <button
     id="theme-btn"
-    class="flex items-center gap-2 px-3 py-2 rounded-xl glass hover:glass-hover transition-all justify-center min-w-[40px]"
+    class="glass hover:glass-hover flex min-w-[40px] items-center justify-center gap-2 rounded-xl px-3 py-2 transition-all"
     aria-label="Change theme"
   >
     <span class="text-xl">🎨</span>
@@ -25,17 +25,17 @@ const themes = [
   <!-- Dropdown -->
   <div
     id="theme-dropdown"
-    class="absolute top-full right-0 mt-2 w-48 p-2 rounded-xl bg-slate-950 border border-white/10 shadow-2xl opacity-0 invisible transition-all duration-300 transform origin-top-right z-50 scale-95"
+    class="invisible absolute top-full right-0 z-50 mt-2 w-48 origin-top-right scale-95 transform rounded-xl border border-white/10 bg-slate-950 p-2 opacity-0 shadow-2xl transition-all duration-300"
   >
     <div class="space-y-1">
       {
         themes.map((theme) => (
           <button
-            class="theme-option w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/10 transition-colors text-sm font-medium text-left"
+            class="theme-option flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors hover:bg-white/10"
             data-theme={theme.id}
           >
             <span
-              class="w-4 h-4 rounded-full shadow-sm border border-white/20"
+              class="h-4 w-4 rounded-full border border-white/20 shadow-sm"
               style={`background: ${theme.color}`}
             />
             <span class="text-slate-200">{theme.name}</span>

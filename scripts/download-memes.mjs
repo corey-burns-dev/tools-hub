@@ -1,17 +1,16 @@
-import fs from 'fs';
-import path from 'path';
-import { promisify } from 'util';
+import fs from "fs";
+import path from "path";
 
-const MEMES_DIR = path.join(process.cwd(), 'public', 'memes');
-const DATA_FILE = path.join(process.cwd(), 'src', 'data', 'memes.json');
+const MEMES_DIR = path.join(process.cwd(), "public", "memes");
+const DATA_FILE = path.join(process.cwd(), "src", "data", "memes.json");
 
 async function downloadMemes() {
-  console.log('Fetching memes from Imgflip...');
-  const response = await fetch('https://api.imgflip.com/get_memes');
+  console.log("Fetching memes from Imgflip...");
+  const response = await fetch("https://api.imgflip.com/get_memes");
   const data = await response.json();
 
   if (!data.success) {
-    console.error('Failed to fetch memes');
+    console.error("Failed to fetch memes");
     return;
   }
 
@@ -28,7 +27,7 @@ async function downloadMemes() {
   const localMemes = [];
 
   for (const meme of memes) {
-    const ext = path.extname(meme.url) || '.jpg';
+    const ext = path.extname(meme.url) || ".jpg";
     const fileName = `${meme.id}${ext}`;
     const filePath = path.join(MEMES_DIR, fileName);
     const localUrl = `/memes/${fileName}`;
@@ -38,10 +37,10 @@ async function downloadMemes() {
       const imgRes = await fetch(meme.url);
       const buffer = await imgRes.arrayBuffer();
       fs.writeFileSync(filePath, Buffer.from(buffer));
-      
+
       localMemes.push({
         ...meme,
-        localUrl: localUrl
+        localUrl: localUrl,
       });
     } catch (err) {
       console.error(`Failed to download ${meme.name}:`, err);
