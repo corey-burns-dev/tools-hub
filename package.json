@@ -14,7 +14,7 @@
     "lint-staged": "lint-staged",
     "check": "astro check",
     "prepare": "husky",
-    "deploy": "wrangler pages deploy dist"
+    "deploy": "wrangler deploy"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,astro}": [

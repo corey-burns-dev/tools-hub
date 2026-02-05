@@ -4,9 +4,6 @@ A premium collection of developer utilities and tools built with [Astro](https:/
 
 ## ✨ Features
 
-- **Premium UI**: Glassmorphism design system with modern gradients and animations.
-- **Dark Mode**: Fully supported dark/light theme switching.
-- **Responsive**: Mobile-first design that works on all devices.
 - **15+ Tools**: A growing suite of utilities including:
   - JSON Ninja
   - Regex Master
