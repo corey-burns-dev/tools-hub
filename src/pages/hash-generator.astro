@@ -1,11 +1,12 @@
 ---
+import Button from "../components/Button.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Hash Generator">
-  <div class="container mx-auto px-4 py-8">
-    <div class="mx-auto max-w-4xl">
-      <div class="mb-8 flex items-center gap-4">
+  <div class="container mx-auto max-w-6xl px-4 py-12">
+    <div class="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex items-center gap-4">
         <div
           class="flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-xl shadow-blue-500/20"
         >
@@ -13,17 +14,198 @@ import Layout from "../layouts/Layout.astro";
         </div>
         <div>
           <h1 class="mb-2 text-4xl font-bold text-white">Hash Generator</h1>
-          <p class="text-slate-400">Generate secure cryptographic hashes (MD5, SHA-256, etc).</p>
+          <p class="text-slate-400">Generate SHA hashes from text or files.</p>
+        </div>
+      </div>
+      <div class="glass flex items-center gap-3 rounded-2xl px-5 py-4 text-sm text-slate-300">
+        <span class="rounded-full bg-violet-500/20 px-3 py-1 text-xs font-semibold text-violet-200"
+          >Web Crypto</span
+        >
+        <span class="text-slate-500">•</span>
+        <span>SHA-256 / SHA-384 / SHA-512</span>
+      </div>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-2">
+      <div class="card-glass">
+        <h2 class="mb-4 text-lg font-bold text-white">
+          <span class="text-blue-400">01.</span> Input
+        </h2>
+
+        <textarea
+          id="hash-input"
+          rows="10"
+          placeholder="Paste text here..."
+          class="w-full resize-none rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-600 transition-all outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+        ></textarea>
+
+        <div class="mt-4 flex flex-wrap gap-2">
+          <Button id="hash-btn" variant="primary" class="px-4 py-2 text-sm">Generate</Button>
+          <Button id="clear-btn" variant="ghost" class="px-4 py-2 text-sm">Clear</Button>
+        </div>
+
+        <div class="mt-6 space-y-3">
+          <label class="flex items-center gap-3 text-sm text-slate-300">
+            <input
+              id="uppercase-toggle"
+              type="checkbox"
+              class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500"
+            />
+            Uppercase output
+          </label>
+
+          <div
+            class="rounded-xl border border-dashed border-white/10 bg-white/5 p-4 text-xs text-slate-400"
+          >
+            Drop a file into the output panel to hash it.
+          </div>
         </div>
       </div>
 
-      <div class="card-glass flex min-h-100 items-center justify-center">
-        <div class="text-center">
-          <div class="mb-4 animate-bounce text-6xl">🚧</div>
-          <h2 class="mb-2 text-2xl font-bold text-white">Coming Soon</h2>
-          <p class="text-slate-400">This tool is currently under construction.</p>
+      <div class="card-glass flex flex-col">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-lg font-bold text-white">
+            <span class="text-violet-400">02.</span> Hash Output
+          </h2>
+          <select
+            id="algo-select"
+            class="rounded-xl border border-white/10 bg-slate-900/50 px-3 py-2 text-sm text-white outline-none"
+          >
+            <option value="SHA-256">SHA-256</option>
+            <option value="SHA-384">SHA-384</option>
+            <option value="SHA-512">SHA-512</option>
+          </select>
+        </div>
+
+        <textarea
+          id="hash-output"
+          rows="8"
+          placeholder="Hash output will appear here"
+          class="w-full flex-1 resize-none rounded-xl border border-white/10 bg-black/50 px-4 py-3 font-mono text-sm text-white outline-none"
+        ></textarea>
+
+        <div class="mt-4 flex items-center justify-between">
+          <div class="text-xs text-slate-500" id="hash-meta">Ready.</div>
+          <Button id="copy-btn" variant="ghost" class="px-4 py-2 text-sm">Copy</Button>
+        </div>
+
+        <div
+          id="hash-drop-zone"
+          class="mt-4 flex items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 px-4 py-4 text-xs text-slate-400"
+        >
+          Drop a file here to hash it
         </div>
       </div>
     </div>
   </div>
 </Layout>
+
+<script>
+  const hashInput = document.querySelector("#hash-input") as HTMLTextAreaElement;
+  const hashOutput = document.querySelector("#hash-output") as HTMLTextAreaElement;
+  const algoSelect = document.querySelector("#algo-select") as HTMLSelectElement;
+  const hashBtn = document.querySelector("#hash-btn") as HTMLButtonElement;
+  const clearBtn = document.querySelector("#clear-btn") as HTMLButtonElement;
+  const copyBtn = document.querySelector("#copy-btn") as HTMLButtonElement;
+  const uppercaseToggle = document.querySelector("#uppercase-toggle") as HTMLInputElement;
+  const hashMeta = document.querySelector("#hash-meta") as HTMLDivElement;
+  const dropZone = document.querySelector("#hash-drop-zone") as HTMLDivElement;
+
+  const bufferToHex = (buffer: ArrayBuffer) => {
+    const hex = Array.from(new Uint8Array(buffer))
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
+    return uppercaseToggle.checked ? hex.toUpperCase() : hex;
+  };
+
+  const hashData = async (data: ArrayBuffer) => {
+    const algo = algoSelect.value;
+    const digest = await crypto.subtle.digest(algo, data);
+    return bufferToHex(digest);
+  };
+
+  const updateMeta = (label: string) => {
+    hashMeta.textContent = label;
+  };
+
+  const hashText = async () => {
+    if (!hashInput.value) {
+      hashOutput.value = "";
+      updateMeta("Ready.");
+      return;
+    }
+
+    const encoder = new TextEncoder();
+    const data = encoder.encode(hashInput.value);
+    updateMeta("Hashing...");
+    hashOutput.value = await hashData(data.buffer);
+    updateMeta(`Hashed ${data.length} bytes using ${algoSelect.value}.`);
+  };
+
+  const hashFile = async (file: File) => {
+    updateMeta(`Hashing ${file.name}...`);
+    const buffer = await file.arrayBuffer();
+    hashOutput.value = await hashData(buffer);
+    updateMeta(`Hashed ${file.name} (${file.size.toLocaleString()} bytes).`);
+  };
+
+  hashBtn.addEventListener("click", () => {
+    hashText();
+  });
+
+  algoSelect.addEventListener("change", () => {
+    if (hashInput.value) hashText();
+  });
+
+  uppercaseToggle.addEventListener("change", () => {
+    if (hashOutput.value) {
+      hashOutput.value = uppercaseToggle.checked
+        ? hashOutput.value.toUpperCase()
+        : hashOutput.value.toLowerCase();
+    }
+  });
+
+  clearBtn.addEventListener("click", () => {
+    hashInput.value = "";
+    hashOutput.value = "";
+    updateMeta("Ready.");
+  });
+
+  copyBtn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(hashOutput.value);
+      copyBtn.textContent = "Copied!";
+      setTimeout(() => {
+        copyBtn.textContent = "Copy";
+      }, 1200);
+    } catch {
+      copyBtn.textContent = "Copy failed";
+      setTimeout(() => {
+        copyBtn.textContent = "Copy";
+      }, 1200);
+    }
+  });
+
+  dropZone.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    dropZone.classList.add("drag-active");
+  });
+
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("drag-active");
+  });
+
+  dropZone.addEventListener("drop", (event) => {
+    event.preventDefault();
+    dropZone.classList.remove("drag-active");
+    const file = event.dataTransfer.files[0];
+    if (file) hashFile(file);
+  });
+</script>
+
+<style>
+  .drag-active {
+    border-color: rgba(139, 92, 246, 0.6);
+    background: rgba(139, 92, 246, 0.1);
+  }
+</style>
