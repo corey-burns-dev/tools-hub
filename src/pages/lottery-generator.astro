@@ -7,94 +7,99 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
 ---
 
 <Layout title="Ontario Lottery Generator">
-  <div class="container mx-auto px-4 py-8">
-    <div class="mx-auto max-w-6xl">
-      <div class="mb-8 flex items-center gap-4">
-        <div
-          class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-violet-500 text-4xl shadow-xl shadow-blue-500/20"
-        >
-          🎰
-        </div>
-        <div>
-          <h1 class="mb-2 text-4xl font-bold text-white">Lottery Generator</h1>
-          <p class="text-slate-400">Generate lucky numbers for Ontario Lottery games.</p>
-        </div>
+  <div class="space-y-12">
+    <div class="animate-float mb-12 text-center">
+      <div
+        class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-lg shadow-blue-500/30"
+      >
+        🎰
+      </div>
+      <h1
+        class="mb-4 bg-linear-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-clip-text text-5xl font-bold text-transparent"
+      >
+        Lottery Generator
+      </h1>
+      <p class="text-xl text-slate-400">Generate lucky numbers for Ontario Lottery games.</p>
+    </div>
+
+    <div class="card-glass mb-6 p-6">
+      <label class="mb-4 block text-sm font-medium text-slate-300">Select Your Game</label>
+
+      <!-- Game Capsules -->
+      <div class="mb-6 flex flex-wrap gap-3">
+        {
+          games.map((game, index) => (
+            <button
+              type="button"
+              class:list={[
+                "game-capsule",
+                "rounded-full px-6 py-3 font-medium text-white transition-all duration-300",
+                "border-2 border-slate-600 bg-slate-800/30 hover:scale-105 hover:border-blue-500 hover:bg-slate-700/50 hover:shadow-lg hover:shadow-blue-500/20",
+                "active:scale-95",
+                { selected: index === 0 },
+              ]}
+              data-game-id={game.id}
+            >
+              {game.name}
+            </button>
+          ))
+        }
       </div>
 
-      <div class="card-glass mb-6 p-6">
-        <label class="mb-4 block text-sm font-medium text-slate-300">Select Your Game</label>
+      <!-- Keno Pick Count (only visible for Keno) -->
+      <div id="keno-picks" class="animate-fade-in mb-6 hidden">
+        <label for="keno-count" class="mb-2 block text-sm font-medium text-slate-300"
+          >Number of Picks (1-10)</label
+        >
+        <input
+          type="number"
+          id="keno-count"
+          min="1"
+          max="10"
+          value="5"
+          class="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
+        />
+      </div>
 
-        <!-- Game Capsules -->
-        <div class="mb-6 flex flex-wrap gap-3">
-          {
-            games.map((game, index) => (
-              <button
-                class:list={[
-                  "game-capsule",
-                  "rounded-full px-6 py-3 font-medium text-white transition-all duration-300",
-                  "border-2 border-slate-600 bg-slate-800/30 hover:scale-105 hover:border-blue-500 hover:bg-slate-700/50 hover:shadow-lg hover:shadow-blue-500/20",
-                  "active:scale-95",
-                  { selected: index === 0 },
-                ]}
-                data-game-id={game.id}
-              >
-                {game.name}
-              </button>
-            ))
-          }
-        </div>
-
-        <!-- Keno Pick Count (only visible for Keno) -->
-        <div id="keno-picks" class="animate-fade-in mb-6 hidden">
-          <label for="keno-count" class="mb-2 block text-sm font-medium text-slate-300"
-            >Number of Picks (1-10)</label
-          >
+      <!-- Encore Checkbox -->
+      <div id="encore-option" class="animate-fade-in mb-6 hidden">
+        <label class="flex cursor-pointer items-center gap-3">
           <input
-            type="number"
-            id="keno-count"
-            min="1"
-            max="10"
-            value="5"
-            class="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
+            type="checkbox"
+            id="encore-checkbox"
+            class="h-5 w-5 cursor-pointer rounded border-slate-600 bg-slate-800/50 text-blue-500 transition-all focus:ring-2 focus:ring-blue-500/50"
           />
-        </div>
+          <span class="text-sm font-medium text-slate-300">
+            Add Encore <span class="text-slate-500">(7 bonus digits)</span>
+          </span>
+        </label>
+      </div>
 
-        <!-- Encore Checkbox -->
-        <div id="encore-option" class="animate-fade-in mb-6 hidden">
-          <label class="flex cursor-pointer items-center gap-3">
-            <input
-              type="checkbox"
-              id="encore-checkbox"
-              class="h-5 w-5 cursor-pointer rounded border-slate-600 bg-slate-800/50 text-blue-500 transition-all focus:ring-2 focus:ring-blue-500/50"
-            />
-            <span class="text-sm font-medium text-slate-300">
-              Add Encore <span class="text-slate-500">(7 bonus digits)</span>
-            </span>
-          </label>
-        </div>
-
+      <div class="flex justify-center">
         <button
           id="generate-btn"
-          class="w-full rounded-lg bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-4 text-lg font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/50 active:scale-95"
+          type="button"
+          class="w-full rounded-lg bg-gradient-to-r from-blue-500 to-violet-500 px-6 px-10 py-4 text-lg font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/50 active:scale-95 sm:w-auto"
         >
           Generate Numbers
         </button>
       </div>
+    </div>
 
-      <!-- Results Container -->
-      <div id="results-container" class="card-glass animate-fade-in hidden p-6">
-        <div class="mb-4 flex items-center justify-between">
-          <h2 class="text-2xl font-bold text-white" id="results-title">Your Numbers</h2>
-          <button
-            id="copy-btn"
-            class="rounded-lg bg-slate-700/50 px-4 py-2 text-sm text-slate-300 transition-all hover:bg-slate-600/50 hover:text-white"
-          >
-            📋 Copy
-          </button>
-        </div>
-
-        <div id="results-content" class="space-y-4"></div>
+    <!-- Results Container -->
+    <div id="results-container" class="card-glass animate-fade-in hidden p-6">
+      <div class="mb-4 flex items-center justify-between">
+        <h2 class="text-2xl font-bold text-white" id="results-title">Your Numbers</h2>
+        <button
+          id="copy-btn"
+          type="button"
+          class="rounded-lg bg-slate-700/50 px-4 py-2 text-sm text-slate-300 transition-all hover:bg-slate-600/50 hover:text-white"
+        >
+          📋 Copy
+        </button>
       </div>
+
+      <div id="results-content" class="space-y-4"></div>
     </div>
   </div>
 </Layout>
@@ -126,7 +131,8 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
 
   // Handle game capsule selection
   document.querySelectorAll(".game-capsule").forEach((capsule) => {
-    capsule.addEventListener("click", () => {
+    capsule.addEventListener("click", (e) => {
+      e.preventDefault();
       // Remove selected state from all capsules
       document.querySelectorAll(".game-capsule").forEach((c) => {
         c.classList.remove(
@@ -167,6 +173,14 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
         encoreCheckbox.checked = false; // Uncheck if switching to incompatible game
       }
     });
+  });
+
+  // Handle Enter key on input fields
+  kenoCount.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      generateBtn.click();
+    }
   });
 
   // Initialize first game
@@ -261,7 +275,8 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
   }
 
   // Generate numbers based on game type
-  generateBtn.addEventListener("click", () => {
+  generateBtn.addEventListener("click", (e) => {
+    e.preventDefault();
     const selectedGame = games.find((g) => g.id === selectedGameId);
     const includeEncore = encoreCheckbox.checked;
     let html = "";
@@ -337,7 +352,8 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
   });
 
   // Copy to clipboard
-  copyBtn.addEventListener("click", () => {
+  copyBtn.addEventListener("click", (e) => {
+    e.preventDefault();
     const text = resultsContainer.dataset.copyText;
     navigator.clipboard.writeText(text).then(() => {
       copyBtn.textContent = "✅ Copied!";

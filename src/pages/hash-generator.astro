@@ -4,26 +4,19 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Hash Generator">
-  <div class="container mx-auto max-w-6xl px-4 py-12">
-    <div class="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-      <div class="flex items-center gap-4">
-        <div
-          class="flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-xl shadow-blue-500/20"
-        >
-          ##
-        </div>
-        <div>
-          <h1 class="mb-2 text-4xl font-bold text-white">Hash Generator</h1>
-          <p class="text-slate-400">Generate SHA hashes from text or files.</p>
-        </div>
+  <div class="space-y-12">
+    <div class="animate-float mb-12 text-center">
+      <div
+        class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-lg shadow-blue-500/30"
+      >
+        ##
       </div>
-      <div class="glass flex items-center gap-3 rounded-2xl px-5 py-4 text-sm text-slate-300">
-        <span class="rounded-full bg-violet-500/20 px-3 py-1 text-xs font-semibold text-violet-200"
-          >Web Crypto</span
-        >
-        <span class="text-slate-500">•</span>
-        <span>SHA-256 / SHA-384 / SHA-512</span>
-      </div>
+      <h1
+        class="mb-4 bg-linear-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-clip-text text-5xl font-bold text-transparent"
+      >
+        Hash Generator
+      </h1>
+      <p class="text-xl text-slate-400">Generate SHA hashes from text or files.</p>
     </div>
 
     <div class="grid gap-8 lg:grid-cols-2">
@@ -40,62 +33,62 @@ import Layout from "../layouts/Layout.astro";
         ></textarea>
 
         <div class="mt-4 flex flex-wrap gap-2">
-          <Button id="hash-btn" variant="primary" class="px-4 py-2 text-sm">Generate</Button>
-          <Button id="clear-btn" variant="ghost" class="px-4 py-2 text-sm">Clear</Button>
-        </div>
-
-        <div class="mt-6 space-y-3">
-          <label class="flex items-center gap-3 text-sm text-slate-300">
-            <input
-              id="uppercase-toggle"
-              type="checkbox"
-              class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500"
-            />
-            Uppercase output
-          </label>
-
-          <div
-            class="rounded-xl border border-dashed border-white/10 bg-white/5 p-4 text-xs text-slate-400"
-          >
-            Drop a file into the output panel to hash it.
-          </div>
+          <Button id="hash-btn" variant="primary" class="px-10 sm:w-auto">Generate</Button>
+          <Button id="clear-btn" variant="ghost" class="px-10 sm:w-auto"> Clear </Button>
         </div>
       </div>
+    </div>
 
-      <div class="card-glass flex flex-col">
-        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h2 class="text-lg font-bold text-white">
-            <span class="text-violet-400">02.</span> Hash Output
-          </h2>
-          <select
-            id="algo-select"
-            class="rounded-xl border border-white/10 bg-slate-900/50 px-3 py-2 text-sm text-white outline-none"
-          >
-            <option value="SHA-256">SHA-256</option>
-            <option value="SHA-384">SHA-384</option>
-            <option value="SHA-512">SHA-512</option>
-          </select>
-        </div>
+    <div class="mt-6 space-y-3">
+      <label class="flex items-center gap-3 text-sm text-slate-300">
+        <input
+          id="uppercase-toggle"
+          type="checkbox"
+          class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500"
+        />
+        Uppercase output
+      </label>
 
-        <textarea
-          id="hash-output"
-          rows="8"
-          placeholder="Hash output will appear here"
-          class="w-full flex-1 resize-none rounded-xl border border-white/10 bg-black/50 px-4 py-3 font-mono text-sm text-white outline-none"
-        ></textarea>
-
-        <div class="mt-4 flex items-center justify-between">
-          <div class="text-xs text-slate-500" id="hash-meta">Ready.</div>
-          <Button id="copy-btn" variant="ghost" class="px-4 py-2 text-sm">Copy</Button>
-        </div>
-
-        <div
-          id="hash-drop-zone"
-          class="mt-4 flex items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 px-4 py-4 text-xs text-slate-400"
-        >
-          Drop a file here to hash it
-        </div>
+      <div
+        class="rounded-xl border border-dashed border-white/10 bg-white/5 p-4 text-xs text-slate-400"
+      >
+        Drop a file into the output panel to hash it.
       </div>
+    </div>
+  </div>
+
+  <div class="card-glass flex flex-col">
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <h2 class="text-lg font-bold text-white">
+        <span class="text-violet-400">02.</span> Hash Output
+      </h2>
+      <select
+        id="algo-select"
+        class="rounded-xl border border-white/10 bg-slate-900/50 px-3 py-2 text-sm text-white outline-none"
+      >
+        <option value="SHA-256">SHA-256</option>
+        <option value="SHA-384">SHA-384</option>
+        <option value="SHA-512">SHA-512</option>
+      </select>
+    </div>
+
+    <textarea
+      id="hash-output"
+      rows="8"
+      placeholder="Hash output will appear here"
+      class="w-full flex-1 resize-none rounded-xl border border-white/10 bg-black/50 px-4 py-3 font-mono text-sm text-white outline-none"
+    ></textarea>
+
+    <div class="mt-4 flex items-center justify-between">
+      <div class="text-xs text-slate-500" id="hash-meta">Ready.</div>
+      <Button id="copy-btn" variant="ghost" class="px-4 py-2 text-sm">Copy</Button>
+    </div>
+
+    <div
+      id="hash-drop-zone"
+      class="mt-4 flex items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 px-4 py-4 text-xs text-slate-400"
+    >
+      Drop a file here to hash it
     </div>
   </div>
 </Layout>
@@ -198,7 +191,7 @@ import Layout from "../layouts/Layout.astro";
   dropZone.addEventListener("drop", (event) => {
     event.preventDefault();
     dropZone.classList.remove("drag-active");
-    const file = event.dataTransfer.files[0];
+    const file = event.dataTransfer?.files[0];
     if (file) hashFile(file);
   });
 </script>

@@ -45,7 +45,7 @@ const tools = [
     <div class="flex h-screen">
       <!-- Sidebar -->
       <aside
-        class="glass z-20 flex h-full w-72 flex-col border-r border-white/5 transition-transform"
+        class="glass z-20 flex h-full w-64 flex-col border-r border-white/5 transition-transform"
       >
         <div class="border-b border-white/5 p-8">
           <a href="/" class="group mb-4 flex items-center gap-3">
@@ -92,8 +92,10 @@ const tools = [
       </aside>
 
       <!-- Main Content -->
-      <main class="relative flex-1 overflow-y-auto scroll-smooth">
-        <slot />
+      <main class="relative flex-1 overflow-y-auto scroll-smooth p-6 lg:p-10">
+        <div class="mx-auto max-w-6xl p-1">
+          <slot />
+        </div>
       </main>
     </div>
   </body>

@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Username Generator">
-  <div class="container mx-auto max-w-4xl px-4 py-12">
+  <div class="space-y-12">
     <div class="animate-float mb-12 text-center">
       <div
         class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-lg shadow-blue-500/30"
@@ -88,9 +88,11 @@ import Layout from "../layouts/Layout.astro";
               </label>
             </div>
 
-            <Button id="generate-btn" class="mt-4 w-full" variant="primary">
-              <span class="mr-2">⚡</span> Generate
-            </Button>
+            <div class="flex justify-center">
+              <Button id="generate-btn" class="mt-4 px-10 sm:w-auto" variant="primary">
+                <span class="mr-2">⚡</span> Generate
+              </Button>
+            </div>
           </div>
         </div>
       </div>

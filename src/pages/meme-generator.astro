@@ -4,531 +4,529 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Meme Generator">
-  <div class="container mx-auto px-4 py-8">
-    <div class="mx-auto max-w-6xl">
-      <div class="mb-8 flex items-center gap-4">
-        <div
-          class="flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-xl shadow-blue-500/20"
-        >
-          🐸
+  <div class="space-y-12">
+    <div class="animate-float mb-12 text-center">
+      <div
+        class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-lg shadow-blue-500/30"
+      >
+        🐸
+      </div>
+      <h1
+        class="mb-4 bg-linear-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-clip-text text-5xl font-bold text-transparent"
+      >
+        Meme Generator
+      </h1>
+      <p class="text-xl text-slate-400">Create meme masterpieces with custom text overlays.</p>
+    </div>
+
+    <div
+      id="meme-generator-container"
+      class="grid grid-cols-1 items-start gap-8 lg:grid-cols-2"
+      data-memes={JSON.stringify(memesData)}
+    >
+      <!-- Preview Area -->
+      <div
+        class="sticky top-8 overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-800/50 p-0 shadow-2xl backdrop-blur-sm"
+      >
+        <div class="flex items-center justify-between border-b border-white/10 p-4">
+          <h2 class="text-lg font-bold text-white">Preview</h2>
+          <div class="flex gap-2">
+            <button
+              id="toggle-edit-mode"
+              class="rounded-lg bg-slate-700 px-4 py-2 text-sm font-bold text-white transition-all hover:bg-slate-600"
+              title="Toggle text editing on canvas"
+            >
+              ✏️ Edit Mode
+            </button>
+            <button
+              id="download-btn"
+              class="rounded-lg bg-linear-to-r from-blue-500 to-violet-500 px-10 py-2 text-sm font-bold text-white shadow-lg transition-all hover:from-blue-600 hover:to-violet-600 sm:w-auto"
+            >
+              💾 Download
+            </button>
+          </div>
         </div>
-        <div>
-          <h1 class="mb-2 text-4xl font-bold text-white">Meme Generator</h1>
-          <p class="text-slate-400">Create meme masterpieces with custom text overlays.</p>
+        <div
+          id="canvas-wrapper"
+          class="relative flex aspect-square items-center justify-center bg-slate-900/50 p-4"
+        >
+          <canvas
+            id="meme-canvas"
+            class="max-h-full max-w-full cursor-default rounded-lg shadow-2xl"></canvas>
+          <div
+            id="edit-hint"
+            class="absolute top-8 left-1/2 hidden -translate-x-1/2 transform rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg"
+          >
+            Click on text to move it around
+          </div>
         </div>
       </div>
 
-      <div
-        id="meme-generator-container"
-        class="grid grid-cols-1 items-start gap-8 lg:grid-cols-2"
-        data-memes={JSON.stringify(memesData)}
-      >
-        <!-- Preview Area -->
+      <!-- Controls Area -->
+      <div class="space-y-6">
+        <!-- Image Source -->
         <div
-          class="sticky top-8 overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-800/50 p-0 shadow-2xl backdrop-blur-sm"
+          class="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6 shadow-2xl backdrop-blur-sm"
         >
-          <div class="flex items-center justify-between border-b border-white/10 p-4">
-            <h2 class="text-lg font-bold text-white">Preview</h2>
-            <div class="flex gap-2">
-              <button
-                id="toggle-edit-mode"
-                class="rounded-lg bg-slate-700 px-4 py-2 text-sm font-bold text-white transition-all hover:bg-slate-600"
-                title="Toggle text editing on canvas"
+          <h3 class="mb-4 flex items-center gap-2 text-lg font-bold text-white">
+            <span>🖼️</span> Image Source
+          </h3>
+          <div class="space-y-4">
+            <label class="block">
+              <span class="mb-2 block text-sm font-semibold tracking-wider text-slate-400 uppercase"
+                >Upload Your Own Image</span
               >
-                ✏️ Edit Mode
-              </button>
-              <button
-                id="download-btn"
-                class="rounded-lg bg-linear-to-r from-blue-500 to-violet-500 px-4 py-2 text-sm font-bold text-white shadow-lg transition-all hover:from-blue-600 hover:to-violet-600"
+              <input
+                type="file"
+                id="image-upload"
+                accept="image/*"
+                class="block w-full cursor-pointer text-sm text-slate-400 file:mr-4 file:rounded-full file:border-0 file:bg-linear-to-r file:from-blue-500 file:to-violet-500 file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:opacity-90"
+              />
+            </label>
+
+            <div class="border-t border-white/5 pt-4">
+              <div class="mb-3 flex items-center justify-between">
+                <span class="text-sm font-semibold tracking-wider text-slate-400 uppercase"
+                  >Popular Meme Templates</span
+                >
+                <button
+                  id="refresh-memes"
+                  class="rounded-full bg-slate-700 px-3 py-1 text-xs text-white transition-all hover:bg-slate-600"
+                >
+                  🔄 Refresh
+                </button>
+              </div>
+
+              <!-- Search Box -->
+              <input
+                type="text"
+                id="meme-search"
+                placeholder="Search memes..."
+                class="mb-3 w-full rounded-lg border border-white/10 bg-slate-900/50 px-3 py-2 text-sm text-white transition-all focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
+              />
+
+              <!-- Loading State -->
+              <div id="memes-loading" class="py-8 text-center">
+                <div
+                  class="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500"
+                >
+                </div>
+                <p class="mt-2 text-sm text-slate-400">Loading memes...</p>
+              </div>
+
+              <!-- Memes Grid -->
+              <div
+                id="memes-grid"
+                class="custom-scrollbar grid hidden max-h-[500px] grid-cols-3 gap-2 overflow-y-auto pr-2"
               >
-                💾 Download
-              </button>
-            </div>
-          </div>
-          <div
-            id="canvas-wrapper"
-            class="relative flex aspect-square items-center justify-center bg-slate-900/50 p-4"
-          >
-            <canvas
-              id="meme-canvas"
-              class="max-h-full max-w-full cursor-default rounded-lg shadow-2xl"></canvas>
-            <div
-              id="edit-hint"
-              class="absolute top-8 left-1/2 hidden -translate-x-1/2 transform rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg"
-            >
-              Click on text to move it around
+                <!-- Memes will be loaded here -->
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Controls Area -->
-        <div class="space-y-6">
-          <!-- Image Source -->
-          <div
-            class="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6 shadow-2xl backdrop-blur-sm"
-          >
-            <h3 class="mb-4 flex items-center gap-2 text-lg font-bold text-white">
-              <span>🖼️</span> Image Source
+        <!-- Text Boxes Manager -->
+        <div
+          class="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6 shadow-2xl backdrop-blur-sm"
+        >
+          <div class="mb-4 flex items-center justify-between">
+            <h3 class="flex items-center gap-2 text-lg font-bold text-white">
+              <span>✍️</span> Text Boxes
             </h3>
-            <div class="space-y-4">
-              <label class="block">
-                <span
-                  class="mb-2 block text-sm font-semibold tracking-wider text-slate-400 uppercase"
-                  >Upload Your Own Image</span
-                >
-                <input
-                  type="file"
-                  id="image-upload"
-                  accept="image/*"
-                  class="block w-full cursor-pointer text-sm text-slate-400 file:mr-4 file:rounded-full file:border-0 file:bg-linear-to-r file:from-blue-500 file:to-violet-500 file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:opacity-90"
-                />
-              </label>
-
-              <div class="border-t border-white/5 pt-4">
-                <div class="mb-3 flex items-center justify-between">
-                  <span class="text-sm font-semibold tracking-wider text-slate-400 uppercase"
-                    >Popular Meme Templates</span
-                  >
-                  <button
-                    id="refresh-memes"
-                    class="rounded-full bg-slate-700 px-3 py-1 text-xs text-white transition-all hover:bg-slate-600"
-                  >
-                    🔄 Refresh
-                  </button>
-                </div>
-
-                <!-- Search Box -->
-                <input
-                  type="text"
-                  id="meme-search"
-                  placeholder="Search memes..."
-                  class="mb-3 w-full rounded-lg border border-white/10 bg-slate-900/50 px-3 py-2 text-sm text-white transition-all focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
-                />
-
-                <!-- Loading State -->
-                <div id="memes-loading" class="py-8 text-center">
-                  <div
-                    class="inline-block h-8 w-8 animate-spin rounded-full border-b-2 border-blue-500"
-                  >
-                  </div>
-                  <p class="mt-2 text-sm text-slate-400">Loading memes...</p>
-                </div>
-
-                <!-- Memes Grid -->
-                <div
-                  id="memes-grid"
-                  class="custom-scrollbar grid hidden max-h-[500px] grid-cols-3 gap-2 overflow-y-auto pr-2"
-                >
-                  <!-- Memes will be loaded here -->
-                </div>
-              </div>
-            </div>
+            <button
+              id="add-text-box"
+              class="rounded-lg bg-blue-600 px-3 py-1 text-sm font-bold text-white transition-all hover:bg-blue-700"
+            >
+              + Add Text
+            </button>
           </div>
 
-          <!-- Text Boxes Manager -->
-          <div
-            class="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6 shadow-2xl backdrop-blur-sm"
-          >
-            <div class="mb-4 flex items-center justify-between">
-              <h3 class="flex items-center gap-2 text-lg font-bold text-white">
-                <span>✍️</span> Text Boxes
-              </h3>
-              <button
-                id="add-text-box"
-                class="rounded-lg bg-blue-600 px-3 py-1 text-sm font-bold text-white transition-all hover:bg-blue-700"
-              >
-                + Add Text
-              </button>
-            </div>
-
-            <div id="text-boxes-container" class="space-y-4">
-              <!-- Text boxes will be dynamically added here -->
-            </div>
+          <div id="text-boxes-container" class="space-y-4">
+            <!-- Text boxes will be dynamically added here -->
           </div>
+        </div>
 
-          <!-- Global Text Settings -->
-          <div
-            class="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6 shadow-2xl backdrop-blur-sm"
-          >
-            <h3 class="mb-4 flex items-center gap-2 text-lg font-bold text-white">
-              <span>🎨</span> Global Text Settings
-            </h3>
-            <div class="space-y-4">
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label
-                    class="mb-2 block text-sm font-semibold tracking-wider text-slate-400 uppercase"
-                    >Font Size</label
-                  >
-                  <input
-                    type="range"
-                    id="global-font-size"
-                    min="20"
-                    max="100"
-                    value="40"
-                    class="w-full accent-blue-500"
-                  />
-                  <span id="global-font-size-value" class="text-xs text-slate-500">40px</span>
-                </div>
-                <div>
-                  <label
-                    class="mb-2 block text-sm font-semibold tracking-wider text-slate-400 uppercase"
-                    >Text Color</label
-                  >
-                  <input
-                    type="color"
-                    id="global-text-color"
-                    value="#ffffff"
-                    class="h-10 w-full cursor-pointer rounded border border-white/10 bg-transparent"
-                  />
-                </div>
-              </div>
-
+        <!-- Global Text Settings -->
+        <div
+          class="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6 shadow-2xl backdrop-blur-sm"
+        >
+          <h3 class="mb-4 flex items-center gap-2 text-lg font-bold text-white">
+            <span>🎨</span> Global Text Settings
+          </h3>
+          <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
               <div>
                 <label
                   class="mb-2 block text-sm font-semibold tracking-wider text-slate-400 uppercase"
-                  >Stroke Width</label
+                  >Font Size</label
                 >
                 <input
                   type="range"
-                  id="global-stroke-width"
-                  min="0"
-                  max="10"
-                  value="3"
+                  id="global-font-size"
+                  min="20"
+                  max="100"
+                  value="40"
                   class="w-full accent-blue-500"
                 />
-                <span id="global-stroke-width-value" class="text-xs text-slate-500">3px</span>
+                <span id="global-font-size-value" class="text-xs text-slate-500">40px</span>
               </div>
-
-              <div class="pt-2">
-                <button
-                  id="reset-positions"
-                  class="w-full rounded-lg bg-slate-700 px-4 py-2 text-sm font-bold text-white transition-all hover:bg-slate-600"
+              <div>
+                <label
+                  class="mb-2 block text-sm font-semibold tracking-wider text-slate-400 uppercase"
+                  >Text Color</label
                 >
-                  🔄 Reset All Positions
-                </button>
+                <input
+                  type="color"
+                  id="global-text-color"
+                  value="#ffffff"
+                  class="h-10 w-full cursor-pointer rounded border border-white/10 bg-transparent"
+                />
               </div>
+            </div>
+
+            <div>
+              <label
+                class="mb-2 block text-sm font-semibold tracking-wider text-slate-400 uppercase"
+                >Stroke Width</label
+              >
+              <input
+                type="range"
+                id="global-stroke-width"
+                min="0"
+                max="10"
+                value="3"
+                class="w-full accent-blue-500"
+              />
+              <span id="global-stroke-width-value" class="text-xs text-slate-500">3px</span>
+            </div>
+
+            <div class="pt-2">
+              <button
+                id="reset-positions"
+                class="w-full rounded-lg bg-slate-700 px-4 py-2 text-sm font-bold text-white transition-all hover:bg-slate-600"
+              >
+                🔄 Reset All Positions
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</Layout>
 
-  <style>
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 8px;
-    }
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
 
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.5);
-      border-radius: 4px;
-    }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: 4px;
+  }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(100, 116, 139, 0.5);
-      border-radius: 4px;
-    }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.5);
+    border-radius: 4px;
+  }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: rgba(100, 116, 139, 0.7);
-    }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 116, 139, 0.7);
+  }
 
-    .meme-template {
-      transition: all 0.2s;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
+  .meme-template {
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
 
-    .meme-template:hover {
-      transform: scale(1.05);
-      z-index: 10;
-    }
+  .meme-template:hover {
+    transform: scale(1.05);
+    z-index: 10;
+  }
 
-    .meme-template.selected {
-      ring: 2px;
-      ring-color: rgb(59, 130, 246);
-    }
+  .meme-template.selected {
+    ring: 2px;
+    ring-color: rgb(59, 130, 246);
+  }
 
-    .meme-template img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+  .meme-template img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-    .meme-name {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-      padding: 8px 4px 4px;
-      font-size: 0.65rem;
-      color: white;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
+  .meme-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 8px 4px 4px;
+    font-size: 0.65rem;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
 
-    .meme-template:hover .meme-name {
-      opacity: 1;
-    }
+  .meme-template:hover .meme-name {
+    opacity: 1;
+  }
 
-    .text-box-card {
-      transition: all 0.2s;
-    }
+  .text-box-card {
+    transition: all 0.2s;
+  }
 
-    .text-box-card.active {
-      border-color: rgb(59, 130, 246);
-      background: rgba(59, 130, 246, 0.1);
-    }
+  .text-box-card.active {
+    border-color: rgb(59, 130, 246);
+    background: rgba(59, 130, 246, 0.1);
+  }
 
-    #meme-canvas.edit-mode {
-      cursor: move;
-    }
-  </style>
+  #meme-canvas.edit-mode {
+    cursor: move;
+  }
+</style>
 
-  <script>
-    const container = document.getElementById("meme-generator-container");
-    const memesData = JSON.parse(container?.dataset.memes || "[]");
+<script>
+  const container = document.getElementById("meme-generator-container");
+  const memesData = JSON.parse(container?.dataset.memes || "[]");
 
-    const canvas = document.getElementById("meme-canvas") as HTMLCanvasElement;
-    const ctx = canvas.getContext("2d");
-    const imageUpload = document.getElementById("image-upload") as HTMLInputElement;
-    const downloadBtn = document.getElementById("download-btn");
-    const memesGrid = document.getElementById("memes-grid");
-    const memesLoading = document.getElementById("memes-loading");
-    const memeSearch = document.getElementById("meme-search") as HTMLInputElement;
-    const refreshBtn = document.getElementById("refresh-memes");
-    const addTextBoxBtn = document.getElementById("add-text-box");
-    const textBoxesContainer = document.getElementById("text-boxes-container");
-    const toggleEditModeBtn = document.getElementById("toggle-edit-mode") as HTMLButtonElement;
-    const editHint = document.getElementById("edit-hint");
-    const resetPositionsBtn = document.getElementById("reset-positions");
+  const canvas = document.getElementById("meme-canvas") as HTMLCanvasElement;
+  const ctx = canvas.getContext("2d");
+  const imageUpload = document.getElementById("image-upload") as HTMLInputElement;
+  const downloadBtn = document.getElementById("download-btn");
+  const memesGrid = document.getElementById("memes-grid");
+  const memesLoading = document.getElementById("memes-loading");
+  const memeSearch = document.getElementById("meme-search") as HTMLInputElement;
+  const refreshBtn = document.getElementById("refresh-memes");
+  const addTextBoxBtn = document.getElementById("add-text-box");
+  const textBoxesContainer = document.getElementById("text-boxes-container");
+  const toggleEditModeBtn = document.getElementById("toggle-edit-mode") as HTMLButtonElement;
+  const editHint = document.getElementById("edit-hint");
+  const resetPositionsBtn = document.getElementById("reset-positions");
 
-    // Global settings
-    const globalFontSizeInput = document.getElementById("global-font-size") as HTMLInputElement;
-    const globalFontSizeValue = document.getElementById("global-font-size-value");
-    const globalStrokeWidthInput = document.getElementById(
-      "global-stroke-width"
-    ) as HTMLInputElement;
-    const globalStrokeWidthValue = document.getElementById("global-stroke-width-value");
-    const globalTextColorInput = document.getElementById("global-text-color") as HTMLInputElement;
+  // Global settings
+  const globalFontSizeInput = document.getElementById("global-font-size") as HTMLInputElement;
+  const globalFontSizeValue = document.getElementById("global-font-size-value");
+  const globalStrokeWidthInput = document.getElementById("global-stroke-width") as HTMLInputElement;
+  const globalStrokeWidthValue = document.getElementById("global-stroke-width-value");
+  const globalTextColorInput = document.getElementById("global-text-color") as HTMLInputElement;
 
-    let currentImg: HTMLImageElement | null = null;
-    const allMemes = memesData;
-    let editMode = false;
-    let draggedTextBox: TextBox | null = null;
-    let resizingTextBox: TextBox | null = null;
-    let dragOffset = { x: 0, y: 0 };
+  let currentImg: HTMLImageElement | null = null;
+  const allMemes = memesData;
+  let editMode = false;
+  let draggedTextBox: TextBox | null = null;
+  let resizingTextBox: TextBox | null = null;
+  let dragOffset = { x: 0, y: 0 };
 
-    interface TextBox {
-      id: number;
-      text: string;
-      x: number; // Percentage (0-100)
-      y: number; // Percentage (0-100)
-      fontSize?: number;
-      color?: string;
-      strokeWidth?: number;
-    }
+  interface TextBox {
+    id: number;
+    text: string;
+    x: number; // Percentage (0-100)
+    y: number; // Percentage (0-100)
+    fontSize?: number;
+    color?: string;
+    strokeWidth?: number;
+  }
 
-    let textBoxes: TextBox[] = [];
-    let nextTextBoxId = 1;
+  let textBoxes: TextBox[] = [];
+  let nextTextBoxId = 1;
 
-    // Predefined templates for popular memes
-    const memeTemplates: Record<string, TextBox[]> = {
-      // Drake meme - top disapprove, bottom approve
-      "181913649": [
-        { id: 1, text: "", x: 70, y: 25 },
-        { id: 2, text: "", x: 70, y: 75 },
-      ],
-      // Distracted Boyfriend - left, center, right
-      "112126428": [
-        { id: 1, text: "", x: 20, y: 70 },
-        { id: 2, text: "", x: 45, y: 45 },
-        { id: 3, text: "", x: 75, y: 55 },
-      ],
-      // Two Buttons - top and two buttons
-      "87743020": [
-        { id: 1, text: "", x: 25, y: 70 },
-        { id: 2, text: "", x: 55, y: 65 },
-        { id: 3, text: "", x: 50, y: 15 },
-      ],
-      // Expanding Brain - 4 panels
-      "93895088": [
-        { id: 1, text: "", x: 30, y: 12 },
-        { id: 2, text: "", x: 30, y: 37 },
-        { id: 3, text: "", x: 30, y: 62 },
-        { id: 4, text: "", x: 30, y: 87 },
-      ],
-      // Batman Slapping Robin
-      "438680": [
-        { id: 1, text: "", x: 30, y: 25 },
-        { id: 2, text: "", x: 75, y: 75 },
-      ],
-      // Change My Mind
-      "129242436": [{ id: 1, text: "", x: 35, y: 65 }],
-      // Woman Yelling at Cat
-      "188390779": [
-        { id: 1, text: "", x: 25, y: 75 },
-        { id: 2, text: "", x: 75, y: 75 },
-      ],
-      // Anakin Padme 4 Panel
-      "322841258": [
-        { id: 1, text: "", x: 25, y: 25 },
-        { id: 2, text: "", x: 75, y: 25 },
-        { id: 3, text: "", x: 75, y: 75 },
-      ],
-      // Bernie Sanders Once Again Asking
-      "224015000": [{ id: 1, text: "", x: 50, y: 85 }],
-      // Hide the Pain Harold
-      "27813981": [{ id: 1, text: "", x: 50, y: 90 }],
-      // This Is Fine
-      "55311130": [{ id: 1, text: "", x: 50, y: 90 }],
-      // Futurama Fry
-      "61520": [
-        { id: 1, text: "", x: 50, y: 10 },
-        { id: 2, text: "", x: 50, y: 90 },
-      ],
-      // Spider Man Triple
-      "206151308": [
-        { id: 1, text: "", x: 20, y: 50 },
-        { id: 2, text: "", x: 50, y: 40 },
-        { id: 3, text: "", x: 80, y: 50 },
-      ],
-      // UNO Draw 25 Cards
-      "217743513": [
-        { id: 1, text: "", x: 25, y: 35 },
-        { id: 2, text: "", x: 75, y: 50 },
-      ],
-      // Left Exit 12 Off Ramp
-      "124822590": [
-        { id: 1, text: "", x: 30, y: 25 },
-        { id: 2, text: "", x: 75, y: 55 },
-        { id: 3, text: "", x: 50, y: 85 },
-      ],
-      // Running Away Balloon
-      "131087935": [
-        { id: 1, text: "", x: 75, y: 15 },
-        { id: 2, text: "", x: 15, y: 65 },
-        { id: 3, text: "", x: 35, y: 55 },
-        { id: 4, text: "", x: 70, y: 55 },
-        { id: 5, text: "", x: 70, y: 80 },
-      ],
-      // Always Has Been
-      "252600902": [
-        { id: 1, text: "", x: 40, y: 20 },
-        { id: 2, text: "", x: 70, y: 20 },
-      ],
-      // Marked Safe From
-      "161865971": [
-        { id: 1, text: "", x: 50, y: 25 },
-        { id: 2, text: "", x: 50, y: 65 },
-      ],
-      // Epic Handshake
-      "135256802": [
-        { id: 1, text: "", x: 15, y: 55 },
-        { id: 2, text: "", x: 85, y: 55 },
-        { id: 3, text: "", x: 50, y: 20 },
-      ],
-      // Disaster Girl
-      "97984": [
-        { id: 1, text: "", x: 50, y: 15 },
-        { id: 2, text: "", x: 50, y: 85 },
-      ],
-      // Gru's Plan
-      "131940431": [
-        { id: 1, text: "", x: 35, y: 25 },
-        { id: 2, text: "", x: 85, y: 25 },
-        { id: 3, text: "", x: 35, y: 75 },
-        { id: 4, text: "", x: 85, y: 75 },
-      ],
-      // Sad Pablo Escobar
-      "80707627": [
-        { id: 1, text: "", x: 50, y: 25 },
-        { id: 2, text: "", x: 50, y: 55 },
-        { id: 3, text: "", x: 50, y: 85 },
-      ],
-      // Waiting Skeleton
-      "4087833": [
-        { id: 1, text: "", x: 50, y: 25 },
-        { id: 2, text: "", x: 50, y: 85 },
-      ],
-      // Mocking Spongebob
-      "102156234": [
-        { id: 1, text: "", x: 50, y: 15 },
-        { id: 2, text: "", x: 50, y: 85 },
-      ],
-      // Trade Offer
-      "309868304": [
-        { id: 1, text: "", x: 25, y: 35 },
-        { id: 2, text: "", x: 75, y: 35 },
-        { id: 3, text: "", x: 50, y: 15 },
-      ],
-      // Is This A Pigeon
-      "100777631": [
-        { id: 1, text: "", x: 20, y: 85 },
-        { id: 2, text: "", x: 50, y: 85 },
-        { id: 3, text: "", x: 75, y: 30 },
-      ],
-      // Monkey Puppet
-      "148909805": [
-        { id: 1, text: "", x: 75, y: 40 },
-        { id: 2, text: "", x: 25, y: 40 },
-      ],
-      // Buff Doge vs Cheems
-      "247375501": [
-        { id: 1, text: "", x: 25, y: 85 },
-        { id: 2, text: "", x: 75, y: 85 },
-        { id: 3, text: "", x: 25, y: 30 },
-        { id: 4, text: "", x: 75, y: 30 },
-      ],
-    };
+  // Predefined templates for popular memes
+  const memeTemplates: Record<string, TextBox[]> = {
+    // Drake meme - top disapprove, bottom approve
+    "181913649": [
+      { id: 1, text: "", x: 70, y: 25 },
+      { id: 2, text: "", x: 70, y: 75 },
+    ],
+    // Distracted Boyfriend - left, center, right
+    "112126428": [
+      { id: 1, text: "", x: 20, y: 70 },
+      { id: 2, text: "", x: 45, y: 45 },
+      { id: 3, text: "", x: 75, y: 55 },
+    ],
+    // Two Buttons - top and two buttons
+    "87743020": [
+      { id: 1, text: "", x: 25, y: 70 },
+      { id: 2, text: "", x: 55, y: 65 },
+      { id: 3, text: "", x: 50, y: 15 },
+    ],
+    // Expanding Brain - 4 panels
+    "93895088": [
+      { id: 1, text: "", x: 30, y: 12 },
+      { id: 2, text: "", x: 30, y: 37 },
+      { id: 3, text: "", x: 30, y: 62 },
+      { id: 4, text: "", x: 30, y: 87 },
+    ],
+    // Batman Slapping Robin
+    "438680": [
+      { id: 1, text: "", x: 30, y: 25 },
+      { id: 2, text: "", x: 75, y: 75 },
+    ],
+    // Change My Mind
+    "129242436": [{ id: 1, text: "", x: 35, y: 65 }],
+    // Woman Yelling at Cat
+    "188390779": [
+      { id: 1, text: "", x: 25, y: 75 },
+      { id: 2, text: "", x: 75, y: 75 },
+    ],
+    // Anakin Padme 4 Panel
+    "322841258": [
+      { id: 1, text: "", x: 25, y: 25 },
+      { id: 2, text: "", x: 75, y: 25 },
+      { id: 3, text: "", x: 75, y: 75 },
+    ],
+    // Bernie Sanders Once Again Asking
+    "224015000": [{ id: 1, text: "", x: 50, y: 85 }],
+    // Hide the Pain Harold
+    "27813981": [{ id: 1, text: "", x: 50, y: 90 }],
+    // This Is Fine
+    "55311130": [{ id: 1, text: "", x: 50, y: 90 }],
+    // Futurama Fry
+    "61520": [
+      { id: 1, text: "", x: 50, y: 10 },
+      { id: 2, text: "", x: 50, y: 90 },
+    ],
+    // Spider Man Triple
+    "206151308": [
+      { id: 1, text: "", x: 20, y: 50 },
+      { id: 2, text: "", x: 50, y: 40 },
+      { id: 3, text: "", x: 80, y: 50 },
+    ],
+    // UNO Draw 25 Cards
+    "217743513": [
+      { id: 1, text: "", x: 25, y: 35 },
+      { id: 2, text: "", x: 75, y: 50 },
+    ],
+    // Left Exit 12 Off Ramp
+    "124822590": [
+      { id: 1, text: "", x: 30, y: 25 },
+      { id: 2, text: "", x: 75, y: 55 },
+      { id: 3, text: "", x: 50, y: 85 },
+    ],
+    // Running Away Balloon
+    "131087935": [
+      { id: 1, text: "", x: 75, y: 15 },
+      { id: 2, text: "", x: 15, y: 65 },
+      { id: 3, text: "", x: 35, y: 55 },
+      { id: 4, text: "", x: 70, y: 55 },
+      { id: 5, text: "", x: 70, y: 80 },
+    ],
+    // Always Has Been
+    "252600902": [
+      { id: 1, text: "", x: 40, y: 20 },
+      { id: 2, text: "", x: 70, y: 20 },
+    ],
+    // Marked Safe From
+    "161865971": [
+      { id: 1, text: "", x: 50, y: 25 },
+      { id: 2, text: "", x: 50, y: 65 },
+    ],
+    // Epic Handshake
+    "135256802": [
+      { id: 1, text: "", x: 15, y: 55 },
+      { id: 2, text: "", x: 85, y: 55 },
+      { id: 3, text: "", x: 50, y: 20 },
+    ],
+    // Disaster Girl
+    "97984": [
+      { id: 1, text: "", x: 50, y: 15 },
+      { id: 2, text: "", x: 50, y: 85 },
+    ],
+    // Gru's Plan
+    "131940431": [
+      { id: 1, text: "", x: 35, y: 25 },
+      { id: 2, text: "", x: 85, y: 25 },
+      { id: 3, text: "", x: 35, y: 75 },
+      { id: 4, text: "", x: 85, y: 75 },
+    ],
+    // Sad Pablo Escobar
+    "80707627": [
+      { id: 1, text: "", x: 50, y: 25 },
+      { id: 2, text: "", x: 50, y: 55 },
+      { id: 3, text: "", x: 50, y: 85 },
+    ],
+    // Waiting Skeleton
+    "4087833": [
+      { id: 1, text: "", x: 50, y: 25 },
+      { id: 2, text: "", x: 50, y: 85 },
+    ],
+    // Mocking Spongebob
+    "102156234": [
+      { id: 1, text: "", x: 50, y: 15 },
+      { id: 2, text: "", x: 50, y: 85 },
+    ],
+    // Trade Offer
+    "309868304": [
+      { id: 1, text: "", x: 25, y: 35 },
+      { id: 2, text: "", x: 75, y: 35 },
+      { id: 3, text: "", x: 50, y: 15 },
+    ],
+    // Is This A Pigeon
+    "100777631": [
+      { id: 1, text: "", x: 20, y: 85 },
+      { id: 2, text: "", x: 50, y: 85 },
+      { id: 3, text: "", x: 75, y: 30 },
+    ],
+    // Monkey Puppet
+    "148909805": [
+      { id: 1, text: "", x: 75, y: 40 },
+      { id: 2, text: "", x: 25, y: 40 },
+    ],
+    // Buff Doge vs Cheems
+    "247375501": [
+      { id: 1, text: "", x: 25, y: 85 },
+      { id: 2, text: "", x: 75, y: 85 },
+      { id: 3, text: "", x: 25, y: 30 },
+      { id: 4, text: "", x: 75, y: 30 },
+    ],
+  };
 
-    // Default template (distributed vertically based on box count)
-    function getDefaultTextBoxes(boxCount: number = 2): TextBox[] {
-      const boxes: TextBox[] = [];
-      for (let i = 0; i < boxCount; i++) {
-        // Distribute boxes vertically: 10%, 90% for 2 boxes, or more spread out for more
-        let y = 10;
-        if (boxCount > 1) {
-          y = 10 + (i * 80) / (boxCount - 1);
-        }
-        boxes.push({ id: nextTextBoxId++, text: "", x: 50, y });
+  // Default template (distributed vertically based on box count)
+  function getDefaultTextBoxes(boxCount: number = 2): TextBox[] {
+    const boxes: TextBox[] = [];
+    for (let i = 0; i < boxCount; i++) {
+      // Distribute boxes vertically: 10%, 90% for 2 boxes, or more spread out for more
+      let y = 10;
+      if (boxCount > 1) {
+        y = 10 + (i * 80) / (boxCount - 1);
       }
-      return boxes;
+      boxes.push({ id: nextTextBoxId++, text: "", x: 50, y });
+    }
+    return boxes;
+  }
+
+  // Initialize with default or template-specific text boxes
+  function initializeTextBoxes(memeId?: string) {
+    textBoxes = [];
+    nextTextBoxId = 1;
+
+    if (memeId && memeTemplates[memeId]) {
+      // Use predefined high-quality template
+      textBoxes = memeTemplates[memeId].map((box) => ({
+        ...box,
+        id: nextTextBoxId++,
+      }));
+    } else {
+      // Smarter default using the meme metadata box_count
+      const meme = allMemes.find((m: { id: string; box_count?: number }) => m.id === memeId);
+      const boxCount = meme?.box_count || 2;
+      textBoxes = getDefaultTextBoxes(boxCount);
     }
 
-    // Initialize with default or template-specific text boxes
-    function initializeTextBoxes(memeId?: string) {
-      textBoxes = [];
-      nextTextBoxId = 1;
+    renderTextBoxControls();
+    drawMeme();
+  }
 
-      if (memeId && memeTemplates[memeId]) {
-        // Use predefined high-quality template
-        textBoxes = memeTemplates[memeId].map((box) => ({
-          ...box,
-          id: nextTextBoxId++,
-        }));
-      } else {
-        // Smarter default using the meme metadata box_count
-        const meme = allMemes.find((m: { id: string; box_count?: number }) => m.id === memeId);
-        const boxCount = meme?.box_count || 2;
-        textBoxes = getDefaultTextBoxes(boxCount);
-      }
+  // Render text box controls
+  function renderTextBoxControls() {
+    if (!textBoxesContainer) return;
 
-      renderTextBoxControls();
-      drawMeme();
-    }
-
-    // Render text box controls
-    function renderTextBoxControls() {
-      if (!textBoxesContainer) return;
-
-      textBoxesContainer.innerHTML = textBoxes
-        .map(
-          (box, index) => `
+    textBoxesContainer.innerHTML = textBoxes
+      .map(
+        (box, index) => `
         <div class="text-box-card bg-slate-900/30 border border-slate-700 rounded-lg p-4" data-box-id="${box.id}">
           <div class="flex items-center justify-between mb-2">
             <label class="text-sm font-semibold text-slate-300">Text ${index + 1}</label>
@@ -548,400 +546,397 @@ import Layout from "../layouts/Layout.astro";
           </div>
         </div>
       `
-        )
-        .join("");
+      )
+      .join("");
 
-      // Add event listeners
-      document.querySelectorAll(".text-box-input").forEach((input) => {
-        input.addEventListener("input", (e) => {
-          const boxId = parseInt((e.target as HTMLElement).dataset.boxId || "0");
-          const box = textBoxes.find((b) => b.id === boxId);
-          if (box) {
-            box.text = (e.target as HTMLInputElement).value;
-            drawMeme();
-          }
-        });
-
-        input.addEventListener("focus", (e) => {
-          const boxId = parseInt((e.target as HTMLElement).dataset.boxId || "0");
-          highlightTextBox(boxId);
-        });
+    // Add event listeners
+    document.querySelectorAll(".text-box-input").forEach((input) => {
+      input.addEventListener("input", (e) => {
+        const boxId = parseInt((e.target as HTMLElement).dataset.boxId || "0");
+        const box = textBoxes.find((b) => b.id === boxId);
+        if (box) {
+          box.text = (e.target as HTMLInputElement).value;
+          drawMeme();
+        }
       });
 
-      document.querySelectorAll(".remove-text-box").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const boxId = parseInt((e.target as HTMLElement).dataset.boxId || "0");
-          removeTextBox(boxId);
-        });
+      input.addEventListener("focus", (e) => {
+        const boxId = parseInt((e.target as HTMLElement).dataset.boxId || "0");
+        highlightTextBox(boxId);
       });
-    }
+    });
 
-    function highlightTextBox(boxId: number) {
-      document.querySelectorAll(".text-box-card").forEach((card) => {
-        card.classList.remove("active");
+    document.querySelectorAll(".remove-text-box").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const boxId = parseInt((e.target as HTMLElement).dataset.boxId || "0");
+        removeTextBox(boxId);
       });
-      const card = document.querySelector(`[data-box-id="${boxId}"]`);
-      if (card) {
-        card.classList.add("active");
-      }
+    });
+  }
+
+  function highlightTextBox(boxId: number) {
+    document.querySelectorAll(".text-box-card").forEach((card) => {
+      card.classList.remove("active");
+    });
+    const card = document.querySelector(`[data-box-id="${boxId}"]`);
+    if (card) {
+      card.classList.add("active");
     }
+  }
 
-    function addTextBox() {
-      const newBox: TextBox = {
-        id: nextTextBoxId++,
-        text: "",
-        x: 50,
-        y: 50,
-      };
-      textBoxes.push(newBox);
-      renderTextBoxControls();
-      drawMeme();
-    }
+  function addTextBox() {
+    const newBox: TextBox = {
+      id: nextTextBoxId++,
+      text: "",
+      x: 50,
+      y: 50,
+    };
+    textBoxes.push(newBox);
+    renderTextBoxControls();
+    drawMeme();
+  }
 
-    function removeTextBox(boxId: number) {
-      textBoxes = textBoxes.filter((b) => b.id !== boxId);
-      renderTextBoxControls();
-      drawMeme();
-    }
+  function removeTextBox(boxId: number) {
+    textBoxes = textBoxes.filter((b) => b.id !== boxId);
+    renderTextBoxControls();
+    drawMeme();
+  }
 
-    // Display initial memes
-    displayMemes(allMemes);
+  // Display initial memes
+  displayMemes(allMemes);
 
-    // Display memes in grid
-    function displayMemes(memes: { id: string; name: string; url: string; localUrl?: string }[]) {
-      if (!memesGrid) return;
+  // Display memes in grid
+  function displayMemes(memes: { id: string; name: string; url: string; localUrl?: string }[]) {
+    if (!memesGrid) return;
 
-      // Hide loading, show grid
-      memesLoading?.classList.add("hidden");
-      memesGrid?.classList.remove("hidden");
+    // Hide loading, show grid
+    memesLoading?.classList.add("hidden");
+    memesGrid?.classList.remove("hidden");
 
-      const popularMemes = memes.slice(0, 100);
+    const popularMemes = memes.slice(0, 100);
 
-      memesGrid.innerHTML = popularMemes
-        .map(
-          (meme) => `
+    memesGrid.innerHTML = popularMemes
+      .map(
+        (meme) => `
         <div class="meme-template aspect-square rounded-lg overflow-hidden bg-slate-700 border border-slate-600 hover:border-blue-500" data-url="${meme.localUrl || meme.url}" data-name="${meme.name}" data-id="${meme.id}">
           <img src="${meme.localUrl || meme.url}" alt="${meme.name}" loading="lazy" />
           <div class="meme-name">${meme.name}</div>
         </div>
       `
-        )
-        .join("");
+      )
+      .join("");
 
-      document.querySelectorAll(".meme-template").forEach((template) => {
-        template.addEventListener("click", () => {
-          const url = (template as HTMLElement).dataset.url;
-          const memeId = (template as HTMLElement).dataset.id;
-          if (url) {
-            loadMemeTemplate(url, memeId);
+    document.querySelectorAll(".meme-template").forEach((template) => {
+      template.addEventListener("click", () => {
+        const url = (template as HTMLElement).dataset.url;
+        const memeId = (template as HTMLElement).dataset.id;
+        if (url) {
+          loadMemeTemplate(url, memeId);
 
-            document
-              .querySelectorAll(".meme-template")
-              .forEach((t) => t.classList.remove("selected"));
-            template.classList.add("selected");
-          }
-        });
-      });
-    }
-
-    // Search memes
-    memeSearch?.addEventListener("input", (e) => {
-      const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
-
-      if (!searchTerm) {
-        displayMemes(allMemes);
-        return;
-      }
-
-      const filtered = allMemes.filter((meme) => meme.name.toLowerCase().includes(searchTerm));
-
-      displayMemes(filtered);
-    });
-
-    refreshBtn?.addEventListener("click", () => displayMemes(allMemes));
-
-    function loadMemeTemplate(url: string, memeId?: string) {
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.onload = () => {
-        currentImg = img;
-        initializeTextBoxes(memeId);
-      };
-      img.onerror = () => {
-        const img2 = new Image();
-        img2.onload = () => {
-          currentImg = img2;
-          initializeTextBoxes(memeId);
-        };
-        img2.src = url;
-      };
-      img.src = url;
-    }
-
-    function drawMeme() {
-      if (!ctx || !currentImg) return;
-
-      const maxWidth = 800;
-      const ratio = currentImg.width / currentImg.height;
-      canvas.width = Math.min(currentImg.width, maxWidth);
-      canvas.height = canvas.width / ratio;
-
-      // Draw Image
-      ctx.drawImage(currentImg, 0, 0, canvas.width, canvas.height);
-
-      // Draw all text boxes
-      textBoxes.forEach((box) => {
-        const fontSize = box.fontSize || parseInt(globalFontSizeInput.value);
-        const strokeWidth = box.strokeWidth || parseInt(globalStrokeWidthInput.value);
-        const color = box.color || globalTextColorInput.value;
-
-        ctx.fillStyle = color;
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = strokeWidth;
-        ctx.textAlign = "center";
-        ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
-        ctx.lineJoin = "round";
-        ctx.textBaseline = "middle";
-
-        const x = (box.x / 100) * canvas.width;
-        const y = (box.y / 100) * canvas.height;
-
-        if (box.text) {
-          for (let i = 0; i < 3; i++) {
-            ctx.strokeText(box.text.toUpperCase(), x, y);
-          }
-          ctx.fillText(box.text.toUpperCase(), x, y);
-        }
-
-        // Draw edit handles if in edit mode
-        if (editMode) {
-          ctx.save();
-          // Draw bounding box
-          const metrics = ctx.measureText(box.text.toUpperCase() || "TEXT " + box.id);
-          const height = fontSize * 1.2;
-          const width = Math.max(metrics.width + 20, 100); // Min width for empty
-          const top = y - height / 2;
-          const left = x - width / 2;
-
-          ctx.strokeStyle = draggedTextBox?.id === box.id ? "#3b82f6" : "#94a3b8";
-          ctx.lineWidth = 2;
-          ctx.setLineDash([5, 5]);
-          ctx.strokeRect(left, top, width, height);
-
-          // Draw resize handle (bottom-right)
-          ctx.fillStyle = draggedTextBox?.id === box.id ? "#3b82f6" : "#94a3b8";
-          ctx.fillRect(left + width - 6, top + height - 6, 12, 12);
-
-          ctx.restore();
-        }
-      });
-    }
-
-    // Edit mode - drag text boxes
-    toggleEditModeBtn?.addEventListener("click", () => {
-      editMode = !editMode;
-      if (editMode) {
-        canvas.classList.add("edit-mode");
-        toggleEditModeBtn.classList.add("bg-blue-600");
-        toggleEditModeBtn.classList.remove("bg-slate-700");
-        editHint?.classList.remove("hidden");
-        setTimeout(() => editHint?.classList.add("hidden"), 3000);
-      } else {
-        canvas.classList.remove("edit-mode");
-        toggleEditModeBtn.classList.remove("bg-blue-600");
-        toggleEditModeBtn.classList.add("bg-slate-700");
-      }
-    });
-
-    canvas.addEventListener("mousedown", (e) => {
-      if (!editMode || !ctx) return;
-
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-      const clickX = (e.clientX - rect.left) * scaleX;
-      const clickY = (e.clientY - rect.top) * scaleY;
-
-      // Check for resize handle click first
-      for (let i = textBoxes.length - 1; i >= 0; i--) {
-        const box = textBoxes[i];
-        const fontSize = box.fontSize || parseInt(globalFontSizeInput.value);
-        const x = (box.x / 100) * canvas.width;
-        const y = (box.y / 100) * canvas.height;
-
-        // Calculate box dimensions
-        ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
-        const metrics = ctx.measureText(box.text.toUpperCase() || "TEXT " + box.id);
-        const height = fontSize * 1.2;
-        const width = Math.max(metrics.width + 20, 100);
-        const top = y - height / 2;
-        const left = x - width / 2;
-
-        // Check resize handle hit (bottom-right)
-        const handleSize = 20; // Larger hit area
-        const handleX = left + width;
-        const handleY = top + height;
-
-        if (Math.abs(clickX - handleX) < handleSize && Math.abs(clickY - handleY) < handleSize) {
-          resizingTextBox = box;
-          highlightTextBox(box.id);
-          return;
-        }
-      }
-
-      // Find clicked text box (reverse order to prioritize top boxes)
-      for (let i = textBoxes.length - 1; i >= 0; i--) {
-        const box = textBoxes[i];
-        const x = (box.x / 100) * canvas.width;
-        const y = (box.y / 100) * canvas.height;
-        const fontSize = box.fontSize || parseInt(globalFontSizeInput.value);
-
-        // More accurate hit detection based on text size
-        ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
-        const metrics = ctx.measureText(box.text.toUpperCase() || "TEXT " + box.id);
-        const height = fontSize * 1.2;
-        const width = Math.max(metrics.width + 20, 100);
-
-        // Simple bounding box check
-        const halfWidth = width / 2;
-        const halfHeight = height / 2;
-
-        if (
-          clickX >= x - halfWidth &&
-          clickX <= x + halfWidth &&
-          clickY >= y - halfHeight &&
-          clickY <= y + halfHeight
-        ) {
-          draggedTextBox = box;
-          dragOffset = { x: clickX - x, y: clickY - y }; // Store offset from center
-          highlightTextBox(box.id);
-          break;
-        }
-      }
-    });
-
-    canvas.addEventListener("mousemove", (e) => {
-      if (!editMode || (!draggedTextBox && !resizingTextBox) || !ctx) return;
-
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-      const mouseX = (e.clientX - rect.left) * scaleX;
-      const mouseY = (e.clientY - rect.top) * scaleY;
-
-      if (resizingTextBox) {
-        // Resize logic: distance from center determines font size
-        const _fontSize = resizingTextBox.fontSize || parseInt(globalFontSizeInput.value);
-        const _x = (resizingTextBox.x / 100) * canvas.width;
-        const y = (resizingTextBox.y / 100) * canvas.height;
-
-        // Calculate new font size based on mouse Y distance from center
-        const dy = mouseY - y;
-        // Assume handle is at bottom (dy positive), roughly half height
-        // New height ~= dy * 2
-        // New font size ~= new height / 1.2
-        let newFontSize = Math.abs(dy * 2) / 1.2;
-        newFontSize = Math.max(10, Math.min(200, newFontSize));
-
-        resizingTextBox.fontSize = newFontSize;
-
-        // If this is the currently selected global override, update slider?
-        // Maybe better to just set per-box property
-
-        renderTextBoxControls();
-        drawMeme();
-        return;
-      }
-
-      if (draggedTextBox) {
-        // Move logic
-        // We stored offset from center, so new center = mouse - offset
-        // But we want to store percentage
-
-        const newX = mouseX - dragOffset.x; // Exact pixel position of center
-        const newY = mouseY - dragOffset.y; // Exact pixel position of center
-
-        draggedTextBox.x = (newX / canvas.width) * 100;
-        draggedTextBox.y = (newY / canvas.height) * 100;
-
-        // Clamp to canvas? Maybe let them drag off slightly
-        draggedTextBox.x = Math.max(-10, Math.min(110, draggedTextBox.x));
-        draggedTextBox.y = Math.max(-10, Math.min(110, draggedTextBox.y));
-
-        renderTextBoxControls();
-        drawMeme();
-      }
-    });
-
-    canvas.addEventListener("mouseup", () => {
-      draggedTextBox = null;
-      resizingTextBox = null;
-    });
-
-    canvas.addEventListener("mouseleave", () => {
-      draggedTextBox = null;
-      resizingTextBox = null;
-    });
-
-    // Image upload handler
-    imageUpload.addEventListener("change", (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const img = new Image();
-        img.onload = () => {
-          currentImg = img;
-          initializeTextBoxes();
           document
             .querySelectorAll(".meme-template")
             .forEach((t) => t.classList.remove("selected"));
-        };
-        img.src = event.target?.result as string;
-      };
-      reader.readAsDataURL(file);
-    });
-
-    // Global settings
-    [globalFontSizeInput, globalStrokeWidthInput, globalTextColorInput].forEach((el) => {
-      el?.addEventListener("input", () => {
-        drawMeme();
-        if (globalFontSizeValue) {
-          globalFontSizeValue.textContent = `${globalFontSizeInput.value}px`;
-        }
-        if (globalStrokeWidthValue) {
-          globalStrokeWidthValue.textContent = `${globalStrokeWidthInput.value}px`;
+          template.classList.add("selected");
         }
       });
     });
+  }
 
-    addTextBoxBtn?.addEventListener("click", addTextBox);
+  // Search memes
+  memeSearch?.addEventListener("input", (e) => {
+    const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
 
-    resetPositionsBtn?.addEventListener("click", () => {
-      if (confirm("Reset all text positions to default?")) {
-        const currentMemeId = document
-          .querySelector(".meme-template.selected")
-          ?.getAttribute("data-id");
-        initializeTextBoxes(currentMemeId || undefined);
+    if (!searchTerm) {
+      displayMemes(allMemes);
+      return;
+    }
+
+    const filtered = allMemes.filter((meme) => meme.name.toLowerCase().includes(searchTerm));
+
+    displayMemes(filtered);
+  });
+
+  refreshBtn?.addEventListener("click", () => displayMemes(allMemes));
+
+  function loadMemeTemplate(url: string, memeId?: string) {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      currentImg = img;
+      initializeTextBoxes(memeId);
+    };
+    img.onerror = () => {
+      const img2 = new Image();
+      img2.onload = () => {
+        currentImg = img2;
+        initializeTextBoxes(memeId);
+      };
+      img2.src = url;
+    };
+    img.src = url;
+  }
+
+  function drawMeme() {
+    if (!ctx || !currentImg) return;
+
+    const maxWidth = 800;
+    const ratio = currentImg.width / currentImg.height;
+    canvas.width = Math.min(currentImg.width, maxWidth);
+    canvas.height = canvas.width / ratio;
+
+    // Draw Image
+    ctx.drawImage(currentImg, 0, 0, canvas.width, canvas.height);
+
+    // Draw all text boxes
+    textBoxes.forEach((box) => {
+      const fontSize = box.fontSize || parseInt(globalFontSizeInput.value);
+      const strokeWidth = box.strokeWidth || parseInt(globalStrokeWidthInput.value);
+      const color = box.color || globalTextColorInput.value;
+
+      ctx.fillStyle = color;
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = strokeWidth;
+      ctx.textAlign = "center";
+      ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
+      ctx.lineJoin = "round";
+      ctx.textBaseline = "middle";
+
+      const x = (box.x / 100) * canvas.width;
+      const y = (box.y / 100) * canvas.height;
+
+      if (box.text) {
+        for (let i = 0; i < 3; i++) {
+          ctx.strokeText(box.text.toUpperCase(), x, y);
+        }
+        ctx.fillText(box.text.toUpperCase(), x, y);
+      }
+
+      // Draw edit handles if in edit mode
+      if (editMode) {
+        ctx.save();
+        // Draw bounding box
+        const metrics = ctx.measureText(box.text.toUpperCase() || "TEXT " + box.id);
+        const height = fontSize * 1.2;
+        const width = Math.max(metrics.width + 20, 100); // Min width for empty
+        const top = y - height / 2;
+        const left = x - width / 2;
+
+        ctx.strokeStyle = draggedTextBox?.id === box.id ? "#3b82f6" : "#94a3b8";
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.strokeRect(left, top, width, height);
+
+        // Draw resize handle (bottom-right)
+        ctx.fillStyle = draggedTextBox?.id === box.id ? "#3b82f6" : "#94a3b8";
+        ctx.fillRect(left + width - 6, top + height - 6, 12, 12);
+
+        ctx.restore();
       }
     });
+  }
 
-    // Download handler
-    downloadBtn?.addEventListener("click", () => {
-      const link = document.createElement("a");
-      const timestamp = new Date().getTime();
-      link.download = `meme-${timestamp}.png`;
-      link.href = canvas.toDataURL();
-      link.click();
-    });
+  // Edit mode - drag text boxes
+  toggleEditModeBtn?.addEventListener("click", () => {
+    editMode = !editMode;
+    if (editMode) {
+      canvas.classList.add("edit-mode");
+      toggleEditModeBtn.classList.add("bg-blue-600");
+      toggleEditModeBtn.classList.remove("bg-slate-700");
+      editHint?.classList.remove("hidden");
+      setTimeout(() => editHint?.classList.add("hidden"), 3000);
+    } else {
+      canvas.classList.remove("edit-mode");
+      toggleEditModeBtn.classList.remove("bg-blue-600");
+      toggleEditModeBtn.classList.add("bg-slate-700");
+    }
+  });
 
-    // Initialize
-    window.addEventListener("load", () => {
-      // Load first meme by default
-      if (allMemes.length > 0) {
-        loadMemeTemplate(allMemes[0].localUrl, allMemes[0].id);
+  canvas.addEventListener("mousedown", (e) => {
+    if (!editMode || !ctx) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const clickX = (e.clientX - rect.left) * scaleX;
+    const clickY = (e.clientY - rect.top) * scaleY;
+
+    // Check for resize handle click first
+    for (let i = textBoxes.length - 1; i >= 0; i--) {
+      const box = textBoxes[i];
+      const fontSize = box.fontSize || parseInt(globalFontSizeInput.value);
+      const x = (box.x / 100) * canvas.width;
+      const y = (box.y / 100) * canvas.height;
+
+      // Calculate box dimensions
+      ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
+      const metrics = ctx.measureText(box.text.toUpperCase() || "TEXT " + box.id);
+      const height = fontSize * 1.2;
+      const width = Math.max(metrics.width + 20, 100);
+      const top = y - height / 2;
+      const left = x - width / 2;
+
+      // Check resize handle hit (bottom-right)
+      const handleSize = 20; // Larger hit area
+      const handleX = left + width;
+      const handleY = top + height;
+
+      if (Math.abs(clickX - handleX) < handleSize && Math.abs(clickY - handleY) < handleSize) {
+        resizingTextBox = box;
+        highlightTextBox(box.id);
+        return;
+      }
+    }
+
+    // Find clicked text box (reverse order to prioritize top boxes)
+    for (let i = textBoxes.length - 1; i >= 0; i--) {
+      const box = textBoxes[i];
+      const x = (box.x / 100) * canvas.width;
+      const y = (box.y / 100) * canvas.height;
+      const fontSize = box.fontSize || parseInt(globalFontSizeInput.value);
+
+      // More accurate hit detection based on text size
+      ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
+      const metrics = ctx.measureText(box.text.toUpperCase() || "TEXT " + box.id);
+      const height = fontSize * 1.2;
+      const width = Math.max(metrics.width + 20, 100);
+
+      // Simple bounding box check
+      const halfWidth = width / 2;
+      const halfHeight = height / 2;
+
+      if (
+        clickX >= x - halfWidth &&
+        clickX <= x + halfWidth &&
+        clickY >= y - halfHeight &&
+        clickY <= y + halfHeight
+      ) {
+        draggedTextBox = box;
+        dragOffset = { x: clickX - x, y: clickY - y }; // Store offset from center
+        highlightTextBox(box.id);
+        break;
+      }
+    }
+  });
+
+  canvas.addEventListener("mousemove", (e) => {
+    if (!editMode || (!draggedTextBox && !resizingTextBox) || !ctx) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mouseX = (e.clientX - rect.left) * scaleX;
+    const mouseY = (e.clientY - rect.top) * scaleY;
+
+    if (resizingTextBox) {
+      // Resize logic: distance from center determines font size
+      const _fontSize = resizingTextBox.fontSize || parseInt(globalFontSizeInput.value);
+      const _x = (resizingTextBox.x / 100) * canvas.width;
+      const y = (resizingTextBox.y / 100) * canvas.height;
+
+      // Calculate new font size based on mouse Y distance from center
+      const dy = mouseY - y;
+      // Assume handle is at bottom (dy positive), roughly half height
+      // New height ~= dy * 2
+      // New font size ~= new height / 1.2
+      let newFontSize = Math.abs(dy * 2) / 1.2;
+      newFontSize = Math.max(10, Math.min(200, newFontSize));
+
+      resizingTextBox.fontSize = newFontSize;
+
+      // If this is the currently selected global override, update slider?
+      // Maybe better to just set per-box property
+
+      renderTextBoxControls();
+      drawMeme();
+      return;
+    }
+
+    if (draggedTextBox) {
+      // Move logic
+      // We stored offset from center, so new center = mouse - offset
+      // But we want to store percentage
+
+      const newX = mouseX - dragOffset.x; // Exact pixel position of center
+      const newY = mouseY - dragOffset.y; // Exact pixel position of center
+
+      draggedTextBox.x = (newX / canvas.width) * 100;
+      draggedTextBox.y = (newY / canvas.height) * 100;
+
+      // Clamp to canvas? Maybe let them drag off slightly
+      draggedTextBox.x = Math.max(-10, Math.min(110, draggedTextBox.x));
+      draggedTextBox.y = Math.max(-10, Math.min(110, draggedTextBox.y));
+
+      renderTextBoxControls();
+      drawMeme();
+    }
+  });
+
+  canvas.addEventListener("mouseup", () => {
+    draggedTextBox = null;
+    resizingTextBox = null;
+  });
+
+  canvas.addEventListener("mouseleave", () => {
+    draggedTextBox = null;
+    resizingTextBox = null;
+  });
+
+  // Image upload handler
+  imageUpload.addEventListener("change", (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        currentImg = img;
+        initializeTextBoxes();
+        document.querySelectorAll(".meme-template").forEach((t) => t.classList.remove("selected"));
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Global settings
+  [globalFontSizeInput, globalStrokeWidthInput, globalTextColorInput].forEach((el) => {
+    el?.addEventListener("input", () => {
+      drawMeme();
+      if (globalFontSizeValue) {
+        globalFontSizeValue.textContent = `${globalFontSizeInput.value}px`;
+      }
+      if (globalStrokeWidthValue) {
+        globalStrokeWidthValue.textContent = `${globalStrokeWidthInput.value}px`;
       }
     });
-  </script>
-</Layout>
+  });
+
+  addTextBoxBtn?.addEventListener("click", addTextBox);
+
+  resetPositionsBtn?.addEventListener("click", () => {
+    if (confirm("Reset all text positions to default?")) {
+      const currentMemeId = document
+        .querySelector(".meme-template.selected")
+        ?.getAttribute("data-id");
+      initializeTextBoxes(currentMemeId || undefined);
+    }
+  });
+
+  // Download handler
+  downloadBtn?.addEventListener("click", () => {
+    const link = document.createElement("a");
+    const timestamp = new Date().getTime();
+    link.download = `meme-${timestamp}.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+
+  // Initialize
+  window.addEventListener("load", () => {
+    // Load first meme by default
+    if (allMemes.length > 0) {
+      loadMemeTemplate(allMemes[0].localUrl, allMemes[0].id);
+    }
+  });
+</script>
