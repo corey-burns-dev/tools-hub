@@ -95,14 +95,14 @@ import Layout from "../layouts/Layout.astro";
 </Layout>
 
 <script>
-  const countRange = document.querySelector("#count-range");
-  const countValue = document.querySelector("#count-value");
-  const uppercaseToggle = document.querySelector("#uppercase-toggle");
-  const compactToggle = document.querySelector("#compact-toggle");
-  const generateBtn = document.querySelector("#generate-btn");
-  const copyBtn = document.querySelector("#copy-btn");
-  const clearBtn = document.querySelector("#clear-btn");
-  const outputEl = document.querySelector("#uuid-output");
+  const countRange = document.querySelector("#count-range") as HTMLInputElement;
+  const countValue = document.querySelector("#count-value") as HTMLSpanElement;
+  const uppercaseToggle = document.querySelector("#uppercase-toggle") as HTMLInputElement;
+  const compactToggle = document.querySelector("#compact-toggle") as HTMLInputElement;
+  const generateBtn = document.querySelector("#generate-btn") as HTMLButtonElement;
+  const copyBtn = document.querySelector("#copy-btn") as HTMLButtonElement;
+  const clearBtn = document.querySelector("#clear-btn") as HTMLButtonElement;
+  const outputEl = document.querySelector("#uuid-output") as HTMLPreElement;
 
   const fallbackUuid = () =>
     "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (char) => {
@@ -120,7 +120,7 @@ import Layout from "../layouts/Layout.astro";
     countValue.textContent = countRange.value;
   };
 
-  const formatUuid = (uuid) => {
+  const formatUuid = (uuid: string) => {
     let value = uuid;
     if (compactToggle.checked) {
       value = value.replace(/-/g, "");

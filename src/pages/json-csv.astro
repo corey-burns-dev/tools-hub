@@ -1,0 +1,186 @@
+---
+import Button from "../components/Button.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="JSON ↔ CSV Converter">
+  <div class="container mx-auto max-w-6xl px-4 py-12">
+    <div class="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex items-center gap-4">
+        <div
+          class="flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-500 to-sky-500 text-4xl shadow-xl shadow-indigo-500/20"
+        >
+          🔁
+        </div>
+        <div>
+          <h1 class="mb-2 text-4xl font-bold text-white">JSON ↔ CSV Converter</h1>
+          <p class="text-slate-400">Convert arrays of objects between JSON and CSV.</p>
+        </div>
+      </div>
+      <div class="glass flex items-center gap-3 rounded-2xl px-5 py-4 text-sm text-slate-300">
+        <span class="rounded-full bg-indigo-500/20 px-3 py-1 text-xs font-semibold text-indigo-200"
+          >Bidirectional</span
+        >
+        <span class="text-slate-500">•</span>
+        <span>Auto-detects headers</span>
+      </div>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-2">
+      <div class="card-glass">
+        <h2 class="mb-4 text-lg font-bold text-white">
+          <span class="text-indigo-300">01.</span> JSON Input
+        </h2>
+        <textarea
+          id="json-input"
+          rows="14"
+          placeholder='[
+  {"name": "Nova", "role": "Engineer"},
+  {"name": "Sol", "role": "Designer"}
+]'
+          class="w-full resize-none rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 font-mono text-sm text-white placeholder-slate-600 transition-all outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+        ></textarea>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <Button id="json-to-csv" variant="primary" class="px-4 py-2 text-sm">JSON → CSV</Button>
+          <Button id="swap-btn" variant="secondary" class="px-4 py-2 text-sm">Swap</Button>
+        </div>
+      </div>
+
+      <div class="card-glass">
+        <h2 class="mb-4 text-lg font-bold text-white">
+          <span class="text-sky-300">02.</span> CSV Output
+        </h2>
+        <textarea
+          id="csv-output"
+          rows="14"
+          placeholder="name,role"
+          class="w-full resize-none rounded-xl border border-white/10 bg-black/50 px-4 py-3 font-mono text-sm text-white outline-none"
+        ></textarea>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <Button id="csv-to-json" variant="secondary" class="px-4 py-2 text-sm">CSV → JSON</Button>
+          <Button id="clear-btn" variant="ghost" class="px-4 py-2 text-sm">Clear</Button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-400">
+      Notes: JSON input must be an array of objects. CSV parsing supports quoted fields.
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const jsonInput = document.querySelector("#json-input") as HTMLTextAreaElement;
+  const csvOutput = document.querySelector("#csv-output") as HTMLTextAreaElement;
+  const jsonToCsvBtn = document.querySelector("#json-to-csv") as HTMLButtonElement;
+  const csvToJsonBtn = document.querySelector("#csv-to-json") as HTMLButtonElement;
+  const swapBtn = document.querySelector("#swap-btn") as HTMLButtonElement;
+  const clearBtn = document.querySelector("#clear-btn") as HTMLButtonElement;
+
+  const escapeCsv = (value: unknown) => {
+    if (value === null || value === undefined) return "";
+    const stringValue = String(value);
+    if (/[",\n]/.test(stringValue)) {
+      return `"${stringValue.replace(/"/g, '""')}"`;
+    }
+    return stringValue;
+  };
+
+  const jsonToCsv = () => {
+    try {
+      const data = JSON.parse(jsonInput.value || "[]") as Record<string, unknown>[];
+      if (!Array.isArray(data)) {
+        csvOutput.value = "Error: JSON must be an array of objects.";
+        return;
+      }
+
+      const headers = Array.from(
+        data.reduce((set, item) => {
+          if (item && typeof item === "object") {
+            Object.keys(item as Record<string, unknown>).forEach((key) => set.add(key));
+          }
+          return set;
+        }, new Set())
+      );
+
+      if (!headers.length) {
+        csvOutput.value = "";
+        return;
+      }
+
+      const rows = [headers.join(",")];
+      data.forEach((item) => {
+        const entry = item as Record<string, unknown>;
+        const row = headers.map((key) => escapeCsv(entry[key] ?? ""));
+        rows.push(row.join(","));
+      });
+
+      csvOutput.value = rows.join("\n");
+    } catch {
+      csvOutput.value = "Error: Invalid JSON.";
+    }
+  };
+
+  const parseCsvRow = (row: string): string[] => {
+    const result = [];
+    let current = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < row.length; i += 1) {
+      const char = row[i];
+      if (char === '"') {
+        if (inQuotes && row[i + 1] === '"') {
+          current += '"';
+          i += 1;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (char === "," && !inQuotes) {
+        result.push(current);
+        current = "";
+      } else {
+        current += char;
+      }
+    }
+
+    result.push(current);
+    return result;
+  };
+
+  const csvToJson = () => {
+    const raw = csvOutput.value.trim();
+    if (!raw) {
+      jsonInput.value = "";
+      return;
+    }
+
+    const rows = raw.split(/\r?\n/).filter(Boolean).map(parseCsvRow);
+    if (!rows.length) {
+      jsonInput.value = "";
+      return;
+    }
+
+    const headers = rows[0];
+    const data = rows.slice(1).map((row: string[]) => {
+      const entry: Record<string, string> = {};
+      headers.forEach((key: string, index: number) => {
+        entry[key] = row[index] ?? "";
+      });
+      return entry;
+    });
+
+    jsonInput.value = JSON.stringify(data, null, 2);
+  };
+
+  jsonToCsvBtn.addEventListener("click", jsonToCsv);
+  csvToJsonBtn.addEventListener("click", csvToJson);
+  swapBtn.addEventListener("click", () => {
+    const temp = jsonInput.value;
+    jsonInput.value = csvOutput.value;
+    csvOutput.value = temp;
+  });
+  clearBtn.addEventListener("click", () => {
+    jsonInput.value = "";
+    csvOutput.value = "";
+  });
+</script>

@@ -1,0 +1,166 @@
+---
+import Button from "../components/Button.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="URL Encoder/Decoder">
+  <div class="container mx-auto max-w-5xl px-4 py-12">
+    <div class="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex items-center gap-4">
+        <div
+          class="flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-amber-500 to-orange-500 text-4xl shadow-xl shadow-amber-500/20"
+        >
+          🔗
+        </div>
+        <div>
+          <h1 class="mb-2 text-4xl font-bold text-white">URL Encoder/Decoder</h1>
+          <p class="text-slate-400">Encode, decode, and inspect query strings.</p>
+        </div>
+      </div>
+      <div class="glass flex items-center gap-3 rounded-2xl px-5 py-4 text-sm text-slate-300">
+        <span class="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-semibold text-amber-200"
+          >Utility</span
+        >
+        <span class="text-slate-500">•</span>
+        <span>Great for debugging URLs</span>
+      </div>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-2">
+      <div class="card-glass">
+        <h2 class="mb-4 text-lg font-bold text-white">
+          <span class="text-amber-400">01.</span> Input
+        </h2>
+        <textarea
+          id="url-input"
+          rows="10"
+          placeholder="Paste a URL or query string..."
+          class="w-full resize-none rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-600 transition-all outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+          >https://example.com/?q=hello world&color=blue%2Fgreen</textarea
+        >
+
+        <div class="mt-4 flex flex-wrap gap-2">
+          <Button id="encode-btn" variant="primary" class="px-4 py-2 text-sm">Encode</Button>
+          <Button id="decode-btn" variant="secondary" class="px-4 py-2 text-sm">Decode</Button>
+          <Button id="clear-btn" variant="ghost" class="px-4 py-2 text-sm">Clear</Button>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="card-glass">
+          <h2 class="mb-4 text-lg font-bold text-white">
+            <span class="text-orange-300">02.</span> Output
+          </h2>
+          <textarea
+            id="url-output"
+            rows="7"
+            readonly
+            class="w-full resize-none rounded-xl border border-white/10 bg-black/50 px-4 py-3 text-white outline-none"
+          ></textarea>
+          <div class="mt-4 flex justify-end">
+            <Button id="copy-btn" variant="ghost" class="px-4 py-2 text-sm">Copy</Button>
+          </div>
+        </div>
+
+        <div class="card-glass">
+          <h2 class="mb-4 text-lg font-bold text-white">
+            <span class="text-orange-300">03.</span> Query Params
+          </h2>
+          <div id="params" class="space-y-2 text-sm text-slate-300">
+            <div class="rounded-lg border border-white/10 bg-white/5 p-3 text-slate-500">
+              No query parameters found yet.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const inputEl = document.querySelector("#url-input") as HTMLTextAreaElement;
+  const outputEl = document.querySelector("#url-output") as HTMLTextAreaElement;
+  const paramsEl = document.querySelector("#params") as HTMLDivElement;
+  const encodeBtn = document.querySelector("#encode-btn") as HTMLButtonElement;
+  const decodeBtn = document.querySelector("#decode-btn") as HTMLButtonElement;
+  const clearBtn = document.querySelector("#clear-btn") as HTMLButtonElement;
+  const copyBtn = document.querySelector("#copy-btn") as HTMLButtonElement;
+
+  const setParams = (params: Array<[string, string]>) => {
+    if (!params.length) {
+      paramsEl.innerHTML =
+        '<div class="rounded-lg border border-white/10 bg-white/5 p-3 text-slate-500">No query parameters found yet.</div>';
+      return;
+    }
+
+    paramsEl.innerHTML = params
+      .map(
+        ([key, value]) =>
+          `<div class="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+            <span class="font-mono text-slate-200">${key}</span>
+            <span class="text-slate-400">${value}</span>
+          </div>`
+      )
+      .join("");
+  };
+
+  const extractQuery = (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed) return "";
+    try {
+      const url = new URL(trimmed, "https://example.com");
+      return url.search.startsWith("?") ? url.search.slice(1) : url.search;
+    } catch {
+      return trimmed.startsWith("?") ? trimmed.slice(1) : trimmed;
+    }
+  };
+
+  const updateParams = (text: string) => {
+    const query = extractQuery(text);
+    const search = new URLSearchParams(query);
+    setParams([...search.entries()]);
+  };
+
+  const encodeValue = () => {
+    const value = inputEl.value;
+    outputEl.value = encodeURIComponent(value);
+    updateParams(outputEl.value);
+  };
+
+  const decodeValue = () => {
+    const value = inputEl.value;
+    try {
+      outputEl.value = decodeURIComponent(value);
+      updateParams(outputEl.value);
+    } catch {
+      outputEl.value = "Unable to decode. Check for malformed escape sequences.";
+      setParams([]);
+    }
+  };
+
+  encodeBtn.addEventListener("click", encodeValue);
+  decodeBtn.addEventListener("click", decodeValue);
+  clearBtn.addEventListener("click", () => {
+    inputEl.value = "";
+    outputEl.value = "";
+    setParams([]);
+  });
+
+  copyBtn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(outputEl.value);
+      copyBtn.textContent = "Copied!";
+      setTimeout(() => {
+        copyBtn.textContent = "Copy";
+      }, 1200);
+    } catch {
+      copyBtn.textContent = "Copy failed";
+      setTimeout(() => {
+        copyBtn.textContent = "Copy";
+      }, 1200);
+    }
+  });
+
+  outputEl.value = "";
+  encodeValue();
+</script>
