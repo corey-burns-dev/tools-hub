@@ -651,7 +651,10 @@ import Layout from "../layouts/Layout.astro";
       return;
     }
 
-    const filtered = allMemes.filter((meme) => meme.name.toLowerCase().includes(searchTerm));
+    const filtered = allMemes.filter(
+      (meme: { id: string; name: string; url: string; localUrl?: string }) =>
+        meme.name.toLowerCase().includes(searchTerm)
+    );
 
     displayMemes(filtered);
   });

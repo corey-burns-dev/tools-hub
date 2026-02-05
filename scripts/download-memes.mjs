@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 
 const MEMES_DIR = path.join(process.cwd(), "public", "memes");
 const DATA_FILE = path.join(process.cwd(), "src", "data", "memes.json");

@@ -1,4 +1,4 @@
-# Tools & Stuff 🛠️
+# Tools Hub 🛠️
 
 A premium collection of developer utilities and tools built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com).
 
@@ -27,8 +27,8 @@ A premium collection of developer utilities and tools built with [Astro](https:/
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/corey-burns-dev/tools-n-stuff.git
-   cd tools-n-stuff
+   git clone https://github.com/corey-burns-dev/tools-hub.git
+   cd tools-hub
    ```
 
 2. Install dependencies:
