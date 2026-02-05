@@ -1,0 +1,164 @@
+---
+import Button from "../components/Button.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="UUID Generator">
+  <div class="container mx-auto max-w-5xl px-4 py-12">
+    <div class="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex items-center gap-4">
+        <div
+          class="flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-500 to-cyan-500 text-4xl shadow-xl shadow-emerald-500/20"
+        >
+          🆔
+        </div>
+        <div>
+          <h1 class="mb-2 text-4xl font-bold text-white">UUID Generator</h1>
+          <p class="text-slate-400">Generate RFC 4122 v4 UUIDs instantly.</p>
+        </div>
+      </div>
+      <div class="glass flex items-center gap-3 rounded-2xl px-5 py-4 text-sm text-slate-300">
+        <span
+          class="rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-200"
+          >Secure</span
+        >
+        <span class="text-slate-500">•</span>
+        <span>Built on Web Crypto</span>
+      </div>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-3">
+      <div class="space-y-6 lg:col-span-1">
+        <div class="card-glass">
+          <h2 class="mb-4 text-lg font-bold text-white">
+            <span class="text-emerald-400">01.</span> Settings
+          </h2>
+
+          <div class="space-y-4">
+            <div>
+              <label for="count-range" class="mb-2 block text-sm font-medium text-slate-400"
+                >Count: <span id="count-value" class="text-slate-200">5</span></label
+              >
+              <input id="count-range" type="range" min="1" max="20" value="5" class="w-full" />
+            </div>
+
+            <label
+              class="flex cursor-pointer items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-slate-300 transition-all hover:bg-white/10"
+            >
+              <input
+                id="uppercase-toggle"
+                type="checkbox"
+                class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-emerald-500 focus:ring-emerald-500"
+              />
+              Uppercase
+            </label>
+
+            <label
+              class="flex cursor-pointer items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-slate-300 transition-all hover:bg-white/10"
+            >
+              <input
+                id="compact-toggle"
+                type="checkbox"
+                class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-emerald-500 focus:ring-emerald-500"
+              />
+              Remove hyphens
+            </label>
+
+            <Button id="generate-btn" class="mt-2 w-full" variant="primary">
+              <span class="text-base">⚡</span> Generate
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2">
+        <div class="card-glass flex min-h-[480px] flex-col">
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-4">
+            <h2 class="text-lg font-bold text-white">
+              <span class="text-cyan-400">02.</span> Output
+            </h2>
+            <div class="flex flex-wrap gap-2">
+              <Button id="copy-btn" variant="secondary" class="px-4 py-2 text-sm">Copy</Button>
+              <Button id="clear-btn" variant="ghost" class="px-4 py-2 text-sm">Clear</Button>
+            </div>
+          </div>
+
+          <div class="flex-1 overflow-auto rounded-xl border border-white/10 bg-black/50 p-4">
+            <pre
+              id="uuid-output"
+              class="min-h-[320px] text-sm whitespace-pre-wrap text-slate-100">Ready to generate UUIDs.</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const countRange = document.querySelector("#count-range");
+  const countValue = document.querySelector("#count-value");
+  const uppercaseToggle = document.querySelector("#uppercase-toggle");
+  const compactToggle = document.querySelector("#compact-toggle");
+  const generateBtn = document.querySelector("#generate-btn");
+  const copyBtn = document.querySelector("#copy-btn");
+  const clearBtn = document.querySelector("#clear-btn");
+  const outputEl = document.querySelector("#uuid-output");
+
+  const fallbackUuid = () =>
+    "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (char) => {
+      const rand = (Math.random() * 16) | 0;
+      const value = char === "x" ? rand : (rand & 0x3) | 0x8;
+      return value.toString(16);
+    });
+
+  const createUuid = () => {
+    if (crypto?.randomUUID) return crypto.randomUUID();
+    return fallbackUuid();
+  };
+
+  const updateCount = () => {
+    countValue.textContent = countRange.value;
+  };
+
+  const formatUuid = (uuid) => {
+    let value = uuid;
+    if (compactToggle.checked) {
+      value = value.replace(/-/g, "");
+    }
+    if (uppercaseToggle.checked) {
+      value = value.toUpperCase();
+    }
+    return value;
+  };
+
+  const generateUuids = () => {
+    const total = Number.parseInt(countRange.value, 10);
+    const list = Array.from({ length: total }, () => formatUuid(createUuid()));
+    outputEl.textContent = list.join("\n");
+  };
+
+  generateBtn.addEventListener("click", generateUuids);
+  countRange.addEventListener("input", updateCount);
+
+  copyBtn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(outputEl.textContent);
+      copyBtn.textContent = "Copied!";
+      setTimeout(() => {
+        copyBtn.textContent = "Copy";
+      }, 1200);
+    } catch {
+      copyBtn.textContent = "Copy failed";
+      setTimeout(() => {
+        copyBtn.textContent = "Copy";
+      }, 1200);
+    }
+  });
+
+  clearBtn.addEventListener("click", () => {
+    outputEl.textContent = "Ready to generate UUIDs.";
+  });
+
+  updateCount();
+  generateUuids();
+</script>
