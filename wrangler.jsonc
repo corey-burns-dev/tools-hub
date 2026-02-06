@@ -5,4 +5,10 @@
   "assets": {
     "directory": "./dist",
   },
+  "routes": [
+    {
+      "pattern": "tools.coreyburns.ca/*",
+      "zone_name": "coreyburns.ca",
+    },
+  ],
 }
