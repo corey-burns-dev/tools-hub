@@ -20,7 +20,7 @@ import Layout from "../layouts/Layout.astro";
     >
       <!-- Preview Area -->
       <div
-        class="sticky top-8 overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-800/50 p-0 shadow-2xl backdrop-blur-sm"
+        class="sticky top-8 order-2 overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-800/50 p-0 shadow-2xl backdrop-blur-sm lg:ml-4 xl:ml-6"
       >
         <div class="flex items-center justify-between border-b border-white/10 p-4">
           <h2 class="text-lg font-bold text-white">Preview</h2>
@@ -57,11 +57,9 @@ import Layout from "../layouts/Layout.astro";
       </div>
 
       <!-- Controls Area -->
-      <div class="space-y-6">
+      <div class="order-1 space-y-6">
         <!-- Image Source -->
-        <div
-          class="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6 shadow-2xl backdrop-blur-sm"
-        >
+        <div class="tool-panel">
           <h3 class="mb-4 flex items-center gap-2 text-lg font-bold text-white">
             <span>🖼️</span> Image Source
           </h3>
@@ -111,7 +109,7 @@ import Layout from "../layouts/Layout.astro";
               <!-- Memes Grid -->
               <div
                 id="memes-grid"
-                class="custom-scrollbar grid hidden max-h-[500px] grid-cols-3 gap-2 overflow-y-auto pr-2"
+                class="custom-scrollbar grid hidden max-h-[260px] auto-cols-[132px] grid-flow-col grid-rows-2 gap-2 overflow-x-auto overflow-y-hidden pr-2 pb-2 md:auto-cols-[148px]"
               >
                 <!-- Memes will be loaded here -->
               </div>
@@ -120,9 +118,7 @@ import Layout from "../layouts/Layout.astro";
         </div>
 
         <!-- Text Boxes Manager -->
-        <div
-          class="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6 shadow-2xl backdrop-blur-sm"
-        >
+        <div class="tool-panel">
           <div class="mb-4 flex items-center justify-between">
             <h3 class="flex items-center gap-2 text-lg font-bold text-white">
               <span>✍️</span> Text Boxes
@@ -141,9 +137,7 @@ import Layout from "../layouts/Layout.astro";
         </div>
 
         <!-- Global Text Settings -->
-        <div
-          class="rounded-2xl border border-slate-700/50 bg-slate-800/50 p-6 shadow-2xl backdrop-blur-sm"
-        >
+        <div class="tool-panel">
           <h3 class="mb-4 flex items-center gap-2 text-lg font-bold text-white">
             <span>🎨</span> Global Text Settings
           </h3>
@@ -212,6 +206,7 @@ import Layout from "../layouts/Layout.astro";
 <style>
   .custom-scrollbar::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
@@ -612,7 +607,7 @@ import Layout from "../layouts/Layout.astro";
     memesGrid.innerHTML = popularMemes
       .map(
         (meme) => `
-        <div class="meme-template aspect-square rounded-lg overflow-hidden bg-slate-700 border border-slate-600 hover:border-blue-500" data-url="${meme.localUrl || meme.url}" data-name="${meme.name}" data-id="${meme.id}">
+        <div class="meme-template h-28 w-full rounded-lg overflow-hidden bg-slate-700 border border-slate-600 hover:border-blue-500 md:h-32" data-url="${meme.localUrl || meme.url}" data-name="${meme.name}" data-id="${meme.id}">
           <img src="${meme.localUrl || meme.url}" alt="${meme.name}" loading="lazy" />
           <div class="meme-name">${meme.name}</div>
         </div>

@@ -1,5 +1,4 @@
 ---
-import ThemePicker from "../components/ThemePicker.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -37,10 +36,10 @@ const structuredData = JSON.stringify({
     url: siteUrl,
   },
 });
+const isDev = import.meta.env.DEV;
 
 const tools = [
-  { name: "Theme Showcase", icon: "🎨", path: "/theme-showcase" },
-  { name: "Debug Logs", icon: "📋", path: "/debug-logs" },
+  ...(isDev ? [{ name: "Debug Logs", icon: "📋", path: "/debug-logs" }] : []),
   { name: "Username Generator", icon: "👤", path: "/username-generator" },
   { name: "Password Generator", icon: "🔐", path: "/password-generator" },
   { name: "Lottery Generator", icon: "🎰", path: "/lottery-generator" },
@@ -95,9 +94,9 @@ const tools = [
       <aside
         class="relative z-20 hidden w-64 flex-col border-r border-slate-800/50 bg-slate-900/50 backdrop-blur-xl md:flex"
       >
-        <div class="flex flex-col gap-6 p-6">
+        <div class="flex flex-col gap-4 p-0">
           <!-- Brand -->
-          <a href="/" class="group flex items-center gap-3">
+          <a href="/" class="group flex items-center gap-3 px-4 pt-4 pb-2">
             <div
               class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-violet-600 text-xl shadow-lg shadow-blue-500/20 transition-all duration-300 group-hover:scale-110 group-hover:shadow-blue-500/40"
             >
@@ -108,23 +107,11 @@ const tools = [
               <span class="text-xs font-medium text-slate-500">Pro Toolkit</span>
             </div>
           </a>
-
-          <!-- Theme Picker -->
-          <div
-            class="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/50 p-1 px-2"
-          >
-            <span class="px-2 text-xs font-medium tracking-wider text-slate-500 uppercase"
-              >Theme</span
-            >
-            <div class="scale-90">
-              <ThemePicker />
-            </div>
-          </div>
         </div>
 
         <!-- Navigation -->
-        <nav class="custom-scrollbar flex-1 space-y-1 overflow-y-auto px-4 pb-4">
-          <div class="mb-2 px-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">
+        <nav class="custom-scrollbar flex-1 space-y-1 overflow-y-auto px-0 pb-0">
+          <div class="mb-2 px-4 pb-1 text-xs font-semibold tracking-wider text-slate-500 uppercase">
             Apps & Utilities
           </div>
           {
@@ -146,9 +133,9 @@ const tools = [
         </nav>
 
         <!-- Footer Info -->
-        <div class="border-t border-slate-800/50 p-4">
+        <div class="border-t border-slate-800/50 p-0">
           <div
-            class="rounded-xl border border-slate-800/50 bg-slate-900/50 p-4 text-center text-xs text-slate-500 backdrop-blur-sm"
+            class="m-4 rounded-xl border border-slate-800/50 bg-slate-900/50 p-4 text-center text-xs text-slate-500 backdrop-blur-sm"
           >
             <p class="font-medium text-slate-400">Tools Hub v2.1</p>
             <p class="mt-1 opacity-70">Premium Edition</p>
@@ -190,7 +177,7 @@ const tools = [
           </button>
         </header>
 
-        <div class="mx-auto w-full max-w-7xl px-6 py-10 pr-8 md:pr-12 lg:pr-16">
+        <div class="page-shell">
           <slot />
         </div>
       </main>
@@ -217,6 +204,25 @@ const tools = [
 
   html {
     scroll-behavior: smooth;
+  }
+
+  .page-shell {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .page-shell {
+      padding: 1.5rem 1.5rem 1.75rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page-shell {
+      padding: 1.85rem 2rem 2rem;
+    }
   }
 
   ::-webkit-scrollbar {

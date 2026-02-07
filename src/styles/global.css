@@ -29,166 +29,6 @@
   --glass-hover-border: rgba(255, 255, 255, 0.12);
 }
 
-[data-theme="neon"] {
-  --color-primary: #00ffa3;
-  --color-secondary: #00a3ff;
-  --color-accent: #ff00e0;
-  --bg-main: #0f0c29;
-  --bg-gradient-start: #302b63;
-  --bg-gradient-mid: #24243e;
-  --bg-gradient-end: #0f0c29;
-  --text-main: #ffffff;
-  --text-muted: #a0aec0;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(0, 255, 200, 0.3);
-  --glass-hover-bg: rgba(255, 255, 255, 0.1);
-  --glass-hover-border: rgba(0, 255, 200, 0.5);
-}
-
-[data-theme="sunset"] {
-  --color-primary: #ff9a8b;
-  --color-secondary: #ff6a88;
-  --color-accent: #f76b1c;
-  --bg-main: #2b1111;
-  --bg-gradient-start: #4a192c;
-  --bg-gradient-mid: #2b1111;
-  --bg-gradient-end: #1f0b0b;
-  --text-main: #fff0f5;
-  --text-muted: #ffcad4;
-  --glass-bg: rgba(255, 245, 240, 0.05);
-  --glass-border: rgba(255, 200, 150, 0.2);
-  --glass-hover-bg: rgba(255, 245, 240, 0.1);
-  --glass-hover-border: rgba(255, 200, 150, 0.4);
-}
-
-[data-theme="oceanic"] {
-  --color-primary: #2193b0;
-  --color-secondary: #6dd5ed;
-  --color-accent: #a6ffcb;
-  --bg-main: #001219;
-  --bg-gradient-start: #001219;
-  --bg-gradient-mid: #002838;
-  --bg-gradient-end: #001219;
-  --text-main: #f0f9ff;
-  --text-muted: #94a3b8;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(100, 200, 255, 0.2);
-  --glass-hover-bg: rgba(255, 255, 255, 0.1);
-  --glass-hover-border: rgba(100, 200, 255, 0.4);
-}
-
-[data-theme="purple"] {
-  --color-primary: #8e2de2;
-  --color-secondary: #4a00e0;
-  --color-accent: #da22ff;
-  --bg-main: #130421;
-  --bg-gradient-start: #130421;
-  --bg-gradient-mid: #240b3b;
-  --bg-gradient-end: #130421;
-  --text-main: #faf5ff;
-  --text-muted: #d8b4fe;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(180, 120, 255, 0.25);
-  --glass-hover-bg: rgba(255, 255, 255, 0.1);
-  --glass-hover-border: rgba(180, 120, 255, 0.4);
-}
-
-[data-theme="minimal"] {
-  --color-primary: #334155;
-  --color-secondary: #475569;
-  --color-accent: #0f172a;
-  --bg-main: #ffffff;
-  --bg-gradient-start: #f1f5f9;
-  --bg-gradient-mid: #ffffff;
-  --bg-gradient-end: #e2e8f0;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(203, 213, 225, 0.6);
-  --glass-hover-bg: rgba(255, 255, 255, 0.9);
-  --glass-hover-border: rgba(148, 163, 184, 0.6);
-}
-
-[data-theme="forest"] {
-  --color-primary: #22c55e;
-  --color-secondary: #10b981;
-  --color-accent: #84cc16;
-  --bg-main: #052e16;
-  --bg-gradient-start: #064e3b;
-  --bg-gradient-mid: #065f46;
-  --bg-gradient-end: #052e16;
-  --text-main: #f0fdf4;
-  --text-muted: #86efac;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(34, 197, 94, 0.3);
-  --glass-hover-bg: rgba(255, 255, 255, 0.1);
-  --glass-hover-border: rgba(34, 197, 94, 0.5);
-}
-
-[data-theme="berry"] {
-  --color-primary: #db2777;
-  --color-secondary: #e11d48;
-  --color-accent: #f472b6;
-  --bg-main: #2e0215; /* deep wine */
-  --bg-gradient-start: #500724;
-  --bg-gradient-mid: #831843;
-  --bg-gradient-end: #2e0215;
-  --text-main: #fdf2f8;
-  --text-muted: #fbcfe8;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(219, 39, 119, 0.3);
-  --glass-hover-bg: rgba(255, 255, 255, 0.1);
-  --glass-hover-border: rgba(219, 39, 119, 0.5);
-}
-
-[data-theme="midnight"] {
-  --color-primary: #6366f1;
-  --color-secondary: #4f46e5;
-  --color-accent: #94a3b8;
-  --bg-main: #020617;
-  --bg-gradient-start: #0f172a;
-  --bg-gradient-mid: #1e293b;
-  --bg-gradient-end: #020617;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(148, 163, 184, 0.2);
-  --glass-hover-bg: rgba(255, 255, 255, 0.08);
-  --glass-hover-border: rgba(148, 163, 184, 0.4);
-}
-
-[data-theme="solar"] {
-  --color-primary: #f59e0b;
-  --color-secondary: #d97706;
-  --color-accent: #fcd34d;
-  --bg-main: #1c1917; /* warm dark */
-  --bg-gradient-start: #451a03;
-  --bg-gradient-mid: #78350f;
-  --bg-gradient-end: #1c1917;
-  --text-main: #fffbeb;
-  --text-muted: #fde68a;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(245, 158, 11, 0.3);
-  --glass-hover-bg: rgba(255, 255, 255, 0.1);
-  --glass-hover-border: rgba(245, 158, 11, 0.5);
-}
-
-[data-theme="arctic"] {
-  --color-primary: #0ea5e9;
-  --color-secondary: #38bdf8;
-  --color-accent: #e0f2fe;
-  --bg-main: #0c4a6e;
-  --bg-gradient-start: #075985;
-  --bg-gradient-mid: #0369a1;
-  --bg-gradient-end: #0c4a6e;
-  --text-main: #f0f9ff;
-  --text-muted: #bae6fd;
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(14, 165, 233, 0.3);
-  --glass-hover-bg: rgba(255, 255, 255, 0.15);
-  --glass-hover-border: rgba(14, 165, 233, 0.5);
-}
-
 @layer base {
   body {
     background-color: var(--bg-main);
@@ -204,6 +44,70 @@
 }
 
 @layer components {
+  /* Shared UI primitives for consistent tool pages */
+  .ui-page {
+    @apply space-y-10;
+  }
+
+  .ui-page-intro {
+    @apply mb-8 flex justify-center;
+  }
+
+  .ui-page-title {
+    @apply text-center text-3xl font-bold text-white md:text-4xl;
+  }
+
+  .ui-page-description {
+    @apply rounded-full border border-white/10 bg-white/5 px-6 py-2 text-sm font-medium text-slate-300 backdrop-blur-md;
+  }
+
+  /* Standardize intro description padding across legacy and new pages */
+  :where(.page-shell) :where(.animate-fade-in) > p.rounded-full {
+    padding: 0.7rem 1rem !important;
+  }
+
+  .ui-grid {
+    @apply grid gap-8;
+  }
+
+  .ui-card {
+    @apply rounded-2xl border border-slate-700/50 bg-slate-800/50 p-5 shadow-2xl backdrop-blur-sm md:p-6;
+  }
+
+  .ui-card-header {
+    @apply mb-5 flex flex-wrap items-center justify-between gap-3;
+  }
+
+  .ui-card-title {
+    @apply flex items-center gap-2 text-xl font-bold text-white;
+  }
+
+  .ui-card-step {
+    @apply text-base font-semibold text-blue-400;
+  }
+
+  .ui-card-body {
+    @apply space-y-4;
+  }
+
+  .ui-input,
+  .ui-select,
+  .ui-textarea {
+    @apply w-full rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-white transition-all outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500;
+  }
+
+  .ui-option-row {
+    @apply flex cursor-pointer items-center gap-3 rounded-lg bg-slate-900/40 px-4 py-3 transition-all hover:bg-slate-900/70;
+  }
+
+  .ui-action-row {
+    @apply mt-4 flex flex-wrap items-center gap-3;
+  }
+
+  .ui-output-box {
+    @apply rounded-xl border border-slate-800/70 bg-slate-950/40 p-4 md:p-5;
+  }
+
   /* Glass Effects */
   .glass {
     @apply rounded-2xl shadow-xl shadow-black/5 backdrop-blur-xl;
@@ -225,16 +129,51 @@
   }
 
   /* Cards */
-  /* Cards */
   .card-glass {
-    @apply relative overflow-hidden rounded-2xl p-8 shadow-xl shadow-black/5 backdrop-blur-xl transition-all duration-300 hover:shadow-2xl hover:shadow-current/5;
+    @apply relative overflow-hidden rounded-2xl shadow-xl shadow-black/5 backdrop-blur-xl transition-all duration-300 hover:shadow-2xl hover:shadow-current/5;
     background-color: var(--glass-bg);
     border: 1px solid var(--glass-border);
+    padding: 1rem !important;
+  }
+
+  @media (min-width: 768px) {
+    .card-glass {
+      padding: 1.15rem !important;
+    }
+  }
+
+  .tool-panel {
+    @apply rounded-2xl border border-slate-700/50 bg-slate-800/50 shadow-2xl backdrop-blur-sm;
+    padding: 1rem !important;
+  }
+
+  @media (min-width: 768px) {
+    .tool-panel {
+      padding: 1.15rem !important;
+    }
   }
 
   .card-glass:hover {
     background-color: var(--glass-hover-bg);
     border-color: var(--glass-hover-border);
+  }
+
+  /* Baseline sizing so buttons feel consistent across pages */
+  :where(.page-shell) :where(button, a.btn-primary, a.btn-secondary, a.btn-ghost) {
+    min-height: 2.5rem;
+    padding: 0.65rem 1rem !important;
+    border-radius: 0.65rem;
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+
+  /* Fallback rhythm if utility spacing classes fail to render */
+  :where(.page-shell) :where([class*="space-y-"]) > * + * {
+    margin-top: 1rem;
+  }
+
+  :where(.card-glass, .tool-panel) > * + * {
+    margin-top: 0.75rem;
   }
 
   /* Buttons */

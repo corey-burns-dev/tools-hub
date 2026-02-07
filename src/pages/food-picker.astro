@@ -91,17 +91,19 @@ import Layout from "../layouts/Layout.astro";
         </div>
 
         <!-- Action Button -->
-        <button
-          id="spin-btn"
-          class="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-r from-orange-500 to-red-600 p-1 transition-transform active:scale-95 md:w-auto md:min-w-[200px]"
-        >
-          <div
-            class="relative flex items-center justify-center gap-2 rounded-xl bg-slate-900/10 px-8 py-4 text-xl font-bold text-white transition-colors group-hover:bg-transparent"
+        <div class="mt-2 pt-6 md:mt-3 md:pt-8">
+          <button
+            id="spin-btn"
+            class="group relative mx-auto w-full overflow-hidden rounded-2xl bg-gradient-to-r from-orange-500 to-red-600 p-1 transition-transform active:scale-95 md:w-auto md:min-w-[200px]"
           >
-            <span>Pick Food</span>
-            <span class="text-2xl transition-transform group-hover:rotate-12">🎲</span>
-          </div>
-        </button>
+            <div
+              class="relative flex items-center justify-center gap-2 rounded-xl bg-slate-900/10 px-8 py-4 text-xl font-bold text-white transition-colors group-hover:bg-transparent"
+            >
+              <span>Pick Food</span>
+              <span class="text-2xl transition-transform group-hover:rotate-12">🎲</span>
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   </div>

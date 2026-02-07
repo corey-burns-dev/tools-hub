@@ -1,0 +1,27 @@
+---
+interface Props {
+  title?: string;
+  step?: string;
+  class?: string;
+  bodyClass?: string;
+}
+
+const { title, step, class: className, bodyClass } = Astro.props;
+---
+
+<section class:list={["ui-card", className]}>
+  {
+    title && (
+      <header class="ui-card-header">
+        <h2 class="ui-card-title">
+          {step && <span class="ui-card-step">{step}</span>}
+          <span>{title}</span>
+        </h2>
+        <slot name="header-actions" />
+      </header>
+    )
+  }
+  <div class:list={["ui-card-body", bodyClass]}>
+    <slot />
+  </div>
+</section>

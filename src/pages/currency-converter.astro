@@ -21,17 +21,17 @@ import Layout from "../layouts/Layout.astro";
 
     <!-- Converter Card -->
     <div
-      class="relative overflow-visible rounded-3xl border border-slate-800 bg-slate-900/50 p-8 shadow-2xl backdrop-blur-xl md:p-12"
+      class="relative overflow-visible rounded-3xl border border-slate-800 bg-slate-900/50 p-6 shadow-2xl backdrop-blur-xl md:p-10"
     >
       <div class="grid gap-8 md:grid-cols-[1fr_auto_1fr] md:items-center">
         <!-- From Currency -->
         <div
-          class="space-y-4 rounded-2xl bg-slate-800/50 p-6 ring-1 ring-slate-700/50 transition-all focus-within:bg-slate-800 focus-within:ring-emerald-500/50"
+          class="space-y-5 rounded-2xl bg-slate-800/50 px-5 py-5 ring-1 ring-slate-700/50 transition-all focus-within:bg-slate-800 focus-within:ring-emerald-500/50 md:px-7 md:py-7"
         >
           <label class="block text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
             >Amount & Currency</label
           >
-          <div class="flex gap-4">
+          <div class="flex gap-4 rounded-xl bg-slate-900/40 p-3">
             <input
               type="number"
               id="amount-from"
@@ -42,7 +42,7 @@ import Layout from "../layouts/Layout.astro";
             />
             <select
               id="currency-from"
-              class="cursor-pointer rounded-xl bg-slate-700 px-3 py-1 font-mono font-bold text-white transition-colors outline-none hover:bg-slate-600"
+              class="cursor-pointer rounded-xl bg-slate-700 px-4 py-2 font-mono font-bold text-white transition-colors outline-none hover:bg-slate-600"
             >
               <option value="USD" selected>🇺🇸 USD</option>
               <option value="EUR">🇪🇺 EUR</option>
@@ -55,7 +55,10 @@ import Layout from "../layouts/Layout.astro";
               <option value="CHF">🇨🇭 CHF</option>
             </select>
           </div>
-          <div class="text-left text-sm text-slate-400" id="rate-display-from">
+          <div
+            class="rounded-lg bg-slate-900/35 px-3 py-2 text-left text-sm text-slate-400"
+            id="rate-display-from"
+          >
             1 USD = 0.92 EUR
           </div>
         </div>
@@ -73,12 +76,12 @@ import Layout from "../layouts/Layout.astro";
 
         <!-- To Currency -->
         <div
-          class="space-y-4 rounded-2xl bg-slate-800/50 p-6 ring-1 ring-slate-700/50 transition-all focus-within:bg-slate-800 focus-within:ring-teal-500/50"
+          class="space-y-5 rounded-2xl bg-slate-800/50 px-5 py-5 ring-1 ring-slate-700/50 transition-all focus-within:bg-slate-800 focus-within:ring-teal-500/50 md:px-7 md:py-7"
         >
           <label class="block text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
             >Converted To</label
           >
-          <div class="flex gap-4">
+          <div class="flex gap-4 rounded-xl bg-slate-900/40 p-3">
             <input
               type="text"
               id="amount-to"
@@ -88,7 +91,7 @@ import Layout from "../layouts/Layout.astro";
             />
             <select
               id="currency-to"
-              class="cursor-pointer rounded-xl bg-slate-700 px-3 py-1 font-mono font-bold text-white transition-colors outline-none hover:bg-slate-600"
+              class="cursor-pointer rounded-xl bg-slate-700 px-4 py-2 font-mono font-bold text-white transition-colors outline-none hover:bg-slate-600"
             >
               <option value="USD">🇺🇸 USD</option>
               <option value="EUR" selected>🇪🇺 EUR</option>
@@ -101,41 +104,50 @@ import Layout from "../layouts/Layout.astro";
               <option value="CHF">🇨🇭 CHF</option>
             </select>
           </div>
-          <div class="text-left text-sm text-slate-400" id="rate-display-to">1 EUR = 1.09 USD</div>
+          <div
+            class="rounded-lg bg-slate-900/35 px-3 py-2 text-left text-sm text-slate-400"
+            id="rate-display-to"
+          >
+            1 EUR = 1.09 USD
+          </div>
         </div>
       </div>
 
       <!-- Quick Actions -->
       <div class="mt-8 border-t border-slate-800/50 pt-8">
-        <p class="mb-4 text-xs font-bold tracking-widest text-slate-500 uppercase">
-          Popular Conversions
-        </p>
-        <div class="flex flex-wrap justify-center gap-3">
-          <button
-            class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
-            data-from="USD"
-            data-to="EUR">USD → EUR</button
-          >
-          <button
-            class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
-            data-from="EUR"
-            data-to="USD">EUR → USD</button
-          >
-          <button
-            class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
-            data-from="GBP"
-            data-to="USD">GBP → USD</button
-          >
-          <button
-            class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
-            data-from="USD"
-            data-to="JPY">USD → JPY</button
-          >
-          <button
-            class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
-            data-from="USD"
-            data-to="CAD">USD → CAD</button
-          >
+        <div
+          class="rounded-2xl border border-slate-800/60 bg-slate-800/30 px-5 py-5 md:px-6 md:py-6"
+        >
+          <p class="mb-4 text-xs font-bold tracking-widest text-slate-500 uppercase">
+            Popular Conversions
+          </p>
+          <div class="flex flex-wrap justify-center gap-3">
+            <button
+              class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-5 py-3 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+              data-from="USD"
+              data-to="EUR">USD → EUR</button
+            >
+            <button
+              class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-5 py-3 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+              data-from="EUR"
+              data-to="USD">EUR → USD</button
+            >
+            <button
+              class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-5 py-3 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+              data-from="GBP"
+              data-to="USD">GBP → USD</button
+            >
+            <button
+              class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-5 py-3 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+              data-from="USD"
+              data-to="JPY">USD → JPY</button
+            >
+            <button
+              class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-5 py-3 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+              data-from="USD"
+              data-to="CAD">USD → CAD</button
+            >
+          </div>
         </div>
       </div>
     </div>

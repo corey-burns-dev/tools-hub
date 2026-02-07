@@ -7,7 +7,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
 ---
 
 <Layout title="Ontario Lottery Generator">
-  <div class="space-y-12">
+  <div class="space-y-10">
     <div class="animate-fade-in mb-8 flex justify-center">
       <p
         class="rounded-full border border-white/10 bg-white/5 px-6 py-2 text-sm font-medium text-slate-300 backdrop-blur-md transition-all hover:bg-white/10 hover:text-white"
@@ -16,84 +16,86 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
       </p>
     </div>
 
-    <div class="card-glass mb-6 p-6">
-      <label class="mb-4 block text-sm font-medium text-slate-300">Select Your Game</label>
+    <div class="lottery-shell">
+      <div class="card-glass lottery-panel">
+        <label class="mb-4 block text-sm font-medium text-slate-300">Select Your Game</label>
 
-      <!-- Game Capsules -->
-      <div class="mb-6 flex flex-wrap gap-3">
-        {
-          games.map((game, index) => (
-            <button
-              type="button"
-              class:list={[
-                "game-capsule",
-                "rounded-full px-6 py-3 font-medium text-white transition-all duration-300",
-                "border-2 border-slate-600 bg-slate-800/30 hover:scale-105 hover:border-blue-500 hover:bg-slate-700/50 hover:shadow-lg hover:shadow-blue-500/20",
-                "active:scale-95",
-                { selected: index === 0 },
-              ]}
-              data-game-id={game.id}
-            >
-              {game.name}
-            </button>
-          ))
-        }
-      </div>
+        <!-- Game Capsules -->
+        <div class="mb-6 flex flex-wrap gap-3">
+          {
+            games.map((game, index) => (
+              <button
+                type="button"
+                class:list={[
+                  "game-capsule lottery-btn",
+                  "rounded-full px-6 py-3 font-medium text-white transition-all duration-300",
+                  "border-2 border-slate-600 bg-slate-800/30 hover:scale-105 hover:border-blue-500 hover:bg-slate-700/50 hover:shadow-lg hover:shadow-blue-500/20",
+                  "active:scale-95",
+                  { selected: index === 0 },
+                ]}
+                data-game-id={game.id}
+              >
+                {game.name}
+              </button>
+            ))
+          }
+        </div>
 
-      <!-- Keno Pick Count (only visible for Keno) -->
-      <div id="keno-picks" class="animate-fade-in mb-6 hidden">
-        <label for="keno-count" class="mb-2 block text-sm font-medium text-slate-300"
-          >Number of Picks (1-10)</label
-        >
-        <input
-          type="number"
-          id="keno-count"
-          min="1"
-          max="10"
-          value="5"
-          class="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
-        />
-      </div>
-
-      <!-- Encore Checkbox -->
-      <div id="encore-option" class="animate-fade-in mb-6 hidden">
-        <label class="flex cursor-pointer items-center gap-3">
+        <!-- Keno Pick Count (only visible for Keno) -->
+        <div id="keno-picks" class="animate-fade-in mb-6 hidden">
+          <label for="keno-count" class="mb-2 block text-sm font-medium text-slate-300"
+            >Number of Picks (1-10)</label
+          >
           <input
-            type="checkbox"
-            id="encore-checkbox"
-            class="h-5 w-5 cursor-pointer rounded border-slate-600 bg-slate-800/50 text-blue-500 transition-all focus:ring-2 focus:ring-blue-500/50"
+            type="number"
+            id="keno-count"
+            min="1"
+            max="10"
+            value="5"
+            class="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
           />
-          <span class="text-sm font-medium text-slate-300">
-            Add Encore <span class="text-slate-500">(7 bonus digits)</span>
-          </span>
-        </label>
+        </div>
+
+        <!-- Encore Checkbox -->
+        <div id="encore-option" class="animate-fade-in mb-6 hidden">
+          <label class="encore-toggle">
+            <input
+              type="checkbox"
+              id="encore-checkbox"
+              class="h-5 w-5 cursor-pointer rounded bg-slate-800/50 text-blue-500 transition-all focus:ring-2 focus:ring-blue-500/50"
+            />
+            <span class="text-sm font-medium text-slate-300">
+              Add Encore <span class="text-slate-500">(7 bonus digits)</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="flex justify-center">
+          <button
+            id="generate-btn"
+            type="button"
+            class="lottery-btn w-full rounded-lg bg-gradient-to-r from-blue-500 to-violet-500 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/50 active:scale-95 sm:w-auto"
+          >
+            Generate Numbers
+          </button>
+        </div>
       </div>
 
-      <div class="flex justify-center">
-        <button
-          id="generate-btn"
-          type="button"
-          class="w-full rounded-lg bg-gradient-to-r from-blue-500 to-violet-500 px-6 px-10 py-4 text-lg font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/50 active:scale-95 sm:w-auto"
-        >
-          Generate Numbers
-        </button>
-      </div>
-    </div>
+      <!-- Results Container -->
+      <div id="results-container" class="card-glass lottery-panel animate-fade-in hidden">
+        <div class="mb-4 flex items-center justify-between">
+          <h2 class="text-2xl font-bold text-white" id="results-title">Your Numbers</h2>
+          <button
+            id="copy-btn"
+            type="button"
+            class="lottery-btn rounded-lg bg-slate-700/50 px-4 py-2 text-sm text-slate-300 transition-all hover:bg-slate-600/50 hover:text-white"
+          >
+            📋 Copy
+          </button>
+        </div>
 
-    <!-- Results Container -->
-    <div id="results-container" class="card-glass animate-fade-in hidden p-6">
-      <div class="mb-4 flex items-center justify-between">
-        <h2 class="text-2xl font-bold text-white" id="results-title">Your Numbers</h2>
-        <button
-          id="copy-btn"
-          type="button"
-          class="rounded-lg bg-slate-700/50 px-4 py-2 text-sm text-slate-300 transition-all hover:bg-slate-600/50 hover:text-white"
-        >
-          📋 Copy
-        </button>
+        <div id="results-content" class="space-y-4"></div>
       </div>
-
-      <div id="results-content" class="space-y-4"></div>
     </div>
   </div>
 </Layout>
@@ -110,6 +112,46 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
   const encoreOption = document.getElementById("encore-option");
   const encoreCheckbox = document.getElementById("encore-checkbox");
 
+  const REVEAL_DURATION_MS = 340;
+  const REVEAL_STEP_MS = 360;
+
+  function playGenerateSound() {
+    const AudioCtx = window.AudioContext || window["webkitAudioContext"];
+    if (!AudioCtx) return;
+
+    const ctx = new AudioCtx();
+    const now = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(0.09, now + 0.02);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
+    master.connect(ctx.destination);
+
+    const osc1 = ctx.createOscillator();
+    osc1.type = "sine";
+    osc1.frequency.setValueAtTime(660, now);
+    osc1.frequency.exponentialRampToValueAtTime(880, now + 0.16);
+    osc1.connect(master);
+
+    const osc2 = ctx.createOscillator();
+    osc2.type = "triangle";
+    osc2.frequency.setValueAtTime(990, now + 0.08);
+    osc2.frequency.exponentialRampToValueAtTime(1320, now + 0.28);
+    osc2.connect(master);
+
+    osc1.start(now);
+    osc1.stop(now + 0.22);
+    osc2.start(now + 0.08);
+    osc2.stop(now + 0.34);
+
+    osc2.onended = () => {
+      master.disconnect();
+      if (ctx.state !== "closed") {
+        void ctx.close();
+      }
+    };
+  }
+
   // Games that support Encore
   const encoreCompatibleGames = [
     "keno",
@@ -122,6 +164,11 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
     "daily_grand",
     "lottario",
   ];
+
+  function updateGenerateButtonLabel(gameId) {
+    if (!generateBtn) return;
+    generateBtn.textContent = gameId === "poker_lotto" ? "Generate Cards" : "Generate Numbers";
+  }
 
   // Handle game capsule selection
   document.querySelectorAll(".game-capsule").forEach((capsule) => {
@@ -151,6 +198,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
 
       selectedGameId = capsule.dataset.gameId;
       const selectedGame = games.find((g) => g.id === selectedGameId);
+      updateGenerateButtonLabel(selectedGame.id);
 
       // Show/hide Keno picks
       if (selectedGame.id === "keno") {
@@ -216,7 +264,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
     const balls = numbers
       .map(
         (num, i) =>
-          `<div class="animate-pop flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-violet-500 text-2xl font-bold text-white shadow-lg shadow-blue-500/30" style="animation-delay: ${staggerDelay + i * 100}ms">${num}</div>`
+          `<div class="lotto-reveal flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-violet-500 text-2xl font-bold text-white shadow-lg shadow-blue-500/30" style="--reveal-delay:${staggerDelay + i * REVEAL_STEP_MS}ms;--reveal-duration:${REVEAL_DURATION_MS}ms">${num}</div>`
       )
       .join("");
 
@@ -233,7 +281,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
     const digitBoxes = digits
       .map(
         (digit, i) =>
-          `<div class="animate-pop flex h-20 w-16 items-center justify-center rounded-lg border-2 border-blue-500 bg-slate-800/50 text-3xl font-bold text-white shadow-lg shadow-blue-500/20" style="animation-delay: ${staggerDelay + i * 80}ms">${digit}</div>`
+          `<div class="lotto-reveal flex h-20 w-16 items-center justify-center rounded-lg border-2 border-blue-500 bg-slate-800/50 text-3xl font-bold text-white shadow-lg shadow-blue-500/20" style="--reveal-delay:${staggerDelay + i * REVEAL_STEP_MS}ms;--reveal-duration:${REVEAL_DURATION_MS}ms">${digit}</div>`
       )
       .join("");
 
@@ -252,7 +300,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
         const isRed = card.suit === "♥" || card.suit === "♦";
         const color = isRed ? "text-red-500" : "text-slate-900";
         return `
-          <div class="animate-pop flex h-32 w-24 flex-col items-center justify-center rounded-lg bg-white shadow-lg" style="animation-delay: ${i * 100}ms">
+          <div class="lotto-card-reveal flex h-32 w-24 flex-col items-center justify-center rounded-lg bg-white shadow-lg" style="--reveal-delay:${i * REVEAL_STEP_MS}ms;--reveal-duration:${REVEAL_DURATION_MS}ms">
             <div class="text-3xl font-bold ${color}">${card.rank}</div>
             <div class="text-4xl ${color}">${card.suit}</div>
           </div>
@@ -271,6 +319,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
   // Generate numbers based on game type
   generateBtn.addEventListener("click", (e) => {
     e.preventDefault();
+    playGenerateSound();
     const selectedGame = games.find((g) => g.id === selectedGameId);
     const includeEncore = encoreCheckbox.checked;
     let html = "";
@@ -282,7 +331,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
       const mainNumbers = generateUniqueNumbers(selectedGame.picks, selectedGame.range);
       html += renderNumbers(mainNumbers, "Main Numbers", totalDelay);
       copyText += mainNumbers.join(", ");
-      totalDelay += selectedGame.picks * 100;
+      totalDelay += selectedGame.picks * REVEAL_STEP_MS;
 
       if (selectedGame.bonus) {
         const bonusNumbers = generateUniqueNumbers(
@@ -291,7 +340,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
         );
         html += renderNumbers(bonusNumbers, "Bonus", totalDelay);
         copyText += ` | Bonus: ${bonusNumbers.join(", ")}`;
-        totalDelay += selectedGame.bonus.count * 100;
+        totalDelay += selectedGame.bonus.count * REVEAL_STEP_MS;
       }
 
       if (selectedGame.special) {
@@ -301,7 +350,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
         );
         html += renderNumbers(specialNumbers, "Grand Number", totalDelay);
         copyText += ` | Grand: ${specialNumbers.join(", ")}`;
-        totalDelay += selectedGame.special.count * 100;
+        totalDelay += selectedGame.special.count * REVEAL_STEP_MS;
       }
     }
     // Keno
@@ -310,21 +359,21 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
       const picks = generateUniqueNumbers(pickCount, selectedGame.range);
       html += renderNumbers(picks, `Your ${pickCount} Picks`, totalDelay);
       copyText += picks.join(", ");
-      totalDelay += pickCount * 100;
+      totalDelay += pickCount * REVEAL_STEP_MS;
     }
     // Digit games
     else if (selectedGame.digits) {
       const digits = generateDigits(selectedGame.digits);
       html += renderDigits(digits, "Your Digits", totalDelay);
       copyText += digits.join("");
-      totalDelay += selectedGame.digits * 80;
+      totalDelay += selectedGame.digits * REVEAL_STEP_MS;
     }
     // Poker Lotto
     else if (selectedGame.id === "poker_lotto") {
       const hand = generatePokerHand();
       html += renderPokerCards(hand);
       copyText += hand.map((c) => `${c.rank}${c.suit}`).join(" ");
-      totalDelay += 500;
+      totalDelay += hand.length * REVEAL_STEP_MS;
     }
 
     // Add Encore if checked
@@ -359,6 +408,93 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
 </script>
 
 <style>
+  .lottery-shell {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 58rem;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .lottery-panel {
+    padding: 1rem !important;
+  }
+
+  .lottery-btn {
+    min-height: 2.5rem !important;
+    padding: 0.65rem 1rem !important;
+  }
+
+  .encore-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(15, 23, 42, 0.35);
+    border-radius: 0.75rem;
+    padding: 0.7rem 0.85rem;
+    transition: all 0.2s ease;
+  }
+
+  .encore-toggle:hover {
+    background: rgba(30, 41, 59, 0.45);
+  }
+
+  .lotto-reveal {
+    opacity: 0;
+    animation: lotto-spin-in var(--reveal-duration, 340ms) cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+    will-change: transform, opacity, filter;
+  }
+
+  .lotto-card-reveal {
+    opacity: 0;
+    transform-origin: center center;
+    animation: card-deal-in var(--reveal-duration, 340ms) cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+    will-change: transform, opacity, filter;
+  }
+
+  @media (min-width: 768px) {
+    .lottery-shell {
+      gap: 1.25rem;
+    }
+
+    .lottery-panel {
+      padding: 1.15rem !important;
+    }
+  }
+
+  @keyframes lotto-spin-in {
+    0% {
+      opacity: 0;
+      transform: translateY(-24px) scale(0.7) rotate(-220deg);
+      filter: blur(5px);
+    }
+    70% {
+      opacity: 1;
+      transform: translateY(2px) scale(1.04) rotate(14deg);
+      filter: blur(0);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1) rotate(0deg);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes card-deal-in {
+    0% {
+      opacity: 0;
+      transform: translateY(-18px) scale(0.88) rotateY(120deg);
+      filter: blur(3px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1) rotateY(0deg);
+      filter: blur(0);
+    }
+  }
+
   @keyframes pop {
     0% {
       opacity: 0;

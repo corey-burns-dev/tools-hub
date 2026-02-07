@@ -13,76 +13,77 @@ import Layout from "../layouts/Layout.astro";
       </p>
     </div>
 
-    <div class="grid gap-8 lg:grid-cols-2">
-      <div class="card-glass">
-        <h2 class="mb-4 text-lg font-bold text-white">
-          <span class="text-blue-400">01.</span> Input
-        </h2>
+    <div class="grid gap-8 lg:grid-cols-2 lg:items-start">
+      <div class="space-y-6">
+        <div class="card-glass">
+          <h2 class="mb-4 text-lg font-bold text-white">
+            <span class="text-blue-400">01.</span> Input
+          </h2>
 
-        <textarea
-          id="hash-input"
-          rows="10"
-          placeholder="Paste text here..."
-          class="w-full resize-none rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-600 transition-all outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-        ></textarea>
+          <textarea
+            id="hash-input"
+            rows="10"
+            placeholder="Paste text here..."
+            class="w-full resize-none rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-600 transition-all outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          ></textarea>
 
-        <div class="mt-4 flex flex-wrap gap-2">
-          <Button id="hash-btn" variant="primary" class="px-10 sm:w-auto">Generate</Button>
-          <Button id="clear-btn" variant="ghost" class="px-10 sm:w-auto"> Clear </Button>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <Button id="hash-btn" variant="primary" class="px-10 sm:w-auto">Generate</Button>
+            <Button id="clear-btn" variant="ghost" class="px-10 sm:w-auto"> Clear </Button>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <label class="flex items-center gap-3 text-sm text-slate-300">
+            <input
+              id="uppercase-toggle"
+              type="checkbox"
+              class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500"
+            />
+            Uppercase output
+          </label>
+
+          <div
+            class="rounded-xl border border-dashed border-white/10 bg-white/5 p-4 text-xs text-slate-400"
+          >
+            Drop a file into the output panel to hash it.
+          </div>
         </div>
       </div>
-    </div>
+      <div class="card-glass flex h-full flex-col">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-lg font-bold text-white">
+            <span class="text-violet-400">02.</span> Hash Output
+          </h2>
+          <select
+            id="algo-select"
+            class="rounded-xl border border-white/10 bg-slate-900/50 px-3 py-2 text-sm text-white outline-none"
+          >
+            <option value="SHA-256">SHA-256</option>
+            <option value="SHA-384">SHA-384</option>
+            <option value="SHA-512">SHA-512</option>
+          </select>
+        </div>
 
-    <div class="mt-6 space-y-3">
-      <label class="flex items-center gap-3 text-sm text-slate-300">
-        <input
-          id="uppercase-toggle"
-          type="checkbox"
-          class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500"
-        />
-        Uppercase output
-      </label>
+        <textarea
+          id="hash-output"
+          rows="8"
+          placeholder="Hash output will appear here"
+          class="w-full flex-1 resize-none rounded-xl border border-white/10 bg-black/50 px-4 py-3 font-mono text-sm text-white outline-none"
+        ></textarea>
 
-      <div
-        class="rounded-xl border border-dashed border-white/10 bg-white/5 p-4 text-xs text-slate-400"
-      >
-        Drop a file into the output panel to hash it.
+        <div class="mt-4 flex items-center justify-between">
+          <div class="text-xs text-slate-500" id="hash-meta">Ready.</div>
+          <Button id="copy-btn" variant="ghost" class="px-4 py-2 text-sm">Copy</Button>
+        </div>
+
+        <div
+          id="hash-drop-zone"
+          class="mt-4 flex items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 px-4 py-4 text-xs text-slate-400"
+        >
+          Drop a file here to hash it
+        </div>
       </div>
-    </div>
-  </div>
-
-  <div class="card-glass flex flex-col">
-    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-      <h2 class="text-lg font-bold text-white">
-        <span class="text-violet-400">02.</span> Hash Output
-      </h2>
-      <select
-        id="algo-select"
-        class="rounded-xl border border-white/10 bg-slate-900/50 px-3 py-2 text-sm text-white outline-none"
-      >
-        <option value="SHA-256">SHA-256</option>
-        <option value="SHA-384">SHA-384</option>
-        <option value="SHA-512">SHA-512</option>
-      </select>
-    </div>
-
-    <textarea
-      id="hash-output"
-      rows="8"
-      placeholder="Hash output will appear here"
-      class="w-full flex-1 resize-none rounded-xl border border-white/10 bg-black/50 px-4 py-3 font-mono text-sm text-white outline-none"
-    ></textarea>
-
-    <div class="mt-4 flex items-center justify-between">
-      <div class="text-xs text-slate-500" id="hash-meta">Ready.</div>
-      <Button id="copy-btn" variant="ghost" class="px-4 py-2 text-sm">Copy</Button>
-    </div>
-
-    <div
-      id="hash-drop-zone"
-      class="mt-4 flex items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 px-4 py-4 text-xs text-slate-400"
-    >
-      Drop a file here to hash it
     </div>
   </div>
 </Layout>

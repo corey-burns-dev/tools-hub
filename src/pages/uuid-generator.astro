@@ -1,27 +1,18 @@
 ---
 import Button from "../components/Button.astro";
 import Layout from "../layouts/Layout.astro";
+import ToolCard from "../components/ui/ToolCard.astro";
+import ToolGrid from "../components/ui/ToolGrid.astro";
+import ToolPage from "../components/ui/ToolPage.astro";
 ---
 
 <Layout title="UUID Generator">
-  <div class="space-y-12">
-    <div class="animate-fade-in mb-8 flex justify-center">
-      <p
-        class="rounded-full border border-white/10 bg-white/5 px-6 py-2 text-sm font-medium text-slate-300 backdrop-blur-md transition-all hover:bg-white/10 hover:text-white"
-      >
-        Generate RFC 4122 v4 UUIDs instantly.
-      </p>
-    </div>
-
-    <div class="grid gap-8 lg:grid-cols-3">
+  <ToolPage description="Generate RFC 4122 v4 UUIDs instantly.">
+    <ToolGrid cols={3}>
       <div class="space-y-6 lg:col-span-1">
-        <div class="card-glass">
-          <h2 class="mb-4 text-lg font-bold text-white">
-            <span class="text-emerald-400">01.</span> Settings
-          </h2>
-
-          <div class="space-y-4">
-            <div>
+        <ToolCard title="Settings" step="01." class="p-6 md:p-7" bodyClass="space-y-5 md:space-y-6">
+          <div class="space-y-6">
+            <div class="ui-output-box border-white/10 bg-white/5 p-5 md:p-6">
               <label for="count-range" class="mb-2 block text-sm font-medium text-slate-400"
                 >Count: <span id="count-value" class="text-slate-200">5</span></label
               >
@@ -29,7 +20,7 @@ import Layout from "../layouts/Layout.astro";
             </div>
 
             <label
-              class="flex cursor-pointer items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-slate-300 transition-all hover:bg-white/10"
+              class="flex cursor-pointer items-center gap-3 rounded-lg border border-white/10 bg-white/5 px-5 py-4 text-sm text-slate-300 transition-all hover:bg-white/10"
             >
               <input
                 id="uppercase-toggle"
@@ -40,7 +31,7 @@ import Layout from "../layouts/Layout.astro";
             </label>
 
             <label
-              class="flex cursor-pointer items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-slate-300 transition-all hover:bg-white/10"
+              class="flex cursor-pointer items-center gap-3 rounded-lg border border-white/10 bg-white/5 px-5 py-4 text-sm text-slate-300 transition-all hover:bg-white/10"
             >
               <input
                 id="compact-toggle"
@@ -50,34 +41,36 @@ import Layout from "../layouts/Layout.astro";
               Remove hyphens
             </label>
 
-            <Button id="generate-btn" class="mt-2 w-full px-10 sm:w-auto" variant="primary">
+            <Button id="generate-btn" class="mt-4 w-full px-10 sm:w-auto" variant="primary">
               <span class="text-base">⚡</span> Generate
             </Button>
           </div>
-        </div>
+        </ToolCard>
       </div>
 
       <div class="lg:col-span-2">
-        <div class="card-glass flex min-h-[480px] flex-col">
-          <div class="mb-4 flex flex-wrap items-center justify-between gap-4">
-            <h2 class="text-lg font-bold text-white">
-              <span class="text-cyan-400">02.</span> Output
-            </h2>
-            <div class="flex flex-wrap gap-2">
-              <Button id="copy-btn" variant="secondary" class="px-4 py-2 text-sm">Copy</Button>
-              <Button id="clear-btn" variant="ghost" class="px-4 py-2 text-sm">Clear</Button>
-            </div>
+        <ToolCard
+          title="Output"
+          step="02."
+          class="flex min-h-[480px] flex-col p-6 md:p-7"
+          bodyClass="space-y-5"
+        >
+          <div slot="header-actions" class="flex flex-wrap gap-2">
+            <Button id="copy-btn" variant="secondary" class="px-4 py-2 text-sm">Copy</Button>
+            <Button id="clear-btn" variant="ghost" class="px-4 py-2 text-sm">Clear</Button>
           </div>
 
-          <div class="flex-1 overflow-auto rounded-xl border border-white/10 bg-black/50 p-4">
+          <div
+            class="flex-1 overflow-auto rounded-xl border border-white/10 bg-black/50 p-6 md:p-7"
+          >
             <pre
               id="uuid-output"
               class="min-h-[320px] text-sm whitespace-pre-wrap text-slate-100">Ready to generate UUIDs.</pre>
           </div>
-        </div>
+        </ToolCard>
       </div>
-    </div>
-  </div>
+    </ToolGrid>
+  </ToolPage>
 </Layout>
 
 <script>

@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Username Generator">
   <div class="space-y-12">
-    <div class="animate-fade-in mb-8 flex justify-center">
+    <div class="animate-fade-in mb-12 flex justify-center">
       <p
         class="rounded-full border border-white/10 bg-white/5 px-6 py-2 text-sm font-medium text-slate-300 backdrop-blur-md transition-all hover:bg-white/10 hover:text-white"
       >
@@ -14,16 +14,16 @@ import Layout from "../layouts/Layout.astro";
     </div>
 
     <!-- Generator Interface -->
-    <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-3">
+    <div class="mt-2 grid grid-cols-1 items-start gap-8 lg:grid-cols-3">
       <!-- Controls -->
       <div class="space-y-6 lg:col-span-1">
-        <div class="card-glass relative z-10">
-          <h2 class="mb-4 flex items-center gap-2 text-lg font-bold text-white">
+        <div class="card-glass username-config-card relative z-10">
+          <h2 class="mb-5 flex items-center gap-2 text-lg font-bold text-white">
             <span class="text-blue-400">01.</span> Configuration
           </h2>
 
-          <div class="space-y-4">
-            <div>
+          <div class="username-config-stack">
+            <div class="space-y-2">
               <label for="base-word" class="mb-2 block text-sm font-medium text-slate-400"
                 >Base Word (Optional)</label
               >
@@ -35,9 +35,9 @@ import Layout from "../layouts/Layout.astro";
               />
             </div>
 
-            <div>
+            <div class="space-y-2">
               <label class="mb-2 block text-sm font-medium text-slate-400">Category</label>
-              <div class="grid grid-cols-2 gap-2">
+              <div class="grid grid-cols-2 gap-3">
                 <button
                   class="category-btn active rounded-lg border border-blue-500/30 bg-blue-600/20 px-3 py-2 text-sm font-medium text-blue-300 transition-all hover:bg-blue-600/30"
                   data-category="all"
@@ -65,7 +65,7 @@ import Layout from "../layouts/Layout.astro";
               </div>
             </div>
 
-            <div>
+            <div class="space-y-2">
               <label class="mb-2 block text-sm font-medium text-slate-400">Options</label>
               <label
                 class="flex cursor-pointer items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:bg-white/10"
@@ -80,8 +80,12 @@ import Layout from "../layouts/Layout.astro";
               </label>
             </div>
 
-            <div class="flex justify-center">
-              <Button id="generate-btn" class="mt-4 px-10 sm:w-auto" variant="primary">
+            <div class="username-generate-wrap flex justify-center">
+              <Button
+                id="generate-btn"
+                class="username-generate-btn w-full sm:w-auto sm:min-w-[180px]"
+                variant="primary"
+              >
                 <span class="mr-2">⚡</span> Generate
               </Button>
             </div>
@@ -409,3 +413,30 @@ import Layout from "../layouts/Layout.astro";
   // Initial Run
   // setTimeout(runGeneration, 500);
 </script>
+
+<style>
+  .username-config-stack {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .username-config-stack {
+      gap: 1.1rem;
+    }
+  }
+
+  .username-generate-wrap {
+    padding-top: 0.35rem;
+  }
+
+  .username-generate-btn {
+    min-height: 2.7rem !important;
+    padding: 0.75rem 1.3rem !important;
+    letter-spacing: 0.01em;
+  }
+
+  .username-config-card .category-btn {
+    padding: 0.6rem 0.85rem !important;
+  }
+</style>

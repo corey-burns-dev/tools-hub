@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+const isDev = import.meta.env.DEV;
 
 // Tool definitions with categories
 const tools = {
@@ -104,13 +105,17 @@ const tools = {
       desc: "Encode, decode, inspect URLs",
       status: "working",
     },
-    {
-      name: "Debug Logs",
-      href: "/debug-logs",
-      icon: "📋",
-      desc: "View captured client crashes",
-      status: "working",
-    },
+    ...(isDev
+      ? [
+          {
+            name: "Debug Logs",
+            href: "/debug-logs",
+            icon: "📋",
+            desc: "View captured client crashes",
+            status: "working",
+          },
+        ]
+      : []),
   ],
   Creative: [
     {
@@ -310,42 +315,6 @@ const categoryIcons: Record<string, string> = {
           </section>
         ))
       }
-    </div>
-
-    <!-- Theme Showcase Link -->
-    <div
-      class="relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900 to-slate-900/50 p-1"
-    >
-      <div
-        class="bg-grid-slate-800/50 absolute inset-0 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]"
-      >
-      </div>
-      <a
-        href="/theme-showcase"
-        class="relative flex items-center justify-between gap-6 rounded-xl bg-slate-950/50 p-8 transition-colors hover:bg-slate-900/80"
-      >
-        <div class="flex items-center gap-6">
-          <div
-            class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 text-4xl shadow-lg"
-          >
-            🎨
-          </div>
-          <div>
-            <h3 class="font-outfit text-xl font-bold text-white">Theme Showcase</h3>
-            <p class="mt-1 text-slate-400">
-              Explore the complete design system, colors, and components.
-            </p>
-          </div>
-        </div>
-        <div
-          class="rounded-full bg-slate-800 p-3 text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-white"
-        >
-          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"
-            ></path>
-          </svg>
-        </div>
-      </a>
     </div>
   </div>
 </Layout>
