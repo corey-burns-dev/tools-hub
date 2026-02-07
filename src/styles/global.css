@@ -80,7 +80,7 @@
   }
 
   .ui-card {
-    @apply rounded-2xl border border-slate-700/50 bg-slate-800/50 p-5 shadow-2xl backdrop-blur-sm md:p-6;
+    @apply rounded-2xl border border-slate-700/50 bg-slate-800/50 p-4 shadow-2xl backdrop-blur-sm md:p-[1.15rem];
   }
 
   .ui-card-header {
@@ -103,6 +103,17 @@
   .ui-select,
   .ui-textarea {
     @apply w-full rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-white transition-all outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500;
+  }
+
+  /* Baseline padding for form fields across all tools */
+  :where(.page-shell)
+    :where(
+      input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not(
+          [type="file"]
+        ),
+      select
+    ) {
+    padding: 0.7rem 1rem;
   }
 
   .ui-option-row {
@@ -142,23 +153,23 @@
     @apply relative overflow-hidden rounded-2xl shadow-xl shadow-black/5 backdrop-blur-xl transition-all duration-300 hover:shadow-2xl hover:shadow-current/5;
     background-color: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    padding: 1rem !important;
+    padding: 1rem;
   }
 
   @media (min-width: 768px) {
     .card-glass {
-      padding: 1.15rem !important;
+      padding: 1.15rem;
     }
   }
 
   .tool-panel {
     @apply rounded-2xl border border-slate-700/50 bg-slate-800/50 shadow-2xl backdrop-blur-sm;
-    padding: 1rem !important;
+    padding: 1rem;
   }
 
   @media (min-width: 768px) {
     .tool-panel {
-      padding: 1.15rem !important;
+      padding: 1.15rem;
     }
   }
 
@@ -170,7 +181,7 @@
   /* Baseline sizing so buttons feel consistent across pages */
   :where(.page-shell) :where(button, a.btn-primary, a.btn-secondary, a.btn-ghost) {
     min-height: 2.5rem;
-    padding: 0.65rem 1rem !important;
+    padding: 0.65rem 1rem;
     border-radius: 0.65rem;
     font-size: 0.9rem;
     line-height: 1.2;

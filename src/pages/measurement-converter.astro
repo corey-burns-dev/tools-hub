@@ -8,8 +8,8 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Measurement Converter">
   <ToolPage>
-    <ToolGrid cols={2} class="gap-10">
-      <ToolCard title="Converter" step="01." class="p-7 md:p-8" bodyClass="space-y-6 md:space-y-7">
+    <ToolGrid cols={2} class="gap-8">
+      <ToolCard title="Converter" step="01." bodyClass="space-y-5 md:space-y-6">
         <div class="space-y-2">
           <label
             for="category"
@@ -76,7 +76,7 @@ import Layout from "../layouts/Layout.astro";
         </div>
       </ToolCard>
 
-      <ToolCard title="Result" step="02." class="p-7 md:p-8" bodyClass="space-y-6">
+      <ToolCard title="Result" step="02." bodyClass="space-y-5">
         <div class="ui-output-box p-6 md:p-7">
           <p class="text-xs font-bold tracking-wider text-slate-500 uppercase">Converted Value</p>
           <p id="result-value" class="mt-2 text-4xl font-extrabold text-emerald-400">1 m</p>
