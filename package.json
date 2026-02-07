@@ -2,6 +2,7 @@
   "name": "tools-hub",
   "type": "module",
   "version": "0.0.1",
+  "packageManager": "bun@1.2.22",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -14,6 +15,7 @@
     "lint-staged": "lint-staged",
     "check": "astro check",
     "prepare": "husky",
+    "predeploy": "bun run build",
     "deploy": "wrangler deploy"
   },
   "lint-staged": {

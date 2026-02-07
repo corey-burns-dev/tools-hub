@@ -16,8 +16,7 @@ A premium collection of developer utilities and tools built with [Astro](https:/
 
 ### Prerequisites
 
-- Node.js v18.17.1 or higher
-- npm v9 or higher
+- Bun v1.2 or higher
 
 ### Installation
 
@@ -31,30 +30,30 @@ A premium collection of developer utilities and tools built with [Astro](https:/
 2. Install dependencies:
 
    ```bash
-   npm install
+   bun install
    ```
 
 3. Start the development server:
 
    ```bash
-   npm run dev
+   bun run dev
    ```
 
 ## 🛠️ Development
 
 ### Scripts
 
-- `npm run dev`: Start local dev server
-- `npm run build`: Build for production
-- `npm run lint`: Run Biome linter
-- `npm run format`: Format code with Biome
-- `npm run check`: Run Astro type checking
+- `bun run dev`: Start local dev server
+- `bun run build`: Build for production
+- `bun run lint`: Run linter
+- `bun run format`: Format code
+- `bun run check`: Run Astro type checking
 
 ### Tech Stack
 
 - **Framework**: Astro 5
 - **Styling**: Tailwind CSS 4
-- **Linting/Formatting**: Biome
+- **Linting/Formatting**: ESLint + Prettier
 - **Type Checking**: Astro Check / TypeScript
 
 ## 📄 License

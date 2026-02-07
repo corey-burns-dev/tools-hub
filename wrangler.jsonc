@@ -3,12 +3,12 @@
   "name": "tools-hub",
   "compatibility_date": "2026-02-05",
   "assets": {
-    "directory": "./dist",
+    "directory": "./dist"
   },
   "routes": [
     {
       "pattern": "tools.coreyburns.ca/*",
-      "zone_name": "coreyburns.ca",
-    },
-  ],
+      "zone_name": "coreyburns.ca"
+    }
+  ]
 }
