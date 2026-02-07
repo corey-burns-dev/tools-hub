@@ -1,14 +1,12 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tools-hub",
-  "compatibility_date": "2026-02-05",
-  "assets": {
-    "directory": "./dist"
-  },
-  "routes": [
-    {
-      "pattern": "tools.coreyburns.ca/*",
-      "zone_name": "coreyburns.ca"
-    }
-  ]
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "tools-hub",
+	"compatibility_date": "2026-02-05",
+	"pages_build_output_dir": "dist",
+	"routes": [
+		{
+			"pattern": "tools.coreyburns.ca/*",
+			"zone_name": "coreyburns.ca"
+		}
+	]
 }
