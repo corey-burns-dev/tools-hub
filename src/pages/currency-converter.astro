@@ -3,27 +3,243 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Currency Converter">
-  <div class="space-y-12">
-    <div class="animate-float mb-12 text-center">
+  <div class="mx-auto max-w-4xl space-y-12 text-center">
+    <!-- Header -->
+    <div class="animate-fade-in space-y-4">
       <div
-        class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-lg shadow-blue-500/30"
+        class="inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-600 text-5xl shadow-xl shadow-emerald-500/20"
       >
         💱
       </div>
       <h1
-        class="mb-4 bg-linear-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-clip-text text-5xl font-bold text-transparent"
+        class="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent md:text-6xl"
       >
         Currency Converter
       </h1>
-      <p class="text-xl text-slate-400">Convert between global currencies with real-time rates.</p>
+      <p class="text-xl text-slate-400">Real-time exchange rates at your fingertips.</p>
     </div>
 
-    <div class="card-glass flex min-h-[400px] items-center justify-center">
-      <div class="text-center">
-        <div class="mb-4 animate-bounce text-6xl">🚧</div>
-        <h2 class="mb-2 text-2xl font-bold text-white">Coming Soon</h2>
-        <p class="text-slate-400">This tool is currently under construction.</p>
+    <!-- Converter Card -->
+    <div
+      class="relative overflow-visible rounded-3xl border border-slate-800 bg-slate-900/50 p-8 shadow-2xl backdrop-blur-xl md:p-12"
+    >
+      <div class="grid gap-8 md:grid-cols-[1fr_auto_1fr] md:items-center">
+        <!-- From Currency -->
+        <div
+          class="space-y-4 rounded-2xl bg-slate-800/50 p-6 ring-1 ring-slate-700/50 transition-all focus-within:bg-slate-800 focus-within:ring-emerald-500/50"
+        >
+          <label class="block text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
+            >Amount & Currency</label
+          >
+          <div class="flex gap-4">
+            <input
+              type="number"
+              id="amount-from"
+              value="1"
+              min="0"
+              step="any"
+              class="w-full bg-transparent text-3xl font-bold text-white outline-none placeholder:text-slate-600 focus:placeholder:text-slate-500"
+            />
+            <select
+              id="currency-from"
+              class="cursor-pointer rounded-xl bg-slate-700 px-3 py-1 font-mono font-bold text-white transition-colors outline-none hover:bg-slate-600"
+            >
+              <option value="USD" selected>🇺🇸 USD</option>
+              <option value="EUR">🇪🇺 EUR</option>
+              <option value="GBP">🇬🇧 GBP</option>
+              <option value="JPY">🇯🇵 JPY</option>
+              <option value="CAD">🇨🇦 CAD</option>
+              <option value="AUD">🇦🇺 AUD</option>
+              <option value="CNY">🇨🇳 CNY</option>
+              <option value="INR">🇮🇳 INR</option>
+              <option value="CHF">🇨🇭 CHF</option>
+            </select>
+          </div>
+          <div class="text-left text-sm text-slate-400" id="rate-display-from">
+            1 USD = 0.92 EUR
+          </div>
+        </div>
+
+        <!-- Swap Button -->
+        <div class="flex justify-center">
+          <button
+            id="swap-btn"
+            class="group flex h-14 w-14 items-center justify-center rounded-full border border-slate-700 bg-slate-800 text-2xl shadow-lg transition-all hover:scale-110 hover:border-emerald-500/50 hover:bg-slate-700 active:scale-95 md:rotate-90"
+            title="Swap Currencies"
+          >
+            <span class="transition-transform duration-500 group-hover:rotate-180">⇄</span>
+          </button>
+        </div>
+
+        <!-- To Currency -->
+        <div
+          class="space-y-4 rounded-2xl bg-slate-800/50 p-6 ring-1 ring-slate-700/50 transition-all focus-within:bg-slate-800 focus-within:ring-teal-500/50"
+        >
+          <label class="block text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
+            >Converted To</label
+          >
+          <div class="flex gap-4">
+            <input
+              type="text"
+              id="amount-to"
+              value="0.92"
+              readonly
+              class="w-full cursor-default bg-transparent text-3xl font-bold text-emerald-400 outline-none"
+            />
+            <select
+              id="currency-to"
+              class="cursor-pointer rounded-xl bg-slate-700 px-3 py-1 font-mono font-bold text-white transition-colors outline-none hover:bg-slate-600"
+            >
+              <option value="USD">🇺🇸 USD</option>
+              <option value="EUR" selected>🇪🇺 EUR</option>
+              <option value="GBP">🇬🇧 GBP</option>
+              <option value="JPY">🇯🇵 JPY</option>
+              <option value="CAD">🇨🇦 CAD</option>
+              <option value="AUD">🇦🇺 AUD</option>
+              <option value="CNY">🇨🇳 CNY</option>
+              <option value="INR">🇮🇳 INR</option>
+              <option value="CHF">🇨🇭 CHF</option>
+            </select>
+          </div>
+          <div class="text-left text-sm text-slate-400" id="rate-display-to">1 EUR = 1.09 USD</div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="mt-8 border-t border-slate-800/50 pt-8">
+        <p class="mb-4 text-xs font-bold tracking-widest text-slate-500 uppercase">
+          Popular Conversions
+        </p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <button
+            class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+            data-from="USD"
+            data-to="EUR">USD → EUR</button
+          >
+          <button
+            class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+            data-from="EUR"
+            data-to="USD">EUR → USD</button
+          >
+          <button
+            class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+            data-from="GBP"
+            data-to="USD">GBP → USD</button
+          >
+          <button
+            class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+            data-from="USD"
+            data-to="JPY">USD → JPY</button
+          >
+          <button
+            class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+            data-from="USD"
+            data-to="CAD">USD → CAD</button
+          >
+        </div>
       </div>
     </div>
   </div>
 </Layout>
+
+<script>
+  // Rates based on USD (Mock Data)
+  const rates: Record<string, number> = {
+    USD: 1.0,
+    EUR: 0.92,
+    GBP: 0.79,
+    JPY: 150.25,
+    CAD: 1.35,
+    AUD: 1.52,
+    CNY: 7.19,
+    INR: 82.9,
+    CHF: 0.88,
+  };
+
+  // Elements
+  const amountFrom = document.getElementById("amount-from") as HTMLInputElement;
+  const amountTo = document.getElementById("amount-to") as HTMLInputElement;
+  const currencyFrom = document.getElementById("currency-from") as HTMLSelectElement;
+  const currencyTo = document.getElementById("currency-to") as HTMLSelectElement;
+  const swapBtn = document.getElementById("swap-btn");
+  const rateDisplayFrom = document.getElementById("rate-display-from");
+  const rateDisplayTo = document.getElementById("rate-display-to");
+  const quickPairs = document.querySelectorAll(".quick-pair");
+
+  function calculate() {
+    if (!amountFrom || !amountTo || !currencyFrom || !currencyTo) return;
+
+    const fromVal = parseFloat(amountFrom.value) || 0;
+    const fromRate = rates[currencyFrom.value];
+    const toRate = rates[currencyTo.value];
+
+    // Convert to USD first (base), then to target
+    const inUsd = fromVal / fromRate;
+    const result = inUsd * toRate;
+
+    // Smart formatting logic
+    const formatted =
+      result < 0.01 && result > 0
+        ? result.toPrecision(4)
+        : result.toLocaleString("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 0 });
+
+    amountTo.value = formatted;
+
+    // Update single unit displays
+    updateRateDisplays(fromRate, toRate);
+  }
+
+  function updateRateDisplays(fromRate: number, toRate: number) {
+    if (!rateDisplayFrom || !rateDisplayTo || !currencyFrom || !currencyTo) return;
+
+    const singleUnit = (1 / fromRate) * toRate;
+    // e.g. 1 USD = 0.92 EUR
+    rateDisplayFrom.textContent = `1 ${currencyFrom.value} = ${singleUnit.toLocaleString(undefined, { maximumFractionDigits: 4 })} ${currencyTo.value}`;
+
+    const reverseUnit = (1 / toRate) * fromRate;
+    // e.g. 1 EUR = 1.09 USD
+    rateDisplayTo.textContent = `1 ${currencyTo.value} = ${reverseUnit.toLocaleString(undefined, { maximumFractionDigits: 4 })} ${currencyFrom.value}`;
+  }
+
+  function swap() {
+    if (!currencyFrom || !currencyTo) return;
+
+    // Swap values
+    const temp = currencyFrom.value;
+    currencyFrom.value = currencyTo.value;
+    currencyTo.value = temp;
+
+    // Recalculate
+    calculate();
+
+    // Visual feedback
+    swapBtn?.classList.add("rotate-180");
+    setTimeout(() => swapBtn?.classList.remove("rotate-180"), 500);
+  }
+
+  // Listeners
+  amountFrom?.addEventListener("input", calculate);
+  currencyFrom?.addEventListener("change", calculate);
+  currencyTo?.addEventListener("change", calculate);
+  swapBtn?.addEventListener("click", swap);
+
+  // Initial calc
+  calculate();
+
+  // Quick Pairs
+  quickPairs.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const from = btn.getAttribute("data-from");
+      const to = btn.getAttribute("data-to");
+
+      if (from && to && currencyFrom && currencyTo) {
+        currencyFrom.value = from;
+        currencyTo.value = to;
+        calculate();
+
+        // Highlight effect
+        amountFrom?.focus();
+      }
+    });
+  });
+</script>

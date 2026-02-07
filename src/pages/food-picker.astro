@@ -2,28 +2,200 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="What Should I Eat?">
-  <div class="space-y-12">
-    <div class="animate-float mb-12 text-center">
+<Layout title="Food Picker">
+  <div class="mx-auto max-w-3xl space-y-12 text-center">
+    <!-- Header -->
+    <div class="animate-fade-in space-y-4">
       <div
-        class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-violet-500 text-4xl shadow-lg shadow-blue-500/30"
+        class="inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-orange-500 to-red-600 text-5xl shadow-xl shadow-orange-500/20"
       >
         🍔
       </div>
       <h1
-        class="mb-4 bg-linear-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-clip-text text-5xl font-bold text-transparent"
+        class="bg-gradient-to-r from-orange-400 via-red-400 to-rose-400 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent md:text-6xl"
       >
         Food Picker
       </h1>
-      <p class="text-xl text-slate-400">Can't decide what to eat? Let fate decide.</p>
+      <p class="text-xl text-slate-400">Can't decide? Let the algorithm choose your next meal.</p>
     </div>
 
-    <div class="card-glass flex min-h-100 items-center justify-center">
-      <div class="text-center">
-        <div class="mb-4 animate-bounce text-6xl">🚧</div>
-        <h2 class="mb-2 text-2xl font-bold text-white">Coming Soon</h2>
-        <p class="text-slate-400">This tool is currently under construction.</p>
+    <!-- Main Game Area -->
+    <div
+      class="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/50 p-8 shadow-2xl backdrop-blur-xl md:p-12"
+    >
+      <!-- Result Display -->
+      <div id="result-container" class="mb-12 min-h-[200px] content-center">
+        <div id="initial-state">
+          <div class="animate-pulse text-6xl">🤔</div>
+          <p class="mt-4 text-xl font-medium text-slate-500">I'm thinking...</p>
+        </div>
+
+        <div id="result-content" class="hidden transform transition-all duration-500">
+          <div id="result-emoji" class="mb-4 text-8xl transition-transform hover:scale-110"></div>
+          <h2
+            id="result-name"
+            class="mb-2 bg-gradient-to-r from-white to-slate-200 bg-clip-text text-4xl font-bold text-transparent"
+          >
+          </h2>
+          <span
+            id="result-category"
+            class="inline-block rounded-full bg-slate-800 px-4 py-1 text-sm font-medium tracking-wide text-slate-400 uppercase"
+          >
+          </span>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="space-y-8">
+        <!-- Categories -->
+        <div class="space-y-3">
+          <p class="text-xs font-bold tracking-widest text-slate-500 uppercase">Select Filter</p>
+          <div class="flex flex-wrap justify-center gap-2" id="category-filters">
+            <button
+              data-category="All"
+              class="category-btn active rounded-xl border border-orange-500/50 bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-400 transition-all hover:bg-orange-500/20"
+            >
+              All
+            </button>
+            <button
+              data-category="Fast Food"
+              class="category-btn rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-400 transition-all hover:border-slate-600 hover:bg-slate-800"
+            >
+              Fast Food
+            </button>
+            <button
+              data-category="Healthy"
+              class="category-btn rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-400 transition-all hover:border-slate-600 hover:bg-slate-800"
+            >
+              Healthy
+            </button>
+            <button
+              data-category="Asian"
+              class="category-btn rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-400 transition-all hover:border-slate-600 hover:bg-slate-800"
+            >
+              Asian
+            </button>
+            <button
+              data-category="Italian"
+              class="category-btn rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-400 transition-all hover:border-slate-600 hover:bg-slate-800"
+            >
+              Italian
+            </button>
+            <button
+              data-category="Sweet"
+              class="category-btn rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-400 transition-all hover:border-slate-600 hover:bg-slate-800"
+            >
+              Sweet
+            </button>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <button
+          id="spin-btn"
+          class="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-r from-orange-500 to-red-600 p-1 transition-transform active:scale-95 md:w-auto md:min-w-[200px]"
+        >
+          <div
+            class="relative flex items-center justify-center gap-2 rounded-xl bg-slate-900/10 px-8 py-4 text-xl font-bold text-white transition-colors group-hover:bg-transparent"
+          >
+            <span>Pick Food</span>
+            <span class="text-2xl transition-transform group-hover:rotate-12">🎲</span>
+          </div>
+        </button>
       </div>
     </div>
   </div>
 </Layout>
+
+<script>
+  // Food Data
+  const foods = [
+    { name: "Pizza", emoji: "🍕", category: "Italian" },
+    { name: "Burger", emoji: "🍔", category: "Fast Food" },
+    { name: "Sushi", emoji: "🍣", category: "Asian" },
+    { name: "Salad", emoji: "🥗", category: "Healthy" },
+    { name: "Tacos", emoji: "🌮", category: "Mexican" },
+    { name: "Pasta", emoji: "🍝", category: "Italian" },
+    { name: "Ramen", emoji: "🍜", category: "Asian" },
+    { name: "Steak", emoji: "🥩", category: "Fancy" },
+    { name: "Sandwich", emoji: "🥪", category: "Lunch" },
+    { name: "Dim Sum", emoji: "🥟", category: "Asian" },
+    { name: "Fried Chicken", emoji: "🍗", category: "Fast Food" },
+    { name: "Donut", emoji: "🍩", category: "Sweet" },
+    { name: "Poke Bowl", emoji: "🥣", category: "Healthy" },
+    { name: "Burrito", emoji: "🌯", category: "Mexican" },
+    { name: "Ice Cream", emoji: "🍦", category: "Sweet" },
+    { name: "Curry", emoji: "🍛", category: "Asian" },
+  ];
+
+  // State
+  let activeCategory = "All";
+  let isSpinning = false;
+
+  // Elements
+  const resultContainer = document.getElementById("result-content");
+  const initialState = document.getElementById("initial-state");
+  const resultName = document.getElementById("result-name");
+  const resultEmoji = document.getElementById("result-emoji");
+  const resultCategory = document.getElementById("result-category");
+  const spinBtn = document.getElementById("spin-btn");
+  const categoryBtns = document.querySelectorAll(".category-btn");
+
+  // Filter Logic
+  categoryBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (isSpinning) return;
+
+      // Update UI
+      categoryBtns.forEach((b) => {
+        b.classList.remove("active", "border-orange-500/50", "bg-orange-500/10", "text-orange-400");
+        b.classList.add("border-slate-700", "bg-slate-800/50", "text-slate-400");
+      });
+
+      btn.classList.remove("border-slate-700", "bg-slate-800/50", "text-slate-400");
+      btn.classList.add("active", "border-orange-500/50", "bg-orange-500/10", "text-orange-400");
+
+      activeCategory = btn.getAttribute("data-category") || "All";
+    });
+  });
+
+  // Spin Logic
+  spinBtn?.addEventListener("click", () => {
+    if (isSpinning) return;
+
+    isSpinning = true;
+    initialState?.classList.add("hidden");
+    resultContainer?.classList.remove("hidden");
+
+    // Filter available foods
+    const candidates =
+      activeCategory === "All" ? foods : foods.filter((f) => f.category === activeCategory);
+
+    if (candidates.length === 0) {
+      if (resultName) resultName.textContent = "No foods found!";
+      if (resultEmoji) resultEmoji.textContent = "😢";
+      if (resultCategory) resultCategory.textContent = "Try another category";
+      isSpinning = false;
+      return;
+    }
+
+    // Animation Effect
+    let iterations = 0;
+    const maxIterations = 20;
+    const interval = setInterval(() => {
+      const randomFood = candidates[Math.floor(Math.random() * candidates.length)];
+
+      if (resultName) resultName.textContent = randomFood.name;
+      if (resultEmoji) resultEmoji.textContent = randomFood.emoji;
+      if (resultCategory) resultCategory.textContent = randomFood.category;
+
+      iterations++;
+
+      if (iterations >= maxIterations) {
+        clearInterval(interval);
+        isSpinning = false;
+        // Final selection bounce/highlight could go here
+      }
+    }, 100);
+  });
+</script>
