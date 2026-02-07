@@ -8,7 +8,7 @@ import ToolPage from "../components/ui/ToolPage.astro";
 
 <Layout title="UUID Generator">
   <ToolPage description="Generate RFC 4122 v4 UUIDs instantly.">
-    <ToolGrid cols={3}>
+    <ToolGrid cols={3} class="gap-10">
       <div class="space-y-6 lg:col-span-1">
         <ToolCard title="Settings" step="01." class="p-6 md:p-7" bodyClass="space-y-5 md:space-y-6">
           <div class="space-y-6">
@@ -55,7 +55,7 @@ import ToolPage from "../components/ui/ToolPage.astro";
           class="flex min-h-[480px] flex-col p-6 md:p-7"
           bodyClass="space-y-5"
         >
-          <div slot="header-actions" class="flex flex-wrap gap-2">
+          <div slot="header-actions" class="flex flex-wrap gap-3">
             <Button id="copy-btn" variant="secondary" class="px-4 py-2 text-sm">Copy</Button>
             <Button id="clear-btn" variant="ghost" class="px-4 py-2 text-sm">Clear</Button>
           </div>

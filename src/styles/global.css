@@ -66,6 +66,15 @@
     padding: 0.7rem 1rem !important;
   }
 
+  /* Hide tool-page description pills globally */
+  :where(.page-shell) :where(.ui-page-description) {
+    display: none !important;
+  }
+
+  :where(.page-shell) :where(.animate-fade-in.mb-8.flex.justify-center) {
+    display: none !important;
+  }
+
   .ui-grid {
     @apply grid gap-8;
   }

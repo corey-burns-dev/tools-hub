@@ -8,21 +8,21 @@ import ToolPage from "../components/ui/ToolPage.astro";
 
 <Layout title="Base64 Encoder/Decoder">
   <ToolPage description="Encode, decode, and inspect Base64 content.">
-    <ToolGrid cols={2}>
-      <ToolCard title="Input" step="01.">
+    <ToolGrid cols={2} class="gap-10">
+      <ToolCard title="Input" step="01." class="p-7 md:p-8" bodyClass="space-y-6 md:space-y-7">
         <textarea
           id="plain-input"
           rows="10"
           placeholder="Paste text here..."
           class="ui-textarea resize-none placeholder-slate-600"></textarea>
 
-        <div class="ui-action-row">
+        <div class="ui-action-row mt-5 gap-4 sm:gap-5">
           <Button id="encode-btn" variant="primary" class="px-10 sm:w-auto"> Encode → </Button>
           <Button id="decode-btn" variant="secondary" class="px-10 sm:w-auto"> ← Decode </Button>
           <Button id="clear-btn" variant="ghost" class="px-10 sm:w-auto"> Clear </Button>
         </div>
 
-        <div class="mt-6 space-y-3">
+        <div class="mt-8 space-y-5">
           <label class="flex items-center gap-3 text-sm text-slate-300">
             <input
               id="url-safe"
@@ -33,28 +33,33 @@ import ToolPage from "../components/ui/ToolPage.astro";
           </label>
 
           <div
-            class="rounded-xl border border-dashed border-white/10 bg-white/5 p-4 text-xs text-slate-400"
+            class="rounded-xl border border-dashed border-white/10 bg-white/5 p-5 text-xs text-slate-400"
           >
             Tip: Drag a small file into the Base64 output area to encode it.
           </div>
         </div>
       </ToolCard>
 
-      <ToolCard title="Base64 Output" step="02." class="flex flex-col">
+      <ToolCard
+        title="Base64 Output"
+        step="02."
+        class="flex flex-col p-7 md:p-8"
+        bodyClass="space-y-6"
+      >
         <Button slot="header-actions" id="copy-btn" variant="ghost" class="px-4 py-2 text-sm">
           Copy
         </Button>
-        <div class="flex flex-1 flex-col">
+        <div class="flex flex-1 flex-col gap-5">
           <textarea
             id="base64-output"
             rows="12"
             placeholder="Base64 output will appear here"
-            class="ui-textarea mt-0 flex-1 resize-none bg-black/50 px-5 py-4 font-mono text-sm md:px-6 md:py-5"
+            class="ui-textarea mt-0 flex-1 resize-none bg-black/50 px-7 py-6 font-mono text-sm md:px-8 md:py-7"
           ></textarea>
 
           <div
             id="drop-zone"
-            class="mt-4 flex items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 px-4 py-4 text-xs text-slate-400"
+            class="flex items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 px-6 py-6 text-xs text-slate-400"
           >
             Drop a file here to encode it
           </div>

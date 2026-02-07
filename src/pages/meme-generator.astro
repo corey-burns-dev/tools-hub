@@ -5,14 +5,6 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Meme Generator">
   <div class="space-y-12">
-    <div class="animate-fade-in mb-8 flex justify-center">
-      <p
-        class="rounded-full border border-white/10 bg-white/5 px-6 py-2 text-sm font-medium text-slate-300 backdrop-blur-md transition-all hover:bg-white/10 hover:text-white"
-      >
-        Create meme masterpieces with custom text overlays.
-      </p>
-    </div>
-
     <div
       id="meme-generator-container"
       class="grid grid-cols-1 items-start gap-8 lg:grid-cols-2"
@@ -109,7 +101,7 @@ import Layout from "../layouts/Layout.astro";
               <!-- Memes Grid -->
               <div
                 id="memes-grid"
-                class="custom-scrollbar grid hidden max-h-[260px] auto-cols-[132px] grid-flow-col grid-rows-2 gap-2 overflow-x-auto overflow-y-hidden pr-2 pb-2 md:auto-cols-[148px]"
+                class="custom-scrollbar grid hidden max-h-[340px] auto-cols-[168px] grid-flow-col grid-rows-2 gap-3 overflow-x-auto overflow-y-hidden pr-2 pb-2 md:auto-cols-[188px]"
               >
                 <!-- Memes will be loaded here -->
               </div>
@@ -123,15 +115,26 @@ import Layout from "../layouts/Layout.astro";
             <h3 class="flex items-center gap-2 text-lg font-bold text-white">
               <span>✍️</span> Text Boxes
             </h3>
-            <button
-              id="add-text-box"
-              class="rounded-lg bg-blue-600 px-3 py-1 text-sm font-bold text-white transition-all hover:bg-blue-700"
-            >
-              + Add Text
-            </button>
+            <div class="flex items-center gap-2">
+              <button
+                id="reset-text-boxes"
+                class="rounded-lg bg-slate-700 px-3 py-1 text-sm font-bold text-white transition-all hover:bg-slate-600"
+              >
+                Reset
+              </button>
+              <button
+                id="add-text-box"
+                class="rounded-lg bg-blue-600 px-3 py-1 text-sm font-bold text-white transition-all hover:bg-blue-700"
+              >
+                + Add Text
+              </button>
+            </div>
           </div>
 
-          <div id="text-boxes-container" class="space-y-4">
+          <div
+            id="text-boxes-container"
+            class="space-y-4 rounded-xl border border-slate-700/60 bg-slate-900/30 p-4 md:p-5"
+          >
             <!-- Text boxes will be dynamically added here -->
           </div>
         </div>
@@ -291,6 +294,7 @@ import Layout from "../layouts/Layout.astro";
   const memeSearch = document.getElementById("meme-search") as HTMLInputElement;
   const refreshBtn = document.getElementById("refresh-memes");
   const addTextBoxBtn = document.getElementById("add-text-box");
+  const resetTextBoxesBtn = document.getElementById("reset-text-boxes");
   const textBoxesContainer = document.getElementById("text-boxes-container");
   const toggleEditModeBtn = document.getElementById("toggle-edit-mode") as HTMLButtonElement;
   const editHint = document.getElementById("edit-hint");
@@ -516,7 +520,7 @@ import Layout from "../layouts/Layout.astro";
     textBoxesContainer.innerHTML = textBoxes
       .map(
         (box, index) => `
-        <div class="text-box-card bg-slate-900/30 border border-slate-700 rounded-lg p-4" data-box-id="${box.id}">
+        <div class="text-box-card bg-slate-900/35 border border-slate-700 rounded-lg p-5 md:p-6" data-box-id="${box.id}">
           <div class="flex items-center justify-between mb-2">
             <label class="text-sm font-semibold text-slate-300">Text ${index + 1}</label>
             <button class="remove-text-box text-red-400 hover:text-red-300 text-sm" data-box-id="${box.id}">
@@ -525,7 +529,7 @@ import Layout from "../layouts/Layout.astro";
           </div>
           <input
             type="text"
-            class="text-box-input w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all uppercase"
+            class="text-box-input w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all uppercase"
             placeholder="ENTER TEXT"
             data-box-id="${box.id}"
             value="${box.text}"
@@ -591,6 +595,13 @@ import Layout from "../layouts/Layout.astro";
     drawMeme();
   }
 
+  function resetTextBoxes() {
+    const currentMemeId = document
+      .querySelector(".meme-template.selected")
+      ?.getAttribute("data-id");
+    initializeTextBoxes(currentMemeId || undefined);
+  }
+
   // Display initial memes
   displayMemes(allMemes);
 
@@ -607,7 +618,7 @@ import Layout from "../layouts/Layout.astro";
     memesGrid.innerHTML = popularMemes
       .map(
         (meme) => `
-        <div class="meme-template h-28 w-full rounded-lg overflow-hidden bg-slate-700 border border-slate-600 hover:border-blue-500 md:h-32" data-url="${meme.localUrl || meme.url}" data-name="${meme.name}" data-id="${meme.id}">
+        <div class="meme-template h-36 w-full rounded-lg overflow-hidden bg-slate-700 border border-slate-600 hover:border-blue-500 md:h-40" data-url="${meme.localUrl || meme.url}" data-name="${meme.name}" data-id="${meme.id}">
           <img src="${meme.localUrl || meme.url}" alt="${meme.name}" loading="lazy" />
           <div class="meme-name">${meme.name}</div>
         </div>
@@ -913,6 +924,7 @@ import Layout from "../layouts/Layout.astro";
   });
 
   addTextBoxBtn?.addEventListener("click", addTextBox);
+  resetTextBoxesBtn?.addEventListener("click", resetTextBoxes);
 
   resetPositionsBtn?.addEventListener("click", () => {
     if (confirm("Reset all text positions to default?")) {
