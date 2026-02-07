@@ -4,12 +4,43 @@ import "../styles/global.css";
 
 interface Props {
   title: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description = "Tools Hub provides fast, browser-based tools for developers, creators, and daily workflows.",
+  image = "/og-image.svg",
+  noindex = false,
+} = Astro.props;
+
+const siteName = "Tools Hub";
+const siteUrl = Astro.site?.toString() ?? "https://tools.coreyburns.ca";
+const pageTitle = `${title} | ${siteName}`;
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const socialImageUrl =
+  image.startsWith("https://") || image.startsWith("http://")
+    ? image
+    : new URL(image, siteUrl).toString();
+const robotsContent = noindex ? "noindex, nofollow" : "index, follow";
+const structuredData = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: pageTitle,
+  description,
+  url: canonicalUrl,
+  isPartOf: {
+    "@type": "WebSite",
+    name: siteName,
+    url: siteUrl,
+  },
+});
 
 const tools = [
   { name: "Theme Showcase", icon: "🎨", path: "/theme-showcase" },
+  { name: "Debug Logs", icon: "📋", path: "/debug-logs" },
   { name: "Username Generator", icon: "👤", path: "/username-generator" },
   { name: "Password Generator", icon: "🔐", path: "/password-generator" },
   { name: "Lottery Generator", icon: "🎰", path: "/lottery-generator" },
@@ -39,7 +70,24 @@ const tools = [
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>{title} | Tools & Stuff</title>
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={robotsContent} />
+    <meta name="theme-color" content="#020617" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <script is:inline type="application/ld+json" set:html={structuredData} />
   </head>
   <body class="relative min-h-screen overflow-hidden selection:bg-blue-500/30">
     <div class="flex h-screen bg-slate-950 text-slate-200">
@@ -190,6 +238,99 @@ const tools = [
 </style>
 
 <script>
+  type ClientLogEntry = {
+    id: string;
+    level: "error";
+    source: string;
+    message: string;
+    stack?: string | null;
+    file?: string | null;
+    line?: number | null;
+    col?: number | null;
+    path: string;
+    ts: string;
+  };
+
+  const LOG_STORAGE_KEY = "toolsHub:clientLogs";
+  const MAX_CLIENT_LOGS = 200;
+  const LOGGER_FLAG_KEY = "__TOOLS_HUB_LOGGER_INSTALLED__";
+  const loggerFlags = window as unknown as Record<string, boolean>;
+
+  function toText(value: unknown): string {
+    if (value instanceof Error) {
+      return `${value.name}: ${value.message}\n${value.stack || ""}`.trim();
+    }
+
+    if (typeof value === "string") return value;
+
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return String(value);
+    }
+  }
+
+  function appendClientLog(entry: ClientLogEntry) {
+    try {
+      const existing = JSON.parse(localStorage.getItem(LOG_STORAGE_KEY) || "[]") as unknown;
+      const next = Array.isArray(existing) ? existing : [];
+      next.push(entry);
+
+      if (next.length > MAX_CLIENT_LOGS) {
+        next.splice(0, next.length - MAX_CLIENT_LOGS);
+      }
+
+      localStorage.setItem(LOG_STORAGE_KEY, JSON.stringify(next));
+      window.dispatchEvent(new CustomEvent("tools-hub:log-added", { detail: entry }));
+    } catch {
+      // Ignore storage errors (quota/private mode) without breaking app flow.
+    }
+  }
+
+  if (!loggerFlags[LOGGER_FLAG_KEY]) {
+    loggerFlags[LOGGER_FLAG_KEY] = true;
+
+    window.addEventListener("error", (event) => {
+      appendClientLog({
+        id: crypto.randomUUID(),
+        level: "error",
+        source: "window.error",
+        message: event.message || "Unhandled error",
+        stack: event.error?.stack || null,
+        file: event.filename || null,
+        line: event.lineno || null,
+        col: event.colno || null,
+        path: location.pathname,
+        ts: new Date().toISOString(),
+      });
+    });
+
+    window.addEventListener("unhandledrejection", (event) => {
+      appendClientLog({
+        id: crypto.randomUUID(),
+        level: "error",
+        source: "window.unhandledrejection",
+        message: toText(event.reason || "Unhandled promise rejection"),
+        stack: event.reason?.stack || null,
+        path: location.pathname,
+        ts: new Date().toISOString(),
+      });
+    });
+
+    const originalConsoleError = console.error.bind(console);
+    console.error = (...args: unknown[]) => {
+      appendClientLog({
+        id: crypto.randomUUID(),
+        level: "error",
+        source: "console.error",
+        message: args.map(toText).join(" "),
+        path: location.pathname,
+        ts: new Date().toISOString(),
+      });
+      originalConsoleError(...args);
+    };
+  }
+
   const toggle = document.getElementById("mobile-menu-toggle");
   const sidebar = document.querySelector("aside");
 

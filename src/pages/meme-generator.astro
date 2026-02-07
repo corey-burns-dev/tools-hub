@@ -673,16 +673,21 @@ import Layout from "../layouts/Layout.astro";
     img.src = url;
   }
 
-  function drawMeme() {
-    if (!ctx || !currentImg) return;
+  function renderMeme(
+    targetCtx: CanvasRenderingContext2D,
+    targetCanvas: HTMLCanvasElement,
+    showEditHandles: boolean
+  ) {
+    if (!currentImg) return;
 
     const maxWidth = 800;
     const ratio = currentImg.width / currentImg.height;
-    canvas.width = Math.min(currentImg.width, maxWidth);
-    canvas.height = canvas.width / ratio;
+    targetCanvas.width = Math.min(currentImg.width, maxWidth);
+    targetCanvas.height = targetCanvas.width / ratio;
+    targetCtx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
 
     // Draw Image
-    ctx.drawImage(currentImg, 0, 0, canvas.width, canvas.height);
+    targetCtx.drawImage(currentImg, 0, 0, targetCanvas.width, targetCanvas.height);
 
     // Draw all text boxes
     textBoxes.forEach((box) => {
@@ -690,46 +695,51 @@ import Layout from "../layouts/Layout.astro";
       const strokeWidth = box.strokeWidth || parseInt(globalStrokeWidthInput.value);
       const color = box.color || globalTextColorInput.value;
 
-      ctx.fillStyle = color;
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = strokeWidth;
-      ctx.textAlign = "center";
-      ctx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
-      ctx.lineJoin = "round";
-      ctx.textBaseline = "middle";
+      targetCtx.fillStyle = color;
+      targetCtx.strokeStyle = "black";
+      targetCtx.lineWidth = strokeWidth;
+      targetCtx.textAlign = "center";
+      targetCtx.font = `bold ${fontSize}px Impact, Arial Black, sans-serif`;
+      targetCtx.lineJoin = "round";
+      targetCtx.textBaseline = "middle";
 
-      const x = (box.x / 100) * canvas.width;
-      const y = (box.y / 100) * canvas.height;
+      const x = (box.x / 100) * targetCanvas.width;
+      const y = (box.y / 100) * targetCanvas.height;
 
       if (box.text) {
         for (let i = 0; i < 3; i++) {
-          ctx.strokeText(box.text.toUpperCase(), x, y);
+          targetCtx.strokeText(box.text.toUpperCase(), x, y);
         }
-        ctx.fillText(box.text.toUpperCase(), x, y);
+        targetCtx.fillText(box.text.toUpperCase(), x, y);
       }
 
       // Draw edit handles if in edit mode
-      if (editMode) {
-        ctx.save();
+      if (showEditHandles) {
+        targetCtx.save();
         // Draw bounding box
-        const metrics = ctx.measureText(box.text.toUpperCase() || "TEXT " + box.id);
+        const metrics = targetCtx.measureText(box.text.toUpperCase() || "TEXT " + box.id);
         const height = fontSize * 1.2;
         const width = Math.max(metrics.width + 20, 100); // Min width for empty
         const top = y - height / 2;
         const left = x - width / 2;
 
-        ctx.strokeStyle = draggedTextBox?.id === box.id ? "#3b82f6" : "#94a3b8";
-        ctx.lineWidth = 2;
-        ctx.setLineDash([5, 5]);
-        ctx.strokeRect(left, top, width, height);
+        targetCtx.strokeStyle = draggedTextBox?.id === box.id ? "#3b82f6" : "#94a3b8";
+        targetCtx.lineWidth = 2;
+        targetCtx.setLineDash([5, 5]);
+        targetCtx.strokeRect(left, top, width, height);
 
         // Draw resize handle (bottom-right)
-        ctx.fillStyle = draggedTextBox?.id === box.id ? "#3b82f6" : "#94a3b8";
-        ctx.fillRect(left + width - 6, top + height - 6, 12, 12);
+        targetCtx.fillStyle = draggedTextBox?.id === box.id ? "#3b82f6" : "#94a3b8";
+        targetCtx.fillRect(left + width - 6, top + height - 6, 12, 12);
 
-        ctx.restore();
+        targetCtx.restore();
       }
     });
+  }
+
+  function drawMeme() {
+    if (!ctx || !currentImg) return;
+    renderMeme(ctx, canvas, editMode);
   }
 
   // Edit mode - drag text boxes
@@ -826,8 +836,6 @@ import Layout from "../layouts/Layout.astro";
 
     if (resizingTextBox) {
       // Resize logic: distance from center determines font size
-      const _fontSize = resizingTextBox.fontSize || parseInt(globalFontSizeInput.value);
-      const _x = (resizingTextBox.x / 100) * canvas.width;
       const y = (resizingTextBox.y / 100) * canvas.height;
 
       // Calculate new font size based on mouse Y distance from center
@@ -922,10 +930,18 @@ import Layout from "../layouts/Layout.astro";
 
   // Download handler
   downloadBtn?.addEventListener("click", () => {
+    if (!currentImg) return;
+
+    const exportCanvas = document.createElement("canvas");
+    const exportCtx = exportCanvas.getContext("2d");
+    if (!exportCtx) return;
+
+    renderMeme(exportCtx, exportCanvas, false);
+
     const link = document.createElement("a");
     const timestamp = new Date().getTime();
     link.download = `meme-${timestamp}.png`;
-    link.href = canvas.toDataURL();
+    link.href = exportCanvas.toDataURL("image/png");
     link.click();
   });
 

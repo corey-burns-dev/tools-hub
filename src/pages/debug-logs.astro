@@ -1,0 +1,156 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Debug Logs"
+  description="Internal client-side debug logs for Tools Hub."
+  noindex={true}
+>
+  <div class="mx-auto w-full max-w-5xl">
+    <section class="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 class="font-outfit text-3xl font-bold text-white">Debug Logs</h1>
+          <p class="mt-2 text-sm text-slate-400">
+            Captured client-side errors and crashes from this browser.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button
+            id="refresh-logs"
+            class="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-200 hover:bg-slate-700"
+          >
+            Refresh
+          </button>
+          <button
+            id="download-logs"
+            class="rounded-lg border border-blue-600 bg-blue-600/20 px-3 py-2 text-sm text-blue-200 hover:bg-blue-600/30"
+          >
+            Download JSON
+          </button>
+          <button
+            id="clear-logs"
+            class="rounded-lg border border-red-600 bg-red-600/20 px-3 py-2 text-sm text-red-200 hover:bg-red-600/30"
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+
+      <div id="log-stats" class="mt-4 text-xs text-slate-500">0 entries</div>
+
+      <div id="logs-list" class="mt-6 space-y-3">
+        <!-- Logs are rendered by script -->
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  type ClientLogEntry = {
+    id?: string;
+    level?: string;
+    source?: string;
+    message?: string;
+    stack?: string | null;
+    file?: string | null;
+    line?: number | null;
+    col?: number | null;
+    path?: string;
+    ts?: string;
+  };
+
+  const LOG_STORAGE_KEY = "toolsHub:clientLogs";
+  const logsList = document.getElementById("logs-list");
+  const stats = document.getElementById("log-stats");
+  const refreshBtn = document.getElementById("refresh-logs");
+  const clearBtn = document.getElementById("clear-logs");
+  const downloadBtn = document.getElementById("download-logs");
+
+  function escapeHtml(value: string): string {
+    return value
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function readLogs(): ClientLogEntry[] {
+    try {
+      const raw = localStorage.getItem(LOG_STORAGE_KEY);
+      const parsed = JSON.parse(raw || "[]") as unknown;
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function render() {
+    if (!logsList || !stats) return;
+    const logs = readLogs().slice().reverse();
+    stats.textContent = `${logs.length} entr${logs.length === 1 ? "y" : "ies"}`;
+
+    if (logs.length === 0) {
+      logsList.innerHTML = `
+        <div class="rounded-lg border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-500">
+          No client errors captured yet.
+        </div>
+      `;
+      return;
+    }
+
+    logsList.innerHTML = logs
+      .map((log: ClientLogEntry) => {
+        const title = escapeHtml(log.message || "Unknown error");
+        const source = escapeHtml(log.source || "unknown");
+        const time = escapeHtml(log.ts || "");
+        const path = escapeHtml(log.path || "");
+        const details = escapeHtml(
+          JSON.stringify(
+            {
+              file: log.file || null,
+              line: log.line || null,
+              col: log.col || null,
+              stack: log.stack || null,
+            },
+            null,
+            2
+          )
+        );
+
+        return `
+          <article class="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <p class="text-sm font-semibold text-red-300">${title}</p>
+              <p class="text-xs text-slate-500">${time}</p>
+            </div>
+            <p class="mt-1 text-xs text-slate-400">source: ${source} | path: ${path}</p>
+            <pre class="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-slate-300">${details}</pre>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
+  refreshBtn?.addEventListener("click", render);
+  clearBtn?.addEventListener("click", () => {
+    localStorage.removeItem(LOG_STORAGE_KEY);
+    render();
+  });
+
+  downloadBtn?.addEventListener("click", () => {
+    const logs = readLogs();
+    const blob = new Blob([JSON.stringify(logs, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `tools-hub-debug-logs-${Date.now()}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  });
+
+  window.addEventListener("tools-hub:log-added", render);
+  window.addEventListener("load", render);
+</script>

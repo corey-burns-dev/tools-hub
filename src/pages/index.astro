@@ -104,6 +104,13 @@ const tools = {
       desc: "Encode, decode, inspect URLs",
       status: "working",
     },
+    {
+      name: "Debug Logs",
+      href: "/debug-logs",
+      icon: "📋",
+      desc: "View captured client crashes",
+      status: "working",
+    },
   ],
   Creative: [
     {
@@ -192,7 +199,10 @@ const categoryIcons: Record<string, string> = {
 };
 ---
 
-<Layout title="Tools Hub">
+<Layout
+  title="Tools Hub"
+  description="A collection of free online tools for developers and creators: meme generator, JSON tools, encoders, converters, and more."
+>
   <div class="space-y-16 pb-20">
     <!-- Hero Section -->
     <section
