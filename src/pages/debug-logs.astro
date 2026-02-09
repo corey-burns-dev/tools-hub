@@ -1,4 +1,7 @@
 ---
+import Button from "@/components/ui/Button.astro";
+import ToolCard from "@/components/ui/ToolCard.astro";
+import ToolPage from "@/components/ui/ToolPage.astro";
 import Layout from "../layouts/Layout.astro";
 
 if (!import.meta.env.DEV) {
@@ -11,44 +14,44 @@ if (!import.meta.env.DEV) {
   description="Internal client-side debug logs for Tools Hub."
   noindex={true}
 >
-  <div class="mx-auto w-full max-w-5xl">
-    <section class="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl">
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 class="font-outfit text-3xl font-bold text-white">Debug Logs</h1>
-          <p class="mt-2 text-sm text-slate-400">
-            Captured client-side errors and crashes from this browser.
-          </p>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <button
-            id="refresh-logs"
-            class="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-200 hover:bg-slate-700"
-          >
-            Refresh
-          </button>
-          <button
+  <ToolPage description="Captured client-side errors and crashes from this browser.">
+    <div class="mx-auto w-full max-w-5xl">
+      <ToolCard title="Error Console" step="DEV">
+        <div slot="header-actions" class="flex flex-wrap gap-2">
+          <Button id="refresh-logs" variant="secondary" size="sm" class="h-8 text-[10px]">
+            REFRESH
+          </Button>
+          <Button
             id="download-logs"
-            class="rounded-lg border border-blue-600 bg-blue-600/20 px-3 py-2 text-sm text-blue-200 hover:bg-blue-600/30"
+            variant="secondary"
+            size="sm"
+            class="h-8 border-blue-500/20 text-[10px] text-blue-400"
           >
-            Download JSON
-          </button>
-          <button
-            id="clear-logs"
-            class="rounded-lg border border-red-600 bg-red-600/20 px-3 py-2 text-sm text-red-200 hover:bg-red-600/30"
-          >
-            Clear
-          </button>
+            DOWNLOAD JSON
+          </Button>
+          <Button id="clear-logs" variant="danger" size="sm" class="h-8 text-[10px]">
+            CLEAR
+          </Button>
         </div>
-      </div>
 
-      <div id="log-stats" class="mt-4 text-xs text-slate-500">0 entries</div>
+        <div
+          id="log-stats"
+          class="px-1 text-[10px] font-bold tracking-widest text-slate-500 uppercase"
+        >
+          0 entries
+        </div>
 
-      <div id="logs-list" class="mt-6 space-y-3">
-        <!-- Logs are rendered by script -->
-      </div>
-    </section>
-  </div>
+        <div id="logs-list" class="mt-6 space-y-4">
+          <!-- Logs are rendered by script -->
+          <div
+            class="rounded-xl border border-dashed border-white/5 bg-white/5 p-8 text-center text-slate-500"
+          >
+            Scanning for logs...
+          </div>
+        </div>
+      </ToolCard>
+    </div>
+  </ToolPage>
 </Layout>
 
 <script>
@@ -98,8 +101,9 @@ if (!import.meta.env.DEV) {
 
     if (logs.length === 0) {
       logsList.innerHTML = `
-        <div class="rounded-lg border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-500">
-          No client errors captured yet.
+        <div class="rounded-xl border border-dashed border-white/10 bg-white/5 p-12 text-center">
+          <p class="text-[10px] font-bold tracking-widest text-slate-500 uppercase">Clear Skies</p>
+          <p class="text-xs text-slate-400 mt-2">No client errors captured yet.</p>
         </div>
       `;
       return;
@@ -125,13 +129,13 @@ if (!import.meta.env.DEV) {
         );
 
         return `
-          <article class="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <p class="text-sm font-semibold text-red-300">${title}</p>
-              <p class="text-xs text-slate-500">${time}</p>
+          <article class="rounded-xl border border-white/5 bg-black/40 p-5 group hover:border-red-500/20 transition-colors">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <p class="text-sm font-bold text-rose-400">${title}</p>
+              <p class="text-[10px] font-mono font-medium text-slate-600">${time}</p>
             </div>
-            <p class="mt-1 text-xs text-slate-400">source: ${source} | path: ${path}</p>
-            <pre class="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-slate-300">${details}</pre>
+            <p class="mt-2 text-[10px] font-bold tracking-wider text-slate-500 uppercase">source: <span class="text-slate-400">${source}</span> | path: <span class="text-slate-400">${path}</span></p>
+            <pre class="mt-4 overflow-x-auto rounded-lg bg-black/40 p-4 font-mono text-xs text-slate-400 border border-white/5 group-hover:bg-black/60 transition-colors">${details}</pre>
           </article>
         `;
       })

@@ -1,23 +1,15 @@
 ---
-import Button from "../components/Button.astro";
+import Button from "@/components/ui/Button.astro";
+import ToolCard from "@/components/ui/ToolCard.astro";
+import ToolGrid from "@/components/ui/ToolGrid.astro";
+import ToolPage from "@/components/ui/ToolPage.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="JSON ↔ CSV Converter">
-  <div class="space-y-12">
-    <div class="animate-fade-in mb-8 flex justify-center">
-      <p
-        class="rounded-full border border-white/10 bg-white/5 px-6 py-2 text-sm font-medium text-slate-300 backdrop-blur-md transition-all hover:bg-white/10 hover:text-white"
-      >
-        Convert arrays of objects between JSON and CSV.
-      </p>
-    </div>
-
-    <div class="grid gap-8 lg:grid-cols-2">
-      <div class="card-glass">
-        <h2 class="mb-4 text-lg font-bold text-white">
-          <span class="text-indigo-300">01.</span> JSON Input
-        </h2>
+  <ToolPage description="Convert arrays of objects between JSON and CSV.">
+    <ToolGrid cols={2} class="gap-8">
+      <ToolCard title="JSON Input" step="01.">
         <textarea
           id="json-input"
           rows="14"
@@ -25,35 +17,30 @@ import Layout from "../layouts/Layout.astro";
   {"name": "Nova", "role": "Engineer"},
   {"name": "Sol", "role": "Designer"}
 ]'
-          class="w-full resize-none rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 font-mono text-sm text-white placeholder-slate-600 transition-all outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-        ></textarea>
+          class="resize-none font-mono text-sm"></textarea>
         <div class="mt-4 flex flex-wrap gap-2">
-          <Button id="json-to-csv" variant="primary" class="px-10 sm:w-auto"> JSON → CSV </Button>
-          <Button id="swap-btn" variant="secondary" class="px-10 sm:w-auto"> Swap </Button>
+          <Button id="json-to-csv" variant="primary"> JSON → CSV </Button>
+          <Button id="swap-btn" variant="secondary"> Swap </Button>
         </div>
-      </div>
+      </ToolCard>
 
-      <div class="card-glass">
-        <h2 class="mb-4 text-lg font-bold text-white">
-          <span class="text-sky-300">02.</span> CSV Output
-        </h2>
+      <ToolCard title="CSV Output" step="02.">
         <textarea
           id="csv-output"
           rows="14"
           placeholder="name,role"
-          class="w-full resize-none rounded-xl border border-white/10 bg-black/50 px-4 py-3 font-mono text-sm text-white outline-none"
-        ></textarea>
+          class="resize-none bg-black/50 font-mono text-sm"></textarea>
         <div class="mt-4 flex flex-wrap gap-2">
-          <Button id="csv-to-json" variant="secondary" class="px-4 py-2 text-sm">CSV → JSON</Button>
-          <Button id="clear-btn" variant="ghost" class="px-4 py-2 text-sm">Clear</Button>
+          <Button id="csv-to-json" variant="secondary" size="sm">CSV → JSON</Button>
+          <Button id="clear-btn" variant="ghost" size="sm">Clear</Button>
         </div>
-      </div>
-    </div>
+      </ToolCard>
+    </ToolGrid>
 
-    <div class="mt-6 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-400">
+    <div class="mt-8 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-400">
       Notes: JSON input must be an array of objects. CSV parsing supports quoted fields.
     </div>
-  </div>
+  </ToolPage>
 </Layout>
 
 <script>

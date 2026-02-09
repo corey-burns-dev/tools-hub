@@ -1,89 +1,104 @@
 ---
-import Button from "../components/Button.astro";
-import ToolCard from "../components/ui/ToolCard.astro";
-import ToolGrid from "../components/ui/ToolGrid.astro";
-import ToolPage from "../components/ui/ToolPage.astro";
+import Button from "@/components/ui/Button.astro";
+import ToolCard from "@/components/ui/ToolCard.astro";
+import ToolGrid from "@/components/ui/ToolGrid.astro";
+import ToolPage from "@/components/ui/ToolPage.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Habit Tracker">
-  <ToolPage>
+  <ToolPage description="Track your daily progress and build lasting habits.">
     <ToolGrid cols={3} class="gap-8">
       <div class="lg:col-span-1">
-        <ToolCard title="Create Habit" step="01." bodyClass="space-y-5">
-          <div class="space-y-2">
-            <label
-              for="habit-name"
-              class="text-xs font-bold tracking-wider text-slate-500 uppercase">Habit Name</label
-            >
-            <input
-              id="habit-name"
-              type="text"
-              maxlength="60"
-              placeholder="e.g. Drink water"
-              class="ui-input"
-            />
-          </div>
+        <ToolCard title="Create Habit" step="01.">
+          <div class="space-y-6">
+            <div class="space-y-2">
+              <label for="habit-name">Habit Name</label>
+              <input id="habit-name" type="text" maxlength="60" placeholder="e.g. Drink water" />
+            </div>
 
-          <div class="space-y-2">
-            <label
-              for="habit-color"
-              class="text-xs font-bold tracking-wider text-slate-500 uppercase">Color Tag</label
-            >
-            <input
-              id="habit-color"
-              type="color"
-              value="#22c55e"
-              class="h-11 w-full cursor-pointer rounded-xl border border-slate-700 bg-slate-900/50 p-1"
-            />
-          </div>
+            <div class="space-y-2">
+              <label for="habit-color">Color Tag</label>
+              <input
+                id="habit-color"
+                type="color"
+                value="#22c55e"
+                class="h-11 w-full cursor-pointer rounded-xl border border-white/10 bg-black/20 p-1"
+              />
+            </div>
 
-          <div class="ui-action-row mt-2">
-            <Button id="add-habit" variant="primary" class="w-full sm:w-auto sm:min-w-[170px]">
-              Add Habit
-            </Button>
+            <div class="pt-2">
+              <Button id="add-habit" variant="primary" class="w-full"> Add Habit </Button>
+            </div>
           </div>
         </ToolCard>
       </div>
 
       <div class="lg:col-span-2">
-        <ToolCard title="Today" step="02." bodyClass="space-y-5">
-          <div class="ui-output-box p-5 md:p-6">
-            <p id="summary" class="text-sm text-slate-300">0 / 0 habits completed today</p>
-            <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-800">
-              <div id="progress-bar" class="h-full w-0 rounded-full bg-emerald-500 transition-all">
+        <ToolCard title="Today" step="02.">
+          <div class="mb-6 rounded-xl border border-white/5 bg-black/40 p-5 md:p-6">
+            <p id="summary" class="text-sm font-medium text-slate-300">
+              0 / 0 habits completed today
+            </p>
+            <div class="mt-3 h-2 overflow-hidden rounded-full bg-white/5">
+              <div
+                id="progress-bar"
+                class="h-full w-0 rounded-full bg-blue-500 shadow-lg shadow-blue-500/20 transition-all"
+              >
               </div>
             </div>
           </div>
 
-          <div id="habit-list" class="space-y-3">
-            <div
-              class="rounded-xl border border-slate-800 bg-slate-900/40 p-5 text-sm text-slate-500"
-            >
-              Add your first habit to start tracking.
+          <div id="habit-list" class="space-y-4">
+            <div class="rounded-xl border border-dashed border-white/10 bg-white/5 p-8 text-center">
+              <p class="text-xs font-bold tracking-widest text-slate-500 uppercase">
+                No habits found
+              </p>
+              <p class="mt-2 text-sm text-slate-400">Add your first habit to start tracking.</p>
             </div>
           </div>
         </ToolCard>
       </div>
 
       <div class="lg:col-span-3">
-        <ToolCard title="Stats" step="03." bodyClass="space-y-4">
+        <ToolCard title="Stats" step="03.">
           <div id="stats-grid" class="grid gap-4 sm:grid-cols-3">
-            <div class="rounded-xl border border-slate-800 bg-slate-900/30 p-5">
+            <div
+              class="group rounded-xl border border-white/10 bg-black/20 p-5 transition-colors hover:border-blue-500/30"
+            >
               <p class="text-xs font-bold tracking-wider text-slate-500 uppercase">Total Habits</p>
-              <p id="stat-total" class="mt-2 text-2xl font-bold text-white">0</p>
+              <p
+                id="stat-total"
+                class="mt-2 text-2xl font-bold text-white transition-colors group-hover:text-blue-400"
+              >
+                0
+              </p>
             </div>
-            <div class="rounded-xl border border-slate-800 bg-slate-900/30 p-5">
+            <div
+              class="group rounded-xl border border-white/10 bg-black/20 p-5 transition-colors hover:border-emerald-500/30"
+            >
               <p class="text-xs font-bold tracking-wider text-slate-500 uppercase">
                 Completed Today
               </p>
-              <p id="stat-done" class="mt-2 text-2xl font-bold text-emerald-400">0</p>
+              <p
+                id="stat-done"
+                class="mt-2 text-2xl font-bold text-emerald-400 transition-colors group-hover:text-emerald-300"
+              >
+                0
+              </p>
             </div>
-            <div class="rounded-xl border border-slate-800 bg-slate-900/30 p-5">
+            <div
+              class="group rounded-xl border border-white/10 bg-black/20 p-5 transition-colors hover:border-blue-500/30"
+            >
               <p class="text-xs font-bold tracking-wider text-slate-500 uppercase">
                 Best Current Streak
               </p>
-              <p id="stat-streak" class="mt-2 text-2xl font-bold text-blue-400">0</p>
+              <p
+                id="stat-streak"
+                class="mt-2 text-2xl font-bold text-blue-400 transition-colors group-hover:text-blue-300"
+              >
+                0
+              </p>
             </div>
           </div>
         </ToolCard>
@@ -151,8 +166,9 @@ import Layout from "../layouts/Layout.astro";
 
     if (habits.length === 0) {
       habitList.innerHTML = `
-        <div class="rounded-xl border border-slate-800 bg-slate-900/40 p-5 text-sm text-slate-500">
-          Add your first habit to start tracking.
+        <div class="rounded-xl border border-dashed border-white/10 bg-white/5 p-8 text-center">
+          <p class="text-xs font-bold tracking-widest text-slate-500 uppercase">No habits found</p>
+          <p class="text-sm text-slate-400 mt-2">Add your first habit to start tracking.</p>
         </div>
       `;
     } else {
@@ -161,21 +177,21 @@ import Layout from "../layouts/Layout.astro";
           const checked = Boolean(habit.checkins?.[today]);
           const streak = countStreak(habit.checkins || {});
           return `
-            <article class="rounded-xl border border-slate-800 bg-slate-900/30 p-5">
-              <div class="flex flex-wrap items-start justify-between gap-3">
-                <div class="flex items-center gap-3">
-                  <span class="inline-block h-3 w-3 rounded-full" style="background:${habit.color || "#22c55e"}"></span>
+            <article class="rounded-xl border border-white/5 bg-white/[0.02] p-5 hover:border-white/10 transition-colors group">
+              <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                  <div class="h-10 w-1 flex-shrink-0 rounded-full" style="background:${habit.color || "#22c55e"}"></div>
                   <div>
-                    <p class="font-semibold text-white">${habit.name}</p>
-                    <p class="text-xs text-slate-400">Current streak: ${streak} day${streak === 1 ? "" : "s"}</p>
+                    <p class="font-bold text-white group-hover:text-blue-400 transition-colors">${habit.name}</p>
+                    <p class="text-[10px] font-bold tracking-widest text-slate-500 uppercase">Streak: ${streak} day${streak === 1 ? "" : "s"}</p>
                   </div>
                 </div>
-                <button type="button" class="delete-habit rounded-lg bg-red-500/15 px-3 py-1.5 text-xs font-semibold text-red-300 hover:bg-red-500/25" data-id="${habit.id}">Delete</button>
+                <button type="button" class="delete-habit rounded-lg bg-rose-500/10 px-3 py-1.5 text-[10px] font-bold tracking-widest text-rose-400 uppercase hover:bg-rose-500/20 transition-colors" data-id="${habit.id}">Delete</button>
               </div>
 
-              <label class="mt-4 flex items-center gap-3 text-sm text-slate-300">
-                <input type="checkbox" class="toggle-habit h-4 w-4 rounded border-slate-600 bg-slate-800 text-emerald-500" data-id="${habit.id}" ${checked ? "checked" : ""} />
-                Mark complete for today
+              <label class="mt-5 flex items-center gap-3 cursor-pointer select-none">
+                <input type="checkbox" class="toggle-habit h-5 w-5 rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500" data-id="${habit.id}" ${checked ? "checked" : ""} />
+                <span class="text-sm font-medium ${checked ? "text-emerald-400" : "text-slate-400"}">Mark complete for today</span>
               </label>
             </article>
           `;

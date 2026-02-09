@@ -1,0 +1,60 @@
+---
+type Variant = "primary" | "secondary" | "ghost" | "danger";
+type Size = "sm" | "md" | "lg";
+
+interface Props {
+  as?: "button" | "a";
+  href?: string;
+  type?: "button" | "submit" | "reset";
+  variant?: Variant;
+  size?: Size;
+  class?: string;
+  [key: string]: any;
+}
+
+const {
+  as = "button",
+  href,
+  type = "button",
+  variant = "primary" as Variant,
+  size = "md" as Size,
+  class: className = "",
+  ...rest
+} = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center gap-2 rounded-xl font-medium " +
+  "transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 " +
+  "disabled:opacity-50 disabled:pointer-events-none select-none cursor-pointer text-center whitespace-nowrap";
+
+const sizes: Record<Size, string> = {
+  sm: "h-9 px-3 text-sm",
+  md: "h-10 px-6 text-sm",
+  lg: "h-12 px-8 text-base",
+};
+
+const variants: Record<Variant, string> = {
+  primary:
+    "bg-blue-600 text-white hover:bg-blue-500 active:bg-blue-700 shadow-lg shadow-blue-500/20",
+  secondary:
+    "bg-white/5 text-white border border-white/10 hover:bg-white/10 active:bg-white/20 backdrop-blur-sm",
+  ghost: "bg-transparent text-slate-400 hover:bg-white/5 hover:text-white",
+  danger:
+    "bg-rose-600 text-white hover:bg-rose-500 active:bg-rose-700 shadow-lg shadow-rose-500/20",
+};
+
+const cls = `${base} ${sizes[size]} ${variants[variant]} ${className}`.trim();
+const Tag = as;
+---
+
+{
+  Tag === "a" ? (
+    <a href={href} class={cls} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type as "button" | "submit" | "reset"} class={cls} {...rest}>
+      <slot />
+    </button>
+  )
+}

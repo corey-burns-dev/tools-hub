@@ -1,74 +1,52 @@
 ---
-import Button from "../components/Button.astro";
+import Button from "@/components/ui/Button.astro";
+import ToolCard from "@/components/ui/ToolCard.astro";
+import ToolGrid from "@/components/ui/ToolGrid.astro";
+import ToolPage from "@/components/ui/ToolPage.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Username Generator">
-  <div class="space-y-12">
-    <div class="animate-fade-in mb-12 flex justify-center">
-      <p
-        class="rounded-full border border-white/10 bg-white/5 px-6 py-2 text-sm font-medium text-slate-300 backdrop-blur-md transition-all hover:bg-white/10 hover:text-white"
-      >
-        Create unique, aesthetic, and professional identities in seconds.
-      </p>
-    </div>
-
-    <!-- Generator Interface -->
-    <div class="mt-2 grid grid-cols-1 items-start gap-8 lg:grid-cols-3">
+  <ToolPage description="Create unique, aesthetic, and professional identities in seconds.">
+    <ToolGrid cols={3} class="gap-8">
       <!-- Controls -->
-      <div class="space-y-6 lg:col-span-1">
-        <div class="card-glass username-config-card relative z-10">
-          <h2 class="mb-5 flex items-center gap-2 text-lg font-bold text-white">
-            <span class="text-blue-400">01.</span> Configuration
-          </h2>
-
-          <div class="username-config-stack">
+      <div class="lg:col-span-1">
+        <ToolCard title="Configuration" step="01.">
+          <div class="space-y-6">
             <div class="space-y-2">
-              <label for="base-word" class="mb-2 block text-sm font-medium text-slate-400"
+              <label for="base-word" class="block text-sm font-medium text-slate-400"
                 >Base Word (Optional)</label
               >
-              <input
-                type="text"
-                id="base-word"
-                placeholder="e.g. Dragon"
-                class="w-full rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-600 transition-all outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              />
+              <input type="text" id="base-word" placeholder="e.g. Dragon" class="w-full" />
             </div>
 
-            <div class="space-y-2">
-              <label class="mb-2 block text-sm font-medium text-slate-400">Category</label>
-              <div class="grid grid-cols-2 gap-3">
-                <button
-                  class="category-btn active rounded-lg border border-blue-500/30 bg-blue-600/20 px-3 py-2 text-sm font-medium text-blue-300 transition-all hover:bg-blue-600/30"
-                  data-category="all"
-                >
+            <div class="space-y-3">
+              <label class="block text-sm font-medium text-slate-400">Category</label>
+              <div class="grid grid-cols-2 gap-2">
+                <Button variant="primary" size="sm" class="category-btn" data-category="all">
                   All
-                </button>
-                <button
-                  class="category-btn rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-400 transition-all hover:bg-white/10"
-                  data-category="gaming"
-                >
+                </Button>
+                <Button variant="secondary" size="sm" class="category-btn" data-category="gaming">
                   Gaming
-                </button>
-                <button
-                  class="category-btn rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-400 transition-all hover:bg-white/10"
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  class="category-btn"
                   data-category="aesthetic"
                 >
                   Aesthetic
-                </button>
-                <button
-                  class="category-btn rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-400 transition-all hover:bg-white/10"
-                  data-category="funny"
-                >
+                </Button>
+                <Button variant="secondary" size="sm" class="category-btn" data-category="funny">
                   Funny
-                </button>
+                </Button>
               </div>
             </div>
 
-            <div class="space-y-2">
-              <label class="mb-2 block text-sm font-medium text-slate-400">Options</label>
+            <div class="space-y-3">
+              <label class="block text-sm font-medium text-slate-400">Options</label>
               <label
-                class="flex cursor-pointer items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 transition-all hover:bg-white/10"
+                class="flex cursor-pointer items-center gap-3 rounded-lg border border-white/5 bg-black/20 p-3 transition-all hover:bg-white/5 active:bg-black/30"
               >
                 <input
                   type="checkbox"
@@ -80,44 +58,40 @@ import Layout from "../layouts/Layout.astro";
               </label>
             </div>
 
-            <div class="username-generate-wrap flex justify-center">
-              <Button
-                id="generate-btn"
-                class="username-generate-btn w-full sm:w-auto sm:min-w-[180px]"
-                variant="primary"
-              >
-                <span class="mr-2">⚡</span> Generate
-              </Button>
+            <div class="pt-2">
+              <Button id="generate-btn" variant="primary" class="w-full"> ⚡ Generate </Button>
             </div>
           </div>
-        </div>
+        </ToolCard>
       </div>
 
       <!-- Results -->
       <div class="lg:col-span-2">
-        <div class="card-glass flex min-h-[500px] flex-col">
-          <div class="mb-6 flex items-center justify-between">
-            <h2 class="flex items-center gap-2 text-lg font-bold text-white">
-              <span class="text-violet-400">02.</span> Your Identities
-            </h2>
-            <div class="rounded bg-white/5 px-2 py-1 font-mono text-xs text-slate-500">
+        <ToolCard title="Your Identities" step="02.">
+          <div slot="header-actions">
+            <div
+              class="rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-[10px] font-bold tracking-tighter text-blue-400 uppercase"
+            >
               Click to copy
             </div>
           </div>
 
-          <div id="results-grid" class="grid flex-1 grid-cols-1 content-start gap-3 sm:grid-cols-2">
+          <div
+            id="results-grid"
+            class="grid min-h-[400px] grid-cols-1 content-start gap-3 sm:grid-cols-2"
+          >
             <!-- Results will be injected here -->
             <div
-              class="flex flex-col items-center justify-center py-20 text-slate-600 sm:col-span-2"
+              class="flex h-full flex-col items-center justify-center py-20 text-slate-500 opacity-30 sm:col-span-2"
             >
-              <div class="mb-4 text-4xl opacity-50">👤</div>
-              <p>Ready to generate awesome usernames</p>
+              <div class="mb-4 text-5xl">👤</div>
+              <p class="text-xs font-bold tracking-widest uppercase">Ready to generate usernames</p>
             </div>
           </div>
-        </div>
+        </ToolCard>
       </div>
-    </div>
-  </div>
+    </ToolGrid>
+  </ToolPage>
 </Layout>
 
 <script>
@@ -353,15 +327,45 @@ import Layout from "../layouts/Layout.astro";
   // Category Selection
   categoryBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      // Remove active class from all
+      // Remove active class from all (reset to secondary)
       categoryBtns.forEach((b) => {
-        b.classList.remove("bg-blue-600/20", "border-blue-500/30", "text-blue-300");
-        b.classList.add("bg-white/5", "border-white/10", "text-slate-400");
+        b.classList.remove(
+          "bg-blue-600",
+          "text-white",
+          "hover:bg-blue-500",
+          "active:bg-blue-700",
+          "shadow-lg",
+          "shadow-blue-500/20"
+        );
+        b.classList.add(
+          "bg-white/5",
+          "text-white",
+          "border",
+          "border-white/10",
+          "hover:bg-white/10",
+          "active:bg-white/20",
+          "backdrop-blur-sm"
+        );
       });
 
-      // Add active to clicked
-      btn.classList.remove("bg-white/5", "border-white/10", "text-slate-400");
-      btn.classList.add("bg-blue-600/20", "border-blue-500/30", "text-blue-300");
+      // Add active to clicked (switch to primary styles)
+      btn.classList.remove(
+        "bg-white/5",
+        "text-white",
+        "border",
+        "border-white/10",
+        "hover:bg-white/10",
+        "active:bg-white/20",
+        "backdrop-blur-sm"
+      );
+      btn.classList.add(
+        "bg-blue-600",
+        "text-white",
+        "hover:bg-blue-500",
+        "active:bg-blue-700",
+        "shadow-lg",
+        "shadow-blue-500/20"
+      );
 
       currentCategory = btn.getAttribute("data-category") || "all";
     });
@@ -379,26 +383,25 @@ import Layout from "../layouts/Layout.astro";
       names.forEach((name, index) => {
         const div = document.createElement("div");
         div.className =
-          "group flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-blue-500/30 transition-all cursor-pointer animate-in fade-in zoom-in duration-300";
+          "group flex items-center justify-between p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-blue-500/10 hover:border-blue-500/30 transition-all cursor-pointer animate-in fade-in zoom-in duration-300";
         div.style.animationDelay = `${index * 50}ms`;
 
         div.innerHTML = `
           <span class="font-mono text-lg font-medium text-slate-200 group-hover:text-blue-300 transition-colors select-all">${name}</span>
-          <span class="opacity-0 group-hover:opacity-100 text-xs text-blue-400 font-bold transition-opacity">COPY</span>
+          <span class="opacity-0 group-hover:opacity-100 text-[10px] font-bold tracking-tighter text-blue-400 uppercase transition-opacity">Copy</span>
         `;
 
         div.onclick = () => {
           navigator.clipboard.writeText(name);
 
-          // Toast Feedback (Localized)
           const span = div.querySelector("span:last-child");
           if (span) {
             const originalText = span.textContent;
-            span.textContent = "COPIED!";
-            span.classList.add("text-green-400");
+            span.textContent = "Copied!";
+            span.classList.add("text-emerald-400");
             setTimeout(() => {
               span.textContent = originalText;
-              span.classList.remove("text-green-400");
+              span.classList.remove("text-emerald-400");
             }, 1000);
           }
         };
@@ -409,34 +412,4 @@ import Layout from "../layouts/Layout.astro";
   }
 
   generateBtn?.addEventListener("click", runGeneration);
-
-  // Initial Run
-  // setTimeout(runGeneration, 500);
 </script>
-
-<style>
-  .username-config-stack {
-    display: grid;
-    gap: 1rem;
-  }
-
-  @media (min-width: 768px) {
-    .username-config-stack {
-      gap: 1.1rem;
-    }
-  }
-
-  .username-generate-wrap {
-    padding-top: 0.35rem;
-  }
-
-  .username-generate-btn {
-    min-height: 2.7rem !important;
-    padding: 0.75rem 1.3rem !important;
-    letter-spacing: 0.01em;
-  }
-
-  .username-config-card .category-btn {
-    padding: 0.6rem 0.85rem !important;
-  }
-</style>

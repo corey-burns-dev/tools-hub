@@ -1,18 +1,18 @@
 ---
-import Button from "../components/Button.astro";
+import Button from "@/components/ui/Button.astro";
+import ToolCard from "@/components/ui/ToolCard.astro";
+import ToolGrid from "@/components/ui/ToolGrid.astro";
+import ToolPage from "@/components/ui/ToolPage.astro";
 import Layout from "../layouts/Layout.astro";
-import ToolCard from "../components/ui/ToolCard.astro";
-import ToolGrid from "../components/ui/ToolGrid.astro";
-import ToolPage from "../components/ui/ToolPage.astro";
 ---
 
 <Layout title="UUID Generator">
   <ToolPage description="Generate RFC 4122 v4 UUIDs instantly.">
     <ToolGrid cols={3} class="gap-8">
       <div class="space-y-6 lg:col-span-1">
-        <ToolCard title="Settings" step="01." bodyClass="space-y-4 md:space-y-5">
+        <ToolCard title="Settings" step="01.">
           <div class="space-y-6">
-            <div class="ui-output-box border-white/10 bg-white/5 p-5 md:p-6">
+            <div class="rounded-xl border border-white/10 bg-black/20 p-5 md:p-6">
               <label for="count-range" class="mb-2 block text-sm font-medium text-slate-400"
                 >Count: <span id="count-value" class="text-slate-200">5</span></label
               >
@@ -25,7 +25,7 @@ import ToolPage from "../components/ui/ToolPage.astro";
               <input
                 id="uppercase-toggle"
                 type="checkbox"
-                class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-emerald-500 focus:ring-emerald-500"
+                class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500"
               />
               Uppercase
             </label>
@@ -36,12 +36,12 @@ import ToolPage from "../components/ui/ToolPage.astro";
               <input
                 id="compact-toggle"
                 type="checkbox"
-                class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-emerald-500 focus:ring-emerald-500"
+                class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500"
               />
               Remove hyphens
             </label>
 
-            <Button id="generate-btn" class="mt-4 w-full px-10 sm:w-auto" variant="primary">
+            <Button id="generate-btn" class="mt-4 w-full" variant="primary">
               <span class="text-base">⚡</span> Generate
             </Button>
           </div>
@@ -49,15 +49,10 @@ import ToolPage from "../components/ui/ToolPage.astro";
       </div>
 
       <div class="lg:col-span-2">
-        <ToolCard
-          title="Output"
-          step="02."
-          class="flex min-h-[480px] flex-col"
-          bodyClass="space-y-4"
-        >
+        <ToolCard title="Output" step="02." class="flex min-h-[480px] flex-col">
           <div slot="header-actions" class="flex flex-wrap gap-3">
-            <Button id="copy-btn" variant="secondary" class="px-4 py-2 text-sm">Copy</Button>
-            <Button id="clear-btn" variant="ghost" class="px-4 py-2 text-sm">Clear</Button>
+            <Button id="copy-btn" variant="secondary" size="sm">Copy</Button>
+            <Button id="clear-btn" variant="ghost" size="sm">Clear</Button>
           </div>
 
           <div

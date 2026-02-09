@@ -1,158 +1,122 @@
 ---
+import ToolCard from "@/components/ui/ToolCard.astro";
+import ToolPage from "@/components/ui/ToolPage.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Currency Converter">
-  <div class="mx-auto max-w-4xl space-y-12 text-center">
-    <!-- Header -->
-    <div class="animate-fade-in space-y-4">
-      <div
-        class="inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-600 text-5xl shadow-xl shadow-emerald-500/20"
-      >
-        💱
-      </div>
-      <h1
-        class="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent md:text-6xl"
-      >
-        Currency Converter
-      </h1>
-      <p class="text-xl text-slate-400">Real-time exchange rates at your fingertips.</p>
-    </div>
-
-    <!-- Converter Card -->
-    <div
-      class="relative overflow-visible rounded-3xl border border-slate-800 bg-slate-900/50 p-8 shadow-2xl backdrop-blur-xl md:p-14"
-    >
-      <div class="grid gap-12 md:grid-cols-[1fr_auto_1fr] md:items-center">
-        <!-- From Currency -->
-        <div
-          class="space-y-7 rounded-2xl bg-slate-800/50 p-2 px-6 py-6 ring-1 ring-slate-700/50 transition-all focus-within:bg-slate-800 focus-within:ring-emerald-500/50 md:px-8 md:py-8"
-        >
-          <label
-            class="block p-2 text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
-            >Amount & Currency</label
-          >
-          <div class="flex gap-4 rounded-xl bg-slate-900/40 p-4">
-            <input
-              type="number"
-              id="amount-from"
-              value="1"
-              min="0"
-              step="any"
-              class="w-full rounded-lg bg-slate-950/30 px-3 py-2 text-3xl font-bold text-white outline-none placeholder:text-slate-600 focus:placeholder:text-slate-500"
-            />
-            <select
-              id="currency-from"
-              class="cursor-pointer rounded-xl bg-slate-700 px-5 py-3 font-mono font-bold text-white transition-colors outline-none hover:bg-slate-600"
+  <ToolPage description="Real-time exchange rates at your fingertips.">
+    <div class="mx-auto w-full max-w-4xl space-y-8">
+      <ToolCard title="Converter" step="01.">
+        <div class="grid gap-8 md:grid-cols-[1fr_auto_1fr] md:items-center">
+          <!-- From Currency -->
+          <div class="space-y-4 rounded-xl border border-white/10 bg-black/20 p-6 shadow-inner">
+            <label for="amount-from">Amount & Currency</label>
+            <div class="flex gap-4">
+              <input
+                type="number"
+                id="amount-from"
+                value="1"
+                min="0"
+                step="any"
+                class="w-full border-none bg-transparent p-0 text-2xl font-bold focus:ring-0"
+              />
+              <select id="currency-from" class="w-auto px-4">
+                <option value="USD" selected>🇺🇸 USD</option>
+                <option value="EUR">🇪🇺 EUR</option>
+                <option value="GBP">🇬🇧 GBP</option>
+                <option value="JPY">🇯🇵 JPY</option>
+                <option value="CAD">🇨🇦 CAD</option>
+                <option value="AUD">🇦🇺 AUD</option>
+                <option value="CNY">🇨🇳 CNY</option>
+                <option value="INR">🇮🇳 INR</option>
+                <option value="CHF">🇨🇭 CHF</option>
+              </select>
+            </div>
+            <div
+              class="mt-4 rounded-lg bg-white/5 px-4 py-2 text-sm text-slate-400"
+              id="rate-display-from"
             >
-              <option value="USD" selected>🇺🇸 USD</option>
-              <option value="EUR">🇪🇺 EUR</option>
-              <option value="GBP">🇬🇧 GBP</option>
-              <option value="JPY">🇯🇵 JPY</option>
-              <option value="CAD">🇨🇦 CAD</option>
-              <option value="AUD">🇦🇺 AUD</option>
-              <option value="CNY">🇨🇳 CNY</option>
-              <option value="INR">🇮🇳 INR</option>
-              <option value="CHF">🇨🇭 CHF</option>
-            </select>
+              1 USD = 0.92 EUR
+            </div>
           </div>
-          <div
-            class="rounded-lg bg-slate-900/35 px-4 py-3.5 text-left text-sm text-slate-400"
-            id="rate-display-from"
-          >
-            1 USD = 0.92 EUR
+
+          <!-- Swap Button -->
+          <div class="flex justify-center">
+            <button
+              id="swap-btn"
+              class="group flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-2xl shadow-lg transition-all hover:scale-110 hover:border-blue-500/50 hover:bg-white/10 active:scale-95 md:rotate-90"
+              title="Swap Currencies"
+            >
+              <span class="transition-transform duration-500 group-hover:rotate-180">⇄</span>
+            </button>
+          </div>
+
+          <!-- To Currency -->
+          <div class="space-y-4 rounded-xl border border-white/10 bg-black/20 p-6 shadow-inner">
+            <label for="amount-to">Converted To</label>
+            <div class="flex gap-4">
+              <input
+                type="text"
+                id="amount-to"
+                value="0.92"
+                readonly
+                class="w-full border-none bg-transparent p-0 text-2xl font-bold text-blue-400 focus:ring-0"
+              />
+              <select id="currency-to" class="w-auto px-4">
+                <option value="USD">🇺🇸 USD</option>
+                <option value="EUR" selected>🇪🇺 EUR</option>
+                <option value="GBP">🇬🇧 GBP</option>
+                <option value="JPY">🇯🇵 JPY</option>
+                <option value="CAD">🇨🇦 CAD</option>
+                <option value="AUD">🇦🇺 AUD</option>
+                <option value="CNY">🇨🇳 CNY</option>
+                <option value="INR">🇮🇳 INR</option>
+                <option value="CHF">🇨🇭 CHF</option>
+              </select>
+            </div>
+            <div
+              class="mt-4 rounded-lg bg-white/5 px-4 py-2 text-sm text-slate-400"
+              id="rate-display-to"
+            >
+              1 EUR = 1.09 USD
+            </div>
           </div>
         </div>
+      </ToolCard>
 
-        <!-- Swap Button -->
-        <div class="flex justify-center">
+      <!-- Popular Conversions -->
+      <ToolCard title="Popular Conversions">
+        <div class="flex flex-wrap justify-center gap-3">
           <button
-            id="swap-btn"
-            class="group flex h-14 w-14 items-center justify-center rounded-full border border-slate-700 bg-slate-800 text-2xl shadow-lg transition-all hover:scale-110 hover:border-emerald-500/50 hover:bg-slate-700 active:scale-95 md:rotate-90"
-            title="Swap Currencies"
+            class="quick-pair rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-slate-300 transition-all hover:border-blue-500/30 hover:bg-white/10 hover:text-white"
+            data-from="USD"
+            data-to="EUR">USD → EUR</button
           >
-            <span class="transition-transform duration-500 group-hover:rotate-180">⇄</span>
-          </button>
-        </div>
-
-        <!-- To Currency -->
-        <div
-          class="space-y-7 rounded-2xl bg-slate-800/50 px-6 py-6 ring-1 ring-slate-700/50 transition-all focus-within:bg-slate-800 focus-within:ring-teal-500/50 md:px-8 md:py-8"
-        >
-          <label class="block text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
-            >Converted To</label
+          <button
+            class="quick-pair rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-slate-300 transition-all hover:border-blue-500/30 hover:bg-white/10 hover:text-white"
+            data-from="EUR"
+            data-to="USD">EUR → USD</button
           >
-          <div class="flex gap-4 rounded-xl bg-slate-900/40 p-4">
-            <input
-              type="text"
-              id="amount-to"
-              value="0.92"
-              readonly
-              class="w-full cursor-default rounded-lg bg-slate-950/30 px-3 py-2 text-3xl font-bold text-emerald-400 outline-none"
-            />
-            <select
-              id="currency-to"
-              class="cursor-pointer rounded-xl bg-slate-700 px-5 py-3 font-mono font-bold text-white transition-colors outline-none hover:bg-slate-600"
-            >
-              <option value="USD">🇺🇸 USD</option>
-              <option value="EUR" selected>🇪🇺 EUR</option>
-              <option value="GBP">🇬🇧 GBP</option>
-              <option value="JPY">🇯🇵 JPY</option>
-              <option value="CAD">🇨🇦 CAD</option>
-              <option value="AUD">🇦🇺 AUD</option>
-              <option value="CNY">🇨🇳 CNY</option>
-              <option value="INR">🇮🇳 INR</option>
-              <option value="CHF">🇨🇭 CHF</option>
-            </select>
-          </div>
-          <div
-            class="rounded-lg bg-slate-900/35 px-4 py-3.5 text-left text-sm text-slate-400"
-            id="rate-display-to"
+          <button
+            class="quick-pair rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-slate-300 transition-all hover:border-blue-500/30 hover:bg-white/10 hover:text-white"
+            data-from="GBP"
+            data-to="USD">GBP → USD</button
           >
-            1 EUR = 1.09 USD
-          </div>
+          <button
+            class="quick-pair rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-slate-300 transition-all hover:border-blue-500/30 hover:bg-white/10 hover:text-white"
+            data-from="USD"
+            data-to="JPY">USD → JPY</button
+          >
+          <button
+            class="quick-pair rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-slate-300 transition-all hover:border-blue-500/30 hover:bg-white/10 hover:text-white"
+            data-from="USD"
+            data-to="CAD">USD → CAD</button
+          >
         </div>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="mt-12 border-t border-slate-800/50 pt-10">
-        <div
-          class="rounded-2xl border border-slate-800/60 bg-slate-800/30 px-7 py-7 md:px-8 md:py-8"
-        >
-          <p class="mb-4 text-xs font-bold tracking-widest text-slate-500 uppercase">
-            Popular Conversions
-          </p>
-          <div class="flex flex-wrap justify-center gap-4">
-            <button
-              class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-6 py-3.5 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
-              data-from="USD"
-              data-to="EUR">USD → EUR</button
-            >
-            <button
-              class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-6 py-3.5 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
-              data-from="EUR"
-              data-to="USD">EUR → USD</button
-            >
-            <button
-              class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-6 py-3.5 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
-              data-from="GBP"
-              data-to="USD">GBP → USD</button
-            >
-            <button
-              class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-6 py-3.5 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
-              data-from="USD"
-              data-to="JPY">USD → JPY</button
-            >
-            <button
-              class="quick-pair rounded-lg border border-slate-700 bg-slate-800/50 px-6 py-3.5 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
-              data-from="USD"
-              data-to="CAD">USD → CAD</button
-            >
-          </div>
-        </div>
-      </div>
+      </ToolCard>
     </div>
-  </div>
+  </ToolPage>
 </Layout>
 
 <script>

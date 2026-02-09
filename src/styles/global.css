@@ -31,6 +31,10 @@
 }
 
 @layer base {
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
   body {
     background-color: var(--color-bg-main);
     color: var(--color-text-main);
@@ -40,6 +44,20 @@
       radial-gradient(circle at 15% 50%, var(--bg-gradient-start) 0%, transparent 40%),
       radial-gradient(circle at 85% 30%, var(--bg-gradient-end) 0%, transparent 40%);
     background-attachment: fixed;
+  }
+
+  a {
+    @apply underline-offset-4 transition-colors duration-200 hover:underline;
+  }
+
+  input,
+  textarea,
+  select {
+    @apply w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white transition-all outline-none placeholder:text-slate-600 focus:border-blue-500/50 focus:bg-black/40 focus:ring-1 focus:ring-blue-500/50 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  label {
+    @apply mb-2 block text-sm font-medium text-slate-400;
   }
 }
 

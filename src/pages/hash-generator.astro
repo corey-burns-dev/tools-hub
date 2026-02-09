@@ -1,40 +1,27 @@
 ---
-import Button from "../components/Button.astro";
+import Button from "@/components/ui/Button.astro";
+import ToolCard from "@/components/ui/ToolCard.astro";
+import ToolGrid from "@/components/ui/ToolGrid.astro";
+import ToolPage from "@/components/ui/ToolPage.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Hash Generator">
-  <div class="space-y-12">
-    <div class="animate-fade-in mb-8 flex justify-center">
-      <p
-        class="rounded-full border border-white/10 bg-white/5 px-6 py-2 text-sm font-medium text-slate-300 backdrop-blur-md transition-all hover:bg-white/10 hover:text-white"
-      >
-        Generate SHA hashes from text or files.
-      </p>
-    </div>
-
-    <div class="grid gap-8 lg:grid-cols-2 lg:items-start">
+  <ToolPage description="Generate SHA hashes from text or files.">
+    <ToolGrid cols={2} class="gap-8">
       <div class="space-y-6">
-        <div class="card-glass">
-          <h2 class="mb-4 text-lg font-bold text-white">
-            <span class="text-blue-400">01.</span> Input
-          </h2>
-
-          <textarea
-            id="hash-input"
-            rows="10"
-            placeholder="Paste text here..."
-            class="w-full resize-none rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-600 transition-all outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+        <ToolCard title="Input" step="01.">
+          <textarea id="hash-input" rows="10" placeholder="Paste text here..." class="resize-none"
           ></textarea>
 
           <div class="mt-4 flex flex-wrap gap-2">
-            <Button id="hash-btn" variant="primary" class="px-10 sm:w-auto">Generate</Button>
-            <Button id="clear-btn" variant="ghost" class="px-10 sm:w-auto"> Clear </Button>
+            <Button id="hash-btn" variant="primary">Generate</Button>
+            <Button id="clear-btn" variant="ghost"> Clear </Button>
           </div>
-        </div>
+        </ToolCard>
 
         <div class="space-y-3">
-          <label class="flex items-center gap-3 text-sm text-slate-300">
+          <label class="flex items-center gap-3">
             <input
               id="uppercase-toggle"
               type="checkbox"
@@ -46,46 +33,47 @@ import Layout from "../layouts/Layout.astro";
           <div
             class="rounded-xl border border-dashed border-white/10 bg-white/5 p-4 text-xs text-slate-400"
           >
-            Drop a file into the output panel to hash it.
+            Tip: Drop a file into the output panel to hash it.
           </div>
         </div>
       </div>
-      <div class="card-glass flex h-full flex-col">
-        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h2 class="text-lg font-bold text-white">
-            <span class="text-violet-400">02.</span> Hash Output
-          </h2>
-          <select
-            id="algo-select"
-            class="rounded-xl border border-white/10 bg-slate-900/50 px-3 py-2 text-sm text-white outline-none"
-          >
+
+      <ToolCard title="Hash Output" step="02." class="flex h-full flex-col">
+        <div slot="header-actions">
+          <select id="algo-select" class="w-auto px-3 py-1 text-xs">
             <option value="SHA-256">SHA-256</option>
             <option value="SHA-384">SHA-384</option>
             <option value="SHA-512">SHA-512</option>
           </select>
         </div>
 
-        <textarea
-          id="hash-output"
-          rows="8"
-          placeholder="Hash output will appear here"
-          class="w-full flex-1 resize-none rounded-xl border border-white/10 bg-black/50 px-4 py-3 font-mono text-sm text-white outline-none"
-        ></textarea>
+        <div class="flex flex-1 flex-col gap-4">
+          <textarea
+            id="hash-output"
+            rows="8"
+            placeholder="Hash output will appear here"
+            class="mt-0 flex-1 bg-black/50 font-mono text-sm"></textarea>
 
-        <div class="mt-4 flex items-center justify-between">
-          <div class="text-xs text-slate-500" id="hash-meta">Ready.</div>
-          <Button id="copy-btn" variant="ghost" class="px-4 py-2 text-sm">Copy</Button>
-        </div>
+          <div class="flex items-center justify-between">
+            <div
+              class="text-[10px] font-bold tracking-widest text-slate-500 uppercase"
+              id="hash-meta"
+            >
+              Ready.
+            </div>
+            <Button id="copy-btn" variant="ghost" size="sm">Copy</Button>
+          </div>
 
-        <div
-          id="hash-drop-zone"
-          class="mt-4 flex items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 px-4 py-4 text-xs text-slate-400"
-        >
-          Drop a file here to hash it
+          <div
+            id="hash-drop-zone"
+            class="flex items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 px-4 py-6 text-xs text-slate-400 transition-colors"
+          >
+            Drop a file here to hash it
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </ToolCard>
+    </ToolGrid>
+  </ToolPage>
 </Layout>
 
 <script>
@@ -193,7 +181,7 @@ import Layout from "../layouts/Layout.astro";
 
 <style>
   .drag-active {
-    border-color: rgba(139, 92, 246, 0.6);
-    background: rgba(139, 92, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(59, 130, 246, 0.05);
   }
 </style>

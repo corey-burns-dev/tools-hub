@@ -1,49 +1,48 @@
 ---
+import ToolPage from "@/components/ui/ToolPage.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Dashboard">
-  <div class="flex min-h-screen w-full flex-col items-center justify-center p-4 md:p-8">
-    <!-- Header -->
-    <div class="relative z-10 space-y-8 text-center">
-      <h1 class="text-4xl font-extrabold tracking-tight text-white md:text-5xl">DevTools Hub</h1>
-      <p class="mx-auto max-w-2xl text-lg text-slate-400">
-        Your go-to collection of premium developer utilities and tools.
-      </p>
+  <ToolPage description="Your go-to collection of premium developer utilities and tools.">
+    <div class="flex flex-col items-center justify-center pt-20 pb-12">
+      <!-- Header -->
+      <div
+        class="animate-in fade-in slide-in-from-bottom-4 relative z-10 space-y-8 text-center duration-700"
+      >
+        <h1 class="text-5xl font-extrabold tracking-tighter text-white md:text-7xl">
+          DevTools Hub
+        </h1>
+        <p class="mx-auto max-w-2xl text-lg font-medium text-slate-400">
+          Professional-grade utilities for modern developer workflows.
+        </p>
 
-      <!-- Generated Image -->
-      <div class="flex justify-center">
-        <img
-          src="/devtools-hero.png"
-          alt="DevTools Hub Hero"
-          class="h-auto w-full max-w-md rounded-2xl shadow-2xl shadow-blue-500/20"
-        />
-      </div>
-
-      <!-- New Tool Notification -->
-      <div class="mt-8 flex justify-center">
-        <div
-          class="group relative inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm text-blue-300 transition-colors hover:bg-blue-500/20"
-        >
-          <span class="flex h-2 w-2">
-            <span
-              class="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-blue-400 opacity-75"
-            ></span>
-            <span class="relative inline-flex h-2 w-2 rounded-full bg-blue-500"></span>
-          </span>
-          <span class="font-medium">New Arrival:</span>
-          <span>Meme Generator</span>
-          <svg
-            class="h-4 w-4 transition-transform group-hover:translate-x-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+        <!-- New Tool Notification -->
+        <div class="mt-12 flex justify-center">
+          <a
+            href="/meme-generator"
+            class="group relative inline-flex items-center gap-3 rounded-full border border-blue-500/20 bg-blue-500/10 px-6 py-3 text-sm text-blue-300 shadow-lg shadow-blue-500/5 transition-all hover:scale-105 hover:border-blue-500/40 hover:bg-blue-500/20"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"
-            ></path>
-          </svg>
+            <span class="flex h-2 w-2">
+              <span
+                class="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-blue-400 opacity-75"
+              ></span>
+              <span class="relative inline-flex h-2 w-2 rounded-full bg-blue-500"></span>
+            </span>
+            <span class="text-[10px] font-bold tracking-widest uppercase">New Arrival:</span>
+            <span class="font-semibold">Meme Generator</span>
+            <svg
+              class="h-4 w-4 transition-transform group-hover:translate-x-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </a>
         </div>
       </div>
     </div>
-  </div>
+  </ToolPage>
 </Layout>

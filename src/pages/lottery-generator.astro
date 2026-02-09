@@ -1,4 +1,7 @@
 ---
+import Button from "@/components/ui/Button.astro";
+import ToolCard from "@/components/ui/ToolCard.astro";
+import ToolPage from "@/components/ui/ToolPage.astro";
 import lotteryData from "../data/lottery.json";
 import Layout from "../layouts/Layout.astro";
 
@@ -7,19 +10,9 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
 ---
 
 <Layout title="Ontario Lottery Generator">
-  <div class="space-y-10">
-    <div class="animate-fade-in mb-8 flex justify-center">
-      <p
-        class="rounded-full border border-white/10 bg-white/5 px-6 py-2 text-sm font-medium text-slate-300 backdrop-blur-md transition-all hover:bg-white/10 hover:text-white"
-      >
-        Generate lucky numbers for Ontario Lottery games.
-      </p>
-    </div>
-
-    <div class="lottery-shell">
-      <div class="card-glass lottery-panel">
-        <label class="mb-4 block text-sm font-medium text-slate-300">Select Your Game</label>
-
+  <ToolPage description="Generate lucky numbers for Ontario Lottery games.">
+    <div class="mx-auto w-full max-w-4xl space-y-8">
+      <ToolCard title="Select Your Game" step="01.">
         <!-- Game Capsules -->
         <div class="mb-6 flex flex-wrap gap-3">
           {
@@ -27,10 +20,10 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
               <button
                 type="button"
                 class:list={[
-                  "game-capsule lottery-btn",
+                  "game-capsule",
                   "rounded-full px-6 py-3 font-medium text-white transition-all duration-300",
-                  "border-2 border-slate-600 bg-slate-800/30 hover:scale-105 hover:border-blue-500 hover:bg-slate-700/50 hover:shadow-lg hover:shadow-blue-500/20",
-                  "active:scale-95",
+                  "border border-white/10 bg-black/20 shadow-lg hover:scale-105 hover:border-blue-500 hover:bg-white/10",
+                  "cursor-pointer active:scale-95",
                   { selected: index === 0 },
                 ]}
                 data-game-id={game.id}
@@ -42,62 +35,56 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
         </div>
 
         <!-- Keno Pick Count (only visible for Keno) -->
-        <div id="keno-picks" class="animate-fade-in mb-6 hidden">
-          <label for="keno-count" class="mb-2 block text-sm font-medium text-slate-300"
+        <div
+          id="keno-picks"
+          class="animate-in fade-in slide-in-from-top-2 mb-6 hidden duration-300"
+        >
+          <label for="keno-count" class="mb-2 block text-sm font-medium text-slate-400"
             >Number of Picks (1-10)</label
           >
-          <input
-            type="number"
-            id="keno-count"
-            min="1"
-            max="10"
-            value="5"
-            class="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
-          />
+          <input type="number" id="keno-count" min="1" max="10" value="5" class="w-full" />
         </div>
 
         <!-- Encore Checkbox -->
-        <div id="encore-option" class="animate-fade-in mb-6 hidden">
-          <label class="encore-toggle">
+        <div
+          id="encore-option"
+          class="animate-in fade-in slide-in-from-top-2 mb-6 hidden duration-300"
+        >
+          <label class="group flex cursor-pointer items-center gap-3">
             <input
               type="checkbox"
               id="encore-checkbox"
               class="h-5 w-5 cursor-pointer rounded bg-slate-800/50 text-blue-500 transition-all focus:ring-2 focus:ring-blue-500/50"
             />
-            <span class="text-sm font-medium text-slate-300">
+            <span
+              class="text-sm font-medium text-slate-300 transition-colors group-hover:text-white"
+            >
               Add Encore <span class="text-slate-500">(7 bonus digits)</span>
             </span>
           </label>
         </div>
 
         <div class="flex justify-center">
-          <button
-            id="generate-btn"
-            type="button"
-            class="lottery-btn w-full rounded-lg bg-gradient-to-r from-blue-500 to-violet-500 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/50 active:scale-95 sm:w-auto"
-          >
+          <Button id="generate-btn" variant="primary" class="h-14 w-full px-12 text-lg sm:w-auto">
             Generate Numbers
-          </button>
+          </Button>
         </div>
-      </div>
+      </ToolCard>
 
       <!-- Results Container -->
-      <div id="results-container" class="card-glass lottery-panel animate-fade-in hidden">
-        <div class="mb-4 flex items-center justify-between">
-          <h2 class="text-2xl font-bold text-white" id="results-title">Your Numbers</h2>
-          <button
-            id="copy-btn"
-            type="button"
-            class="lottery-btn rounded-lg bg-slate-700/50 px-4 py-2 text-sm text-slate-300 transition-all hover:bg-slate-600/50 hover:text-white"
-          >
-            📋 Copy
-          </button>
-        </div>
-
-        <div id="results-content" class="space-y-4"></div>
+      <div
+        id="results-container"
+        class="animate-in fade-in slide-in-from-top-4 hidden duration-500"
+      >
+        <ToolCard title="Your Numbers" step="02.">
+          <div slot="header-actions">
+            <Button id="copy-btn" variant="ghost" size="sm"> 📋 Copy </Button>
+          </div>
+          <div id="results-content" class="space-y-6 pt-4"></div>
+        </ToolCard>
       </div>
     </div>
-  </div>
+  </ToolPage>
 </Layout>
 
 <script is:inline define:vars={{ games }}>
@@ -105,7 +92,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
   const generateBtn = document.getElementById("generate-btn");
   const resultsContainer = document.getElementById("results-container");
   const resultsContent = document.getElementById("results-content");
-  const resultsTitle = document.getElementById("results-title");
+  const resultsTitle = document.querySelector("#results-container h2 span:last-child");
   const copyBtn = document.getElementById("copy-btn");
   const kenoPicks = document.getElementById("keno-picks");
   const kenoCount = document.getElementById("keno-count");
@@ -179,21 +166,21 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
         c.classList.remove(
           "selected",
           "border-blue-500",
-          "bg-blue-500/20",
+          "bg-blue-500/10",
           "shadow-lg",
-          "shadow-blue-500/30"
+          "shadow-blue-500/20"
         );
-        c.classList.add("border-slate-600", "bg-slate-800/30");
+        c.classList.add("border-white/10", "bg-black/20");
       });
 
       // Add selected state to clicked capsule
-      capsule.classList.remove("border-slate-600", "bg-slate-800/30");
+      capsule.classList.remove("border-white/10", "bg-black/20");
       capsule.classList.add(
         "selected",
         "border-blue-500",
-        "bg-blue-500/20",
+        "bg-blue-500/10",
         "shadow-lg",
-        "shadow-blue-500/30"
+        "shadow-blue-500/20"
       );
 
       selectedGameId = capsule.dataset.gameId;
@@ -264,13 +251,13 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
     const balls = numbers
       .map(
         (num, i) =>
-          `<div class="lotto-reveal flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-violet-500 text-2xl font-bold text-white shadow-lg shadow-blue-500/30" style="--reveal-delay:${staggerDelay + i * REVEAL_STEP_MS}ms;--reveal-duration:${REVEAL_DURATION_MS}ms">${num}</div>`
+          `<div class="lotto-reveal flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-blue-600/20 text-xl sm:text-2xl font-bold text-blue-400 border border-blue-500/30 shadow-lg shadow-blue-500/10" style="--reveal-delay:${staggerDelay + i * REVEAL_STEP_MS}ms;--reveal-duration:${REVEAL_DURATION_MS}ms">${num}</div>`
       )
       .join("");
 
     return `
-      <div>
-        <h3 class="mb-3 text-sm font-medium text-slate-400">${label}</h3>
+      <div class="space-y-3">
+        <h3 class="text-xs font-bold tracking-widest text-slate-500 uppercase">${label}</h3>
         <div class="flex flex-wrap gap-3">${balls}</div>
       </div>
     `;
@@ -281,13 +268,13 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
     const digitBoxes = digits
       .map(
         (digit, i) =>
-          `<div class="lotto-reveal flex h-20 w-16 items-center justify-center rounded-lg border-2 border-blue-500 bg-slate-800/50 text-3xl font-bold text-white shadow-lg shadow-blue-500/20" style="--reveal-delay:${staggerDelay + i * REVEAL_STEP_MS}ms;--reveal-duration:${REVEAL_DURATION_MS}ms">${digit}</div>`
+          `<div class="lotto-reveal flex h-20 w-16 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-3xl font-mono font-bold text-white shadow-lg" style="--reveal-delay:${staggerDelay + i * REVEAL_STEP_MS}ms;--reveal-duration:${REVEAL_DURATION_MS}ms">${digit}</div>`
       )
       .join("");
 
     return `
-      <div>
-        <h3 class="mb-3 text-sm font-medium text-slate-400">${label}</h3>
+      <div class="space-y-3">
+        <h3 class="text-xs font-bold tracking-widest text-slate-500 uppercase">${label}</h3>
         <div class="flex flex-wrap gap-2">${digitBoxes}</div>
       </div>
     `;
@@ -300,7 +287,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
         const isRed = card.suit === "♥" || card.suit === "♦";
         const color = isRed ? "text-red-500" : "text-slate-900";
         return `
-          <div class="lotto-card-reveal flex h-32 w-24 flex-col items-center justify-center rounded-lg bg-white shadow-lg" style="--reveal-delay:${i * REVEAL_STEP_MS}ms;--reveal-duration:${REVEAL_DURATION_MS}ms">
+          <div class="lotto-card-reveal flex h-32 w-24 flex-col items-center justify-center rounded-lg bg-white shadow-xl" style="--reveal-delay:${i * REVEAL_STEP_MS}ms;--reveal-duration:${REVEAL_DURATION_MS}ms">
             <div class="text-3xl font-bold ${color}">${card.rank}</div>
             <div class="text-4xl ${color}">${card.suit}</div>
           </div>
@@ -309,8 +296,8 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
       .join("");
 
     return `
-      <div>
-        <h3 class="mb-3 text-sm font-medium text-slate-400">Your Hand</h3>
+      <div class="space-y-3">
+        <h3 class="text-xs font-bold tracking-widest text-slate-500 uppercase">Your Hand</h3>
         <div class="flex flex-wrap gap-3">${cardHTML}</div>
       </div>
     `;
@@ -384,7 +371,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
     }
 
     resultsContent.innerHTML = html;
-    resultsTitle.textContent = selectedGame.name;
+    if (resultsTitle) resultsTitle.textContent = " — " + selectedGame.name;
     resultsContainer.classList.remove("hidden");
 
     // Store for copy function
@@ -399,46 +386,16 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
     e.preventDefault();
     const text = resultsContainer.dataset.copyText;
     navigator.clipboard.writeText(text).then(() => {
+      const originalText = copyBtn.textContent;
       copyBtn.textContent = "✅ Copied!";
       setTimeout(() => {
-        copyBtn.textContent = "📋 Copy";
+        copyBtn.textContent = originalText;
       }, 2000);
     });
   });
 </script>
 
 <style>
-  .lottery-shell {
-    margin-inline: auto;
-    width: 100%;
-    max-width: 58rem;
-    display: grid;
-    gap: 1rem;
-  }
-
-  .lottery-panel {
-    padding: 1rem !important;
-  }
-
-  .lottery-btn {
-    min-height: 2.5rem !important;
-    padding: 0.65rem 1rem !important;
-  }
-
-  .encore-toggle {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: rgba(15, 23, 42, 0.35);
-    border-radius: 0.75rem;
-    padding: 0.7rem 0.85rem;
-    transition: all 0.2s ease;
-  }
-
-  .encore-toggle:hover {
-    background: rgba(30, 41, 59, 0.45);
-  }
-
   .lotto-reveal {
     opacity: 0;
     animation: lotto-spin-in var(--reveal-duration, 340ms) cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
@@ -452,16 +409,6 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
     animation: card-deal-in var(--reveal-duration, 340ms) cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
     animation-delay: var(--reveal-delay, 0ms);
     will-change: transform, opacity, filter;
-  }
-
-  @media (min-width: 768px) {
-    .lottery-shell {
-      gap: 1.25rem;
-    }
-
-    .lottery-panel {
-      padding: 1.15rem !important;
-    }
   }
 
   @keyframes lotto-spin-in {
@@ -493,39 +440,5 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
       transform: translateY(0) scale(1) rotateY(0deg);
       filter: blur(0);
     }
-  }
-
-  @keyframes pop {
-    0% {
-      opacity: 0;
-      transform: scale(0.5);
-    }
-    50% {
-      transform: scale(1.1);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .animate-pop {
-    animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    opacity: 0;
-  }
-
-  .animate-fade-in {
-    animation: fade-in 0.3s ease-out forwards;
   }
 </style>

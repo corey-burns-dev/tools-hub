@@ -1,89 +1,78 @@
 ---
-import Button from "../components/Button.astro";
-import ToolCard from "../components/ui/ToolCard.astro";
-import ToolGrid from "../components/ui/ToolGrid.astro";
-import ToolPage from "../components/ui/ToolPage.astro";
+import Button from "@/components/ui/Button.astro";
+import ToolCard from "@/components/ui/ToolCard.astro";
+import ToolGrid from "@/components/ui/ToolGrid.astro";
+import ToolPage from "@/components/ui/ToolPage.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Measurement Converter">
-  <ToolPage>
+  <ToolPage description="Convert length, weight, volume, temperature, speed, and area instantly.">
     <ToolGrid cols={2} class="gap-8">
-      <ToolCard title="Converter" step="01." bodyClass="space-y-5 md:space-y-6">
-        <div class="space-y-2">
-          <label
-            for="category"
-            class="text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
-            >Measurement Type</label
-          >
-          <select id="category" class="ui-select">
-            <option value="length">Length</option>
-            <option value="weight">Weight</option>
-            <option value="volume">Volume</option>
-            <option value="temperature">Temperature</option>
-            <option value="speed">Speed</option>
-            <option value="area">Area</option>
-          </select>
-        </div>
-
-        <div class="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-end">
-          <div class="space-y-2 rounded-xl border border-slate-800/60 bg-slate-900/30 p-4">
-            <label
-              for="value-from"
-              class="text-left text-xs font-bold tracking-wider text-slate-500 uppercase"
-              >From</label
-            >
-            <input
-              id="value-from"
-              type="number"
-              step="any"
-              value="1"
-              class="ui-input text-2xl font-bold"
-            />
-            <select id="unit-from" class="ui-select"></select>
+      <ToolCard title="Converter" step="01.">
+        <div class="space-y-4">
+          <div class="space-y-2">
+            <label for="category">Measurement Type</label>
+            <select id="category">
+              <option value="length">Length</option>
+              <option value="weight">Weight</option>
+              <option value="volume">Volume</option>
+              <option value="temperature">Temperature</option>
+              <option value="speed">Speed</option>
+              <option value="area">Area</option>
+            </select>
           </div>
 
-          <div class="flex justify-center">
-            <button
-              id="swap-btn"
-              type="button"
-              class="group flex h-12 w-12 items-center justify-center rounded-full border border-slate-700 bg-slate-800 text-xl text-slate-200 transition-all hover:scale-105 hover:border-blue-500/50 hover:bg-slate-700"
-              title="Swap units"
-            >
-              <span class="transition-transform group-hover:rotate-180">⇄</span>
-            </button>
+          <div class="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-end">
+            <div class="space-y-3 rounded-xl border border-white/10 bg-black/20 p-4">
+              <label for="value-from" class="mb-0!">From</label>
+              <input
+                id="value-from"
+                type="number"
+                step="any"
+                value="1"
+                class="border-none bg-transparent p-0 text-2xl font-bold focus:ring-0"
+              />
+              <select id="unit-from" class="mt-2"></select>
+            </div>
+
+            <div class="flex justify-center pb-4">
+              <button
+                id="swap-btn"
+                type="button"
+                class="group flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-slate-200 transition-all hover:scale-110 hover:border-blue-500/50 hover:bg-white/10"
+                title="Swap units"
+              >
+                <span class="transition-transform group-hover:rotate-180">⇄</span>
+              </button>
+            </div>
+
+            <div class="space-y-3 rounded-xl border border-white/10 bg-black/20 p-4">
+              <label for="value-to" class="mb-0!">To</label>
+              <input
+                id="value-to"
+                type="text"
+                readonly
+                class="border-none bg-transparent p-0 text-2xl font-bold text-blue-400 focus:ring-0"
+              />
+              <select id="unit-to" class="mt-2"></select>
+            </div>
           </div>
 
-          <div class="space-y-2 rounded-xl border border-slate-800/60 bg-slate-900/30 p-4">
-            <label
-              for="value-to"
-              class="text-left text-xs font-bold tracking-wider text-slate-500 uppercase">To</label
-            >
-            <input
-              id="value-to"
-              type="text"
-              readonly
-              class="ui-input text-2xl font-bold text-emerald-400"
-            />
-            <select id="unit-to" class="ui-select"></select>
+          <div class="pt-2">
+            <Button id="convert-btn" variant="primary" class="w-full"> Convert </Button>
           </div>
-        </div>
-
-        <div class="ui-action-row mt-1">
-          <Button id="convert-btn" variant="primary" class="w-full sm:w-auto sm:min-w-[190px]">
-            Convert
-          </Button>
         </div>
       </ToolCard>
 
-      <ToolCard title="Result" step="02." bodyClass="space-y-5">
-        <div class="ui-output-box p-6 md:p-7">
+      <ToolCard title="Result" step="02.">
+        <div class="rounded-xl border border-white/10 bg-black/40 p-6 shadow-inner md:p-7">
           <p class="text-xs font-bold tracking-wider text-slate-500 uppercase">Converted Value</p>
-          <p id="result-value" class="mt-2 text-4xl font-extrabold text-emerald-400">1 m</p>
+          <p id="result-value" class="mt-2 text-4xl font-extrabold text-blue-400">1 m</p>
           <p id="result-meta" class="mt-3 text-sm text-slate-400">Ready to convert</p>
         </div>
 
-        <div class="rounded-xl border border-slate-800/70 bg-slate-900/20 p-5">
+        <div class="rounded-xl border border-white/5 bg-white/2 p-5">
           <p class="text-xs font-bold tracking-wider text-slate-500 uppercase">Quick Conversions</p>
           <div id="quick-conversions" class="mt-4 grid gap-3 sm:grid-cols-2"></div>
         </div>
@@ -244,7 +233,7 @@ import Layout from "../layouts/Layout.astro";
     quickConversionsEl.innerHTML = presets
       .map((n) => {
         const converted = convertValue(category, n, fromUnit, toUnit);
-        return `<button type="button" class="quick-convert rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2.5 text-sm text-slate-200 hover:bg-slate-700" data-value="${n}">${n} ${fromUnit} → ${formatNumber(converted)} ${toUnit}</button>`;
+        return `<button type="button" class="quick-convert rounded-lg border border-white/5 bg-white/5 px-4 py-2.5 text-sm text-slate-300 transition-all hover:bg-white/10 hover:text-white" data-value="${n}">${n} ${fromUnit} → ${formatNumber(converted)} ${toUnit}</button>`;
       })
       .join("");
 

@@ -1,112 +1,81 @@
 ---
+import Button from "@/components/ui/Button.astro";
+import ToolCard from "@/components/ui/ToolCard.astro";
+import ToolPage from "@/components/ui/ToolPage.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Food Picker">
-  <div class="mx-auto max-w-3xl space-y-12 text-center">
-    <!-- Header -->
-    <div class="animate-fade-in space-y-4">
-      <div
-        class="inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-orange-500 to-red-600 text-5xl shadow-xl shadow-orange-500/20"
-      >
-        🍔
-      </div>
-      <h1
-        class="bg-gradient-to-r from-orange-400 via-red-400 to-rose-400 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent md:text-6xl"
-      >
-        Food Picker
-      </h1>
-      <p class="text-xl text-slate-400">Can't decide? Let the algorithm choose your next meal.</p>
-    </div>
+  <ToolPage description="Can't decide? Let the algorithm choose your next meal.">
+    <div class="mx-auto w-full max-w-2xl space-y-8">
+      <ToolCard title="Decision Machine" step="01.">
+        <!-- Result Display -->
+        <div
+          id="result-container"
+          class="mb-12 flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-white/5 bg-black/20 p-8 shadow-inner"
+        >
+          <div id="initial-state" class="group text-center">
+            <div
+              class="mb-4 animate-bounce text-6xl drop-shadow-xl filter transition-transform group-hover:scale-110"
+            >
+              🤔
+            </div>
+            <p class="text-xs font-bold tracking-widest text-slate-500 uppercase">
+              Awaiting input...
+            </p>
+          </div>
 
-    <!-- Main Game Area -->
-    <div
-      class="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/50 p-8 shadow-2xl backdrop-blur-xl md:p-12"
-    >
-      <!-- Result Display -->
-      <div id="result-container" class="mb-12 min-h-[200px] content-center">
-        <div id="initial-state">
-          <div class="animate-pulse text-6xl">🤔</div>
-          <p class="mt-4 text-xl font-medium text-slate-500">I'm thinking...</p>
-        </div>
-
-        <div id="result-content" class="hidden transform transition-all duration-500">
-          <div id="result-emoji" class="mb-4 text-8xl transition-transform hover:scale-110"></div>
-          <h2
-            id="result-name"
-            class="mb-2 bg-gradient-to-r from-white to-slate-200 bg-clip-text text-4xl font-bold text-transparent"
+          <div
+            id="result-content"
+            class="animate-in fade-in zoom-in hidden text-center duration-500"
           >
-          </h2>
-          <span
-            id="result-category"
-            class="inline-block rounded-full bg-slate-800 px-4 py-1 text-sm font-medium tracking-wide text-slate-400 uppercase"
-          >
-          </span>
-        </div>
-      </div>
-
-      <!-- Controls -->
-      <div class="space-y-8">
-        <!-- Categories -->
-        <div class="space-y-3">
-          <p class="text-xs font-bold tracking-widest text-slate-500 uppercase">Select Filter</p>
-          <div class="flex flex-wrap justify-center gap-2" id="category-filters">
-            <button
-              data-category="All"
-              class="category-btn active rounded-xl border border-orange-500/50 bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-400 transition-all hover:bg-orange-500/20"
+            <div id="result-emoji" class="mb-4 text-8xl drop-shadow-2xl filter"></div>
+            <h2 id="result-name" class="mb-2 text-4xl font-extrabold text-white"></h2>
+            <div
+              id="result-category"
+              class="inline-block rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-1 text-[10px] font-bold tracking-widest text-blue-400 uppercase"
             >
-              All
-            </button>
-            <button
-              data-category="Fast Food"
-              class="category-btn rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-400 transition-all hover:border-slate-600 hover:bg-slate-800"
-            >
-              Fast Food
-            </button>
-            <button
-              data-category="Healthy"
-              class="category-btn rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-400 transition-all hover:border-slate-600 hover:bg-slate-800"
-            >
-              Healthy
-            </button>
-            <button
-              data-category="Asian"
-              class="category-btn rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-400 transition-all hover:border-slate-600 hover:bg-slate-800"
-            >
-              Asian
-            </button>
-            <button
-              data-category="Italian"
-              class="category-btn rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-400 transition-all hover:border-slate-600 hover:bg-slate-800"
-            >
-              Italian
-            </button>
-            <button
-              data-category="Sweet"
-              class="category-btn rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-400 transition-all hover:border-slate-600 hover:bg-slate-800"
-            >
-              Sweet
-            </button>
+            </div>
           </div>
         </div>
 
-        <!-- Action Button -->
-        <div class="mt-2 pt-6 md:mt-3 md:pt-8">
-          <button
-            id="spin-btn"
-            class="group relative mx-auto w-full overflow-hidden rounded-2xl bg-gradient-to-r from-orange-500 to-red-600 p-1 transition-transform active:scale-95 md:w-auto md:min-w-[200px]"
-          >
-            <div
-              class="relative flex items-center justify-center gap-2 rounded-xl bg-slate-900/10 px-8 py-4 text-xl font-bold text-white transition-colors group-hover:bg-transparent"
-            >
-              <span>Pick Food</span>
-              <span class="text-2xl transition-transform group-hover:rotate-12">🎲</span>
+        <div class="space-y-8">
+          <!-- Categories -->
+          <div class="space-y-4">
+            <p class="text-center text-[10px] font-bold tracking-widest text-slate-500 uppercase">
+              Select Filter
+            </p>
+            <div class="flex flex-wrap justify-center gap-2" id="category-filters">
+              <Button variant="primary" size="sm" class="category-btn" data-category="All">
+                All
+              </Button>
+              <Button variant="secondary" size="sm" class="category-btn" data-category="Fast Food">
+                Fast Food
+              </Button>
+              <Button variant="secondary" size="sm" class="category-btn" data-category="Healthy">
+                Healthy
+              </Button>
+              <Button variant="secondary" size="sm" class="category-btn" data-category="Asian">
+                Asian
+              </Button>
+              <Button variant="secondary" size="sm" class="category-btn" data-category="Italian">
+                Italian
+              </Button>
+              <Button variant="secondary" size="sm" class="category-btn" data-category="Sweet">
+                Sweet
+              </Button>
             </div>
-          </button>
+          </div>
+
+          <div class="flex justify-center pt-2">
+            <Button id="spin-btn" variant="primary" class="h-14 w-full px-12 text-lg sm:w-auto">
+              Pick Food 🎲
+            </Button>
+          </div>
         </div>
-      </div>
+      </ToolCard>
     </div>
-  </div>
+  </ToolPage>
 </Layout>
 
 <script>
@@ -148,14 +117,45 @@ import Layout from "../layouts/Layout.astro";
     btn.addEventListener("click", () => {
       if (isSpinning) return;
 
-      // Update UI
+      // Reset all buttons to secondary variants
       categoryBtns.forEach((b) => {
-        b.classList.remove("active", "border-orange-500/50", "bg-orange-500/10", "text-orange-400");
-        b.classList.add("border-slate-700", "bg-slate-800/50", "text-slate-400");
+        b.classList.remove(
+          "bg-blue-600",
+          "text-white",
+          "hover:bg-blue-500",
+          "active:bg-blue-700",
+          "shadow-lg",
+          "shadow-blue-500/20"
+        );
+        b.classList.add(
+          "bg-white/5",
+          "text-white",
+          "border",
+          "border-white/10",
+          "hover:bg-white/10",
+          "active:bg-white/20",
+          "backdrop-blur-sm"
+        );
       });
 
-      btn.classList.remove("border-slate-700", "bg-slate-800/50", "text-slate-400");
-      btn.classList.add("active", "border-orange-500/50", "bg-orange-500/10", "text-orange-400");
+      // Update active button to primary variant
+      btn.classList.remove(
+        "bg-white/5",
+        "text-white",
+        "border",
+        "border-white/10",
+        "hover:bg-white/10",
+        "active:bg-white/20",
+        "backdrop-blur-sm"
+      );
+      btn.classList.add(
+        "bg-blue-600",
+        "text-white",
+        "hover:bg-blue-500",
+        "active:bg-blue-700",
+        "shadow-lg",
+        "shadow-blue-500/20"
+      );
 
       activeCategory = btn.getAttribute("data-category") || "All";
     });
@@ -196,7 +196,6 @@ import Layout from "../layouts/Layout.astro";
       if (iterations >= maxIterations) {
         clearInterval(interval);
         isSpinning = false;
-        // Final selection bounce/highlight could go here
       }
     }, 100);
   });
