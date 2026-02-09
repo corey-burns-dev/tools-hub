@@ -1,11 +1,13 @@
 ---
 import "../styles/global.css";
+import { tools } from "../config/tools";
 
 interface Props {
   title: string;
   description?: string;
   image?: string;
   noindex?: boolean;
+  keywords?: string;
 }
 
 const {
@@ -13,6 +15,7 @@ const {
   description = "Tools Hub provides fast, browser-based tools for developers, creators, and daily workflows.",
   image = "/og-image.svg",
   noindex = false,
+  keywords = "Tools Hub, Developer Tools, Online Generators, Web Tools, Frontend Utilities, Password Generator, JSON Converter, Corey Burns",
 } = Astro.props;
 
 const siteName = "Tools Hub";
@@ -26,34 +29,28 @@ const socialImageUrl =
 const robotsContent = noindex ? "noindex, nofollow" : "index, follow";
 const structuredData = JSON.stringify({
   "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: pageTitle,
+  "@type": "SoftwareApplication",
+  name: siteName,
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "Web",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
   description,
   url: canonicalUrl,
+  author: {
+    "@type": "Person",
+    name: "Corey Burns",
+    url: "https://coreyburns.ca",
+  },
   isPartOf: {
     "@type": "WebSite",
     name: siteName,
     url: siteUrl,
   },
 });
-const isDev = import.meta.env.DEV;
-
-const tools = [
-  ...(isDev ? [{ name: "Debug Logs", icon: "📋", path: "/debug-logs" }] : []),
-  { name: "Username Generator", icon: "👤", path: "/username-generator" },
-  { name: "Password Generator", icon: "🔐", path: "/password-generator" },
-  { name: "Lottery Generator", icon: "🎰", path: "/lottery-generator" },
-  { name: "Food Picker", icon: "🍔", path: "/food-picker" },
-  { name: "Currency Converter", icon: "💱", path: "/currency-converter" },
-  { name: "Measure Converter", icon: "📏", path: "/measurement-converter" },
-  { name: "Habit Tracker", icon: "📈", path: "/habit-tracker" },
-  { name: "Meme Generator", icon: "🐸", path: "/meme-generator" },
-  { name: "Hash Generator", icon: "##", path: "/hash-generator" },
-  { name: "Base64 Tool", icon: "64", path: "/base64-tool" },
-  { name: "UUID Generator", icon: "🆔", path: "/uuid-generator" },
-  { name: "JSON ↔ CSV", icon: "🔁", path: "/json-csv" },
-  { name: "URL Encoder", icon: "🔗", path: "/url-encoder" },
-];
 ---
 
 <!doctype html>
@@ -71,6 +68,8 @@ const tools = [
     />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <meta name="author" content="Corey Burns" />
+    <meta name="keywords" content={keywords} />
     <meta name="robots" content={robotsContent} />
     <meta name="theme-color" content="#020617" />
     <link rel="canonical" href={canonicalUrl} />
@@ -88,15 +87,16 @@ const tools = [
     <meta name="twitter:image" content={socialImageUrl} />
     <script is:inline type="application/ld+json" set:html={structuredData} />
   </head>
-  <body class="relative min-h-screen overflow-hidden selection:bg-blue-500/30">
+  <body class="relative min-h-screen selection:bg-blue-500/30">
     <div class="flex h-screen bg-slate-950 text-slate-200">
       <!-- Sidebar -->
       <aside
-        class="relative z-20 hidden w-56 flex-col border-r border-slate-800/50 bg-slate-900/50 px-2 backdrop-blur-xl md:flex"
+        class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full transform border-r border-white/5 bg-slate-900/50 backdrop-blur-2xl transition-transform duration-300 md:relative md:translate-x-0"
+        id="sidebar-menu"
       >
-        <div class="flex flex-col gap-4 p-0">
+        <div class="flex h-full flex-col gap-4">
           <!-- Brand -->
-          <a href="/" class="group flex items-center gap-3 px-4 pt-4 pb-2">
+          <a href="/" class="group flex items-center gap-3 px-6 pt-6 pb-2">
             <div
               class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-violet-600 text-xl shadow-lg shadow-blue-500/20 transition-all duration-300 group-hover:scale-110 group-hover:shadow-blue-500/40"
             >
@@ -107,44 +107,51 @@ const tools = [
               <span class="text-xs font-medium text-slate-500">Pro Toolkit</span>
             </div>
           </a>
-        </div>
 
-        <!-- Navigation -->
-        <nav class="custom-scrollbar mt-3 flex-1 space-y-1 overflow-y-auto px-0 pb-0">
-          <div class="mb-2 px-4 pb-1 text-xs font-semibold tracking-wider text-slate-500 uppercase">
-            Apps & Utilities
-          </div>
-          {
-            tools.map((tool) => (
-              <a
-                href={tool.path}
-                class="group flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-slate-400 transition-all hover:bg-white/5 hover:text-white hover:shadow-sm"
-              >
-                <span class="text-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                  {tool.icon}
-                </span>
-                <span>{tool.name}</span>
-                {tool.path === Astro.url.pathname && (
-                  <div class="ml-auto h-1.5 w-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
-                )}
-              </a>
-            ))
-          }
-        </nav>
+          <!-- Navigation -->
+          <nav class="custom-scrollbar mt-6 flex-1 space-y-1 overflow-y-auto px-3 pb-4">
+            <div class="mb-3 px-4 pb-1 text-xs font-bold tracking-widest text-slate-500 uppercase">
+              Apps & Utilities
+            </div>
+            {
+              tools.map((tool) => (
+                <div class="px-1">
+                  <a
+                    href={tool.path}
+                    class:list={[
+                      "group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300",
+                      tool.path === Astro.url.pathname
+                        ? "border border-blue-500/20 bg-blue-600/10 text-blue-400 shadow-lg shadow-blue-500/10"
+                        : "border border-transparent text-slate-400 hover:border hover:border-white/5 hover:bg-white/5 hover:text-white",
+                    ]}
+                  >
+                    <span class="text-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+                      {tool.icon}
+                    </span>
+                    <span>{tool.name}</span>
+                    {tool.path === Astro.url.pathname && (
+                      <div class="ml-auto h-2 w-2 animate-pulse rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.6)]" />
+                    )}
+                  </a>
+                </div>
+              ))
+            }
+          </nav>
 
-        <!-- Footer Info -->
-        <div class="border-t border-slate-800/50 p-0">
-          <div
-            class="m-4 rounded-xl border border-slate-800/50 bg-slate-900/50 p-4 text-center text-xs text-slate-500 backdrop-blur-sm"
-          >
-            <p class="font-medium text-slate-400">Tools Hub v2.1</p>
-            <p class="mt-1 opacity-70">Premium Edition</p>
+          <!-- Footer Info -->
+          <div class="border-t border-slate-800/50 p-4">
+            <div
+              class="rounded-xl border border-slate-800/50 bg-slate-900/50 p-4 text-center text-xs text-slate-500 backdrop-blur-sm"
+            >
+              <p class="font-medium text-slate-400">Tools Hub v2.1</p>
+              <p class="mt-1 opacity-70">Premium Edition</p>
+            </div>
           </div>
         </div>
       </aside>
 
       <!-- Main Content -->
-      <main class="relative flex-1 overflow-y-auto scroll-smooth bg-slate-950">
+      <main class="relative w-full flex-1 overflow-y-auto scroll-smooth bg-slate-950">
         <!-- Mobile Header (Visible only on small screens) -->
         <header
           class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-800/50 bg-slate-950/80 px-4 py-3 backdrop-blur-md md:hidden"
@@ -159,7 +166,8 @@ const tools = [
           </a>
           <button
             id="mobile-menu-toggle"
-            class="rounded-lg p-2 text-slate-400 hover:bg-white/5 hover:text-white"
+            class="rounded-lg p-2 text-slate-400 transition-colors hover:bg-white/5 hover:text-white"
+            aria-label="Toggle Menu"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -181,6 +189,13 @@ const tools = [
           <slot />
         </div>
       </main>
+    </div>
+
+    <!-- Overlay for mobile -->
+    <div
+      id="sidebar-overlay"
+      class="pointer-events-none fixed inset-0 z-40 bg-black/50 opacity-0 backdrop-blur-sm transition-opacity duration-300 md:hidden"
+    >
     </div>
   </body>
 </html>
@@ -234,12 +249,14 @@ const tools = [
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgb(59, 130, 246);
+    background: rgb(30, 41, 59);
     border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgb(37, 99, 235);
+    background: rgb(51, 65, 85);
   }
 </style>
 
@@ -337,16 +354,37 @@ const tools = [
     };
   }
 
+  // Sidebar Toggle Logic
   const toggle = document.getElementById("mobile-menu-toggle");
-  const sidebar = document.querySelector("aside");
+  const sidebar = document.getElementById("sidebar-menu");
+  const overlay = document.getElementById("sidebar-overlay");
 
-  if (toggle && sidebar) {
+  function closeMenu() {
+    sidebar?.classList.add("-translate-x-full");
+    overlay?.classList.add("opacity-0", "pointer-events-none");
+  }
+
+  function openMenu() {
+    sidebar?.classList.remove("-translate-x-full");
+    overlay?.classList.remove("opacity-0", "pointer-events-none");
+  }
+
+  if (toggle) {
     toggle.addEventListener("click", () => {
-      sidebar.classList.toggle("hidden");
-      sidebar.classList.toggle("fixed");
-      sidebar.classList.toggle("inset-0");
-      sidebar.classList.toggle("z-50");
-      sidebar.classList.toggle("w-full");
+      const isOpen = !sidebar?.classList.contains("-translate-x-full");
+      if (isOpen) closeMenu();
+      else openMenu();
     });
   }
+
+  overlay?.addEventListener("click", closeMenu);
+
+  // Close menu on navigation (for SPA-like feel if View Transitions act up)
+  document.querySelectorAll("nav a").forEach((link) => {
+    link.addEventListener("click", () => {
+      if (window.innerWidth < 768) {
+        closeMenu();
+      }
+    });
+  });
 </script>

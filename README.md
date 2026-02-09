@@ -1,61 +1,45 @@
-# Tools Hub 🛠️
+# Tools Hub — The Professional Developer's Toolkit 🛠️
 
-A premium collection of developer utilities and tools built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com).
+**Tools Hub** is a premium, high-performance suite of developer utilities designed to streamline your daily workflow. Built with **Astro 5** and **Tailwind CSS 4**, it offers a collection of fast, browser-based tools with zero server-side requirements, ensuring your data remains private and secure.
 
-## ✨ Features
+## ✨ Featured Tools
 
-- **15+ Tools**: A growing suite of utilities including:
-  - JSON Ninja
-  - Regex Master
-  - Color Canvas
-  - Code Forge (Password Generator)
-  - Time Travel
-  - And many more...
+- 👤 **Identity**: Username, Password, and UUID Generators.
+- 💱 **Converters**: Currency, Measurement, and JSON ↔ CSV.
+- 🔐 **Security**: Hash Generator and Base64 Utilities.
+- 📈 **Productivity**: Habit Tracker and specialized generators (Lottery, Food Picker).
+- 🎨 **Creative**: Meme Generator and more coming soon.
+
+## 🚀 Why Tools Hub?
+
+- ⚡ **Instant Loading**: Leverages Astro's partial hydration and static optimization.
+- 🎨 **Premium Experience**: A sleek, dark-themed interface with smooth animations and intuitive UX.
+- 🔒 **Privacy First**: All computations are performed locally in your browser.
+- 📱 **Fully Responsive**: Access your favorite tools on desktop, tablet, or mobile.
+- 🛠️ **Developer Focused**: Built by a developer, for developers.
+
+## 🛠️ Tech Stack
+
+- **Framework**: Astro 5 (Static / Server Side)
+- **Styling**: Tailwind CSS 4
+- **Runtime**: Bun
+- **Quality Control**: ESLint, Prettier, Husky
 
 ## 🚀 Getting Started
 
-### Prerequisites
+```bash
+# Install dependencies
+bun install
 
-- Bun v1.2 or higher
+# Start development server
+bun run dev
+```
 
-### Installation
+Open [http://localhost:4321](http://localhost:4321) to explore the toolkit.
 
-1. Clone the repository:
+## 📦 Scripts
 
-   ```bash
-   git clone https://github.com/corey-burns-dev/tools-hub.git
-   cd tools-hub
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   bun install
-   ```
-
-3. Start the development server:
-
-   ```bash
-   bun run dev
-   ```
-
-## 🛠️ Development
-
-### Scripts
-
-- `bun run dev`: Start local dev server
-- `bun run build`: Build for production
-- `bun run lint`: Run linter
-- `bun run format`: Format code
-- `bun run check`: Run Astro type checking
-
-### Tech Stack
-
-- **Framework**: Astro 5
-- **Styling**: Tailwind CSS 4
-- **Linting/Formatting**: ESLint + Prettier
-- **Type Checking**: Astro Check / TypeScript
-
-## 📄 License
-
-MIT
+- `bun run dev`: Start local development server.
+- `bun run build`: Create a production-ready build.
+- `bun run check`: Run Astro's type and health checks.
+- `bun run lint`: Execute linting and formatting checks.

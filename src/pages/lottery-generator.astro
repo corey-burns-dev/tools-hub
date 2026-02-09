@@ -100,7 +100,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
   </div>
 </Layout>
 
-<script define:vars={{ games }}>
+<script is:inline define:vars={{ games }}>
   let selectedGameId = games[0].id;
   const generateBtn = document.getElementById("generate-btn");
   const resultsContainer = document.getElementById("results-container");

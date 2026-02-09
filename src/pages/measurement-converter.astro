@@ -205,8 +205,20 @@ import Layout from "../layouts/Layout.astro";
     }
 
     const family = (unitFamilies as FamilyMap)[category];
-    const fromFactor = family.units[fromUnit].factor;
-    const toFactor = family.units[toUnit].factor;
+    const fromUnitMeta = family.units[fromUnit];
+    const toUnitMeta = family.units[toUnit];
+
+    if (
+      !fromUnitMeta ||
+      !toUnitMeta ||
+      fromUnitMeta.factor === undefined ||
+      toUnitMeta.factor === undefined
+    ) {
+      return 0;
+    }
+
+    const fromFactor = fromUnitMeta.factor;
+    const toFactor = toUnitMeta.factor;
     const baseValue = value * fromFactor;
     return baseValue / toFactor;
   }

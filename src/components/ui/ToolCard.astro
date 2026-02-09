@@ -1,4 +1,6 @@
 ---
+import Card from "../Card.astro";
+
 interface Props {
   title?: string;
   step?: string;
@@ -9,19 +11,7 @@ interface Props {
 const { title, step, class: className, bodyClass } = Astro.props;
 ---
 
-<section class:list={["ui-card", className]}>
-  {
-    title && (
-      <header class="ui-card-header">
-        <h2 class="ui-card-title">
-          {step && <span class="ui-card-step">{step}</span>}
-          <span>{title}</span>
-        </h2>
-        <slot name="header-actions" />
-      </header>
-    )
-  }
-  <div class:list={["ui-card-body", bodyClass]}>
-    <slot />
-  </div>
-</section>
+<Card title={title} step={step} class={className} bodyClass={bodyClass}>
+  <slot name="header-actions" slot="header-actions" />
+  <slot />
+</Card>

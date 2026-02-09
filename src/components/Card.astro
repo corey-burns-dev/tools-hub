@@ -2,20 +2,67 @@
 interface Props {
   href?: string;
   class?: string;
+  bodyClass?: string;
   title?: string;
+  step?: string;
+  "aria-label"?: string;
+  interactive?: boolean;
 }
 
-const { href, class: className, title, ...props } = Astro.props;
+const {
+  href,
+  class: className,
+  bodyClass,
+  title,
+  step,
+  "aria-label": ariaLabel,
+  interactive: _interactive,
+  ...props
+} = Astro.props;
 
-const Component = href ? "a" : "div";
-const baseStyles = "card-glass block group text-main";
+// Default interactive to true if href is present, false otherwise
+const interactive = _interactive ?? !!href;
+
+const Component = href ? "a" : "section";
+
+// Robust default padding if not overridden by className
+// We use a utility class approach here to ensure it's applied even if CSS specificity is wonky
+const defaultPadding = className?.includes("p-") ? "" : "p-5 md:p-6";
+const baseStyles = "card-glass block group text-main relative overflow-hidden";
+const interactiveStyles = interactive ? "interactive-card" : "";
 ---
 
-<Component href={href} class:list={[baseStyles, className]} title={title} {...props}>
-  <slot />
+<Component
+  href={href}
+  class:list={[baseStyles, interactiveStyles, defaultPadding, className]}
+  aria-label={ariaLabel || (href ? `Navigate to ${title || "tool"}` : undefined)}
+  {...props}
+>
+  {
+    title && (
+      <header class="ui-card-header relative z-10">
+        <h2 class="ui-card-title">
+          {step && <span class="ui-card-step">{step}</span>}
+          <span>{title}</span>
+        </h2>
+        <slot name="header-actions" />
+      </header>
+    )
+  }
+
+  <div class:list={["ui-card-body relative z-10", bodyClass]}>
+    <slot />
+  </div>
+
   {/* Light reflection effect */}
   <div
-    class="pointer-events-none absolute inset-0 bg-linear-to-tr from-white/5 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+    class="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+  >
+  </div>
+
+  {/* Glow effect */}
+  <div
+    class="card-glow pointer-events-none absolute -right-20 -bottom-20 h-48 w-48 rounded-full bg-blue-500/20 opacity-0 blur-3xl transition-opacity duration-500"
   >
   </div>
 </Component>
