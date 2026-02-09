@@ -20,7 +20,7 @@ const {
   size = "md" as Size,
   class: className = "",
   ...rest
-} = Astro.props;
+} = Astro.props as Props;
 
 const base =
   "inline-flex items-center justify-center gap-2 rounded-xl font-medium " +
