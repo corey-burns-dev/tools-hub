@@ -23,24 +23,22 @@ const {
 } = Astro.props as Props;
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-xl font-medium " +
-  "transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 " +
+  "inline-flex items-center justify-center gap-2 rounded-lg font-medium " +
+  "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 " +
   "disabled:opacity-50 disabled:pointer-events-none select-none cursor-pointer text-center whitespace-nowrap";
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-3 text-sm",
-  md: "h-10 px-6 text-sm",
-  lg: "h-12 px-8 text-base",
+  sm: "min-h-9 px-3 text-sm",
+  md: "min-h-10 px-4 text-sm",
+  lg: "min-h-11 px-5 text-base",
 };
 
 const variants: Record<Variant, string> = {
-  primary:
-    "bg-blue-600 text-white hover:bg-blue-500 active:bg-blue-700 shadow-lg shadow-blue-500/20",
+  primary: "border border-blue-500 bg-blue-600 text-white hover:bg-blue-500 active:bg-blue-700",
   secondary:
-    "bg-white/5 text-white border border-white/10 hover:bg-white/10 active:bg-white/20 backdrop-blur-sm",
-  ghost: "bg-transparent text-slate-400 hover:bg-white/5 hover:text-white",
-  danger:
-    "bg-rose-600 text-white hover:bg-rose-500 active:bg-rose-700 shadow-lg shadow-rose-500/20",
+    "border border-slate-600 bg-slate-900 text-slate-100 hover:border-slate-500 hover:bg-slate-800",
+  ghost: "border border-transparent text-slate-300 hover:border-slate-700 hover:bg-slate-900",
+  danger: "border border-rose-500 bg-rose-600 text-white hover:bg-rose-500 active:bg-rose-700",
 };
 
 const cls = `${base} ${sizes[size]} ${variants[variant]} ${className}`.trim();

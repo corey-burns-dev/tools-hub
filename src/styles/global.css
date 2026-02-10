@@ -38,7 +38,7 @@
   body {
     background-color: var(--color-bg-main);
     color: var(--color-text-main);
-    @apply antialiased transition-colors duration-700 ease-in-out selection:bg-indigo-500/30;
+    @apply antialiased selection:bg-indigo-500/30;
 
     background-image:
       radial-gradient(circle at 15% 50%, var(--bg-gradient-start) 0%, transparent 40%),
@@ -53,131 +53,118 @@
   input,
   textarea,
   select {
-    @apply w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white transition-all outline-none placeholder:text-slate-600 focus:border-blue-500/50 focus:bg-black/40 focus:ring-1 focus:ring-blue-500/50 disabled:pointer-events-none disabled:opacity-50;
+    @apply w-full rounded-lg border border-slate-700/90 bg-slate-950/60 px-3 py-2.5 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/35 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    @apply h-4 w-4 rounded border-slate-600 bg-slate-900 text-blue-500 focus:ring-2 focus:ring-blue-500/40;
+  }
+
+  input[type="range"] {
+    @apply h-2 rounded-lg border-0 bg-slate-800 p-0 accent-blue-500;
   }
 
   label {
-    @apply mb-2 block text-sm font-medium text-slate-400;
+    @apply mb-1.5 block text-sm font-medium text-slate-300;
   }
 }
 
 @layer components {
-  /* Shared UI primitives */
   .ui-page {
-    @apply mx-auto max-w-7xl space-y-12 px-4 pb-24 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-[95rem] space-y-6;
   }
 
   .ui-page-intro {
-    @apply mb-12 flex flex-col items-center justify-center gap-6 text-center;
+    @apply border-b border-slate-800 pb-5;
   }
 
   .ui-page-title {
-    @apply bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent drop-shadow-sm md:text-6xl;
+    @apply text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-[2rem];
   }
 
   .ui-page-description {
-    @apply inline-block rounded-full border border-white/5 bg-white/5 px-6 py-2 text-sm font-medium text-slate-300 shadow-lg shadow-black/20 backdrop-blur-md;
+    @apply mt-2 max-w-3xl text-sm leading-6 text-slate-300;
   }
 
-  /* Grid Layouts */
   .ui-grid {
-    @apply grid gap-6 sm:grid-cols-2 lg:grid-cols-3;
+    @apply grid gap-4 sm:gap-5 lg:gap-6;
   }
 
-  /* Cards & Containers */
   .ui-card {
-    @apply rounded-3xl border border-white/5 bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md transition-all duration-300 md:p-8;
+    @apply rounded-xl border border-slate-800 bg-slate-900/65 p-4 shadow-none md:p-5;
   }
 
   .ui-card-header {
-    @apply mb-6 flex flex-wrap items-center justify-between gap-4;
+    @apply mb-4 flex flex-wrap items-center justify-between gap-3;
   }
 
   .ui-card-title {
-    @apply flex items-center gap-3 text-2xl font-bold text-white;
+    @apply flex items-center gap-2 text-lg font-semibold text-white;
   }
 
   .ui-card-step {
-    @apply font-mono text-sm tracking-wider text-blue-400/80;
+    @apply font-mono text-xs tracking-wider text-blue-300;
   }
 
   .ui-input,
   .ui-select,
   .ui-textarea {
-    @apply w-full rounded-xl border border-white/10 bg-black/20 px-5 py-4 text-white transition-all outline-none placeholder:text-slate-600 focus:border-blue-500/50 focus:bg-black/40 focus:ring-1 focus:ring-blue-500/50;
+    @apply w-full rounded-lg border border-slate-700/90 bg-slate-950/60 px-3 py-2.5 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/35;
   }
 
   .ui-option-row {
-    @apply flex cursor-pointer items-center gap-4 rounded-xl border border-transparent bg-white/5 px-5 py-4 transition-all hover:border-white/10 hover:bg-white/10;
+    @apply flex cursor-pointer items-center gap-3 rounded-lg border border-slate-700 bg-slate-950/40 px-3 py-2.5 transition-colors hover:border-slate-500 hover:bg-slate-900;
   }
 
   .ui-action-row {
-    @apply mt-8 flex flex-wrap items-center gap-4;
+    @apply mt-6 flex flex-wrap items-center gap-3;
   }
 
   .ui-output-box {
-    @apply rounded-xl border border-white/5 bg-black/40 p-6 shadow-inner;
+    @apply rounded-lg border border-slate-800 bg-slate-950/70 p-4;
   }
 
-  /* Glass Effects */
   .glass {
-    @apply rounded-2xl border border-white/5 bg-white/[0.02] shadow-xl backdrop-blur-xl;
+    @apply rounded-xl border border-slate-800 bg-slate-900/70;
   }
 
   .glass-panel {
-    @apply border border-white/5 bg-slate-900/60 shadow-2xl backdrop-blur-xl;
+    @apply border border-slate-800 bg-slate-900/70;
   }
 
-  /* Interactive Cards */
   .card-glass {
-    @apply relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-6 shadow-lg backdrop-blur-md transition-all duration-500;
+    @apply relative overflow-hidden rounded-xl border border-slate-800 bg-slate-900/65 p-4;
   }
 
   .interactive-card {
-    @apply cursor-pointer hover:-translate-y-1 hover:border-white/10 hover:bg-white/[0.04] hover:shadow-2xl hover:shadow-blue-900/10;
+    @apply cursor-pointer transition-colors hover:border-slate-600 hover:bg-slate-900;
   }
 
-  .interactive-card:hover .card-glow {
-    @apply opacity-100;
-  }
-
-  /* Buttons */
   button,
   .btn-primary,
   .btn-secondary,
   .btn-ghost {
-    @apply flex min-h-[3rem] items-center justify-center rounded-xl px-6 py-3 text-[0.95rem] leading-tight font-semibold tracking-wide transition-all duration-300;
+    @apply inline-flex min-h-10 items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium transition-colors;
   }
 
   .btn-primary {
-    @apply relative overflow-hidden text-white shadow-lg shadow-blue-500/20 hover:scale-[1.02] hover:shadow-blue-500/40 active:scale-[0.98];
-    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  }
-
-  .btn-primary::after {
-    content: "";
-    @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700;
-  }
-
-  .btn-primary:hover::after {
-    @apply translate-x-full;
+    @apply border border-blue-500 bg-blue-600 text-white hover:bg-blue-500;
   }
 
   .btn-secondary {
-    @apply border border-white/10 bg-white/5 text-white backdrop-blur-sm hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 active:scale-[0.98];
+    @apply border border-slate-600 bg-slate-900 text-slate-100 hover:bg-slate-800;
   }
 
   .btn-ghost {
-    @apply text-slate-400 hover:bg-white/5 hover:text-white;
+    @apply border border-transparent text-slate-300 hover:border-slate-700 hover:bg-slate-900;
   }
 
-  /* Typography Utilities */
   .text-gradient {
-    @apply animate-gradient-text bg-gradient-to-r from-blue-400 via-violet-400 to-fuchsia-400 bg-[length:200%_auto] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-blue-300 via-violet-300 to-fuchsia-300 bg-clip-text text-transparent;
   }
 }
 
-/* Animations */
 @keyframes float {
   0%,
   100% {
@@ -228,7 +215,6 @@
   }
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
 }
