@@ -87,87 +87,91 @@ const structuredData = JSON.stringify({
     <meta name="twitter:image" content={socialImageUrl} />
     <script is:inline type="application/ld+json" set:html={structuredData} />
   </head>
-  <body class="relative min-h-screen selection:bg-blue-500/30">
-    <div class="flex h-screen bg-slate-950 p-2 text-slate-200">
-      <!-- Sidebar -->
+  <body class="relative min-h-screen bg-slate-950 text-slate-100 selection:bg-blue-500/30">
+    <div class="relative flex min-h-screen">
       <aside
-        class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full transform border-r border-white/5 bg-slate-900/50 backdrop-blur-2xl transition-transform duration-300 md:relative md:translate-x-0"
+        class="fixed inset-y-0 left-0 z-50 w-[17.5rem] -translate-x-full border-r border-slate-800/80 bg-slate-950/95 transition-transform duration-200 md:sticky md:top-0 md:h-screen md:translate-x-0"
         id="sidebar-menu"
       >
-        <div class="flex h-full flex-col gap-4">
-          <!-- Brand -->
-          <a href="/" class="group flex items-center gap-3 px-6 pt-6 pb-2">
+        <div class="flex h-full flex-col">
+          <a
+            href="/"
+            class="group mx-3 mt-3 flex items-center gap-3 rounded-xl border border-transparent px-3 py-3 transition-colors hover:border-white/10 hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
+          >
             <div
-              class="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-blue-600 to-violet-600 text-xl shadow-lg shadow-blue-500/20 transition-all duration-300 group-hover:scale-110 group-hover:shadow-blue-500/40"
+              class="flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-blue-600 to-violet-600 text-base"
             >
               🛠️
             </div>
-            <div class="flex flex-col">
-              <h1 class="font-outfit text-xl font-bold tracking-tight text-white">Tools Hub</h1>
-              <span class="text-xs font-medium text-slate-500">Pro Toolkit</span>
+            <div class="min-w-0">
+              <h1
+                class="font-outfit truncate text-base leading-5 font-semibold tracking-tight text-white"
+              >
+                Tools Hub
+              </h1>
+              <span class="text-xs text-slate-400">Utilities workspace</span>
             </div>
           </a>
 
-          <!-- Navigation -->
-          <nav class="custom-scrollbar mt-6 flex-1 space-y-1 overflow-y-auto px-3 pb-4">
-            <div class="mb-3 px-4 pb-1 text-xs font-bold tracking-widest text-slate-500 uppercase">
-              Apps & Utilities
-            </div>
+          <div
+            class="px-6 pt-4 pb-2 text-[11px] font-semibold tracking-[0.14em] text-slate-500 uppercase"
+          >
+            Apps & Utilities
+          </div>
+
+          <nav
+            class="custom-scrollbar flex-1 space-y-1 overflow-y-auto px-3 pb-4"
+            aria-label="Tools"
+          >
             {
               tools.map((tool) => (
-                <div class="px-1">
-                  <a
-                    href={tool.path}
-                    class:list={[
-                      "group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300",
-                      tool.path === Astro.url.pathname
-                        ? "border border-blue-500/20 bg-blue-600/10 text-blue-400 shadow-lg shadow-blue-500/10"
-                        : "border border-transparent text-slate-400 hover:border hover:border-white/5 hover:bg-white/5 hover:text-white",
-                    ]}
-                  >
-                    <span class="text-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
-                      {tool.icon}
-                    </span>
-                    <span>{tool.name}</span>
-                    {tool.path === Astro.url.pathname && (
-                      <div class="ml-auto h-2 w-2 animate-pulse rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.6)]" />
-                    )}
-                  </a>
-                </div>
+                <a
+                  href={tool.path}
+                  class:list={[
+                    "group flex items-center gap-3 rounded-lg border px-3 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none",
+                    tool.path === Astro.url.pathname
+                      ? "border-blue-500/40 bg-blue-500/12 text-blue-200"
+                      : "border-transparent text-slate-300 hover:border-slate-700 hover:bg-slate-900 hover:text-white",
+                  ]}
+                >
+                  <span class="text-base leading-none opacity-90">{tool.icon}</span>
+                  <span class="truncate">{tool.name}</span>
+                  {tool.path === Astro.url.pathname && (
+                    <span class="ml-auto h-1.5 w-1.5 rounded-full bg-blue-400" aria-hidden="true" />
+                  )}
+                </a>
               ))
             }
           </nav>
 
-          <!-- Footer Info -->
-          <div class="border-t border-slate-800/50 p-4">
-            <div
-              class="rounded-xl border border-slate-800/50 bg-slate-900/50 p-4 text-center text-xs text-slate-500 backdrop-blur-sm"
-            >
-              <p class="font-medium text-slate-400">Tools Hub v2.1</p>
-              <p class="mt-1 opacity-70">Premium Edition</p>
-            </div>
+          <div class="mt-auto border-t border-slate-800/80 p-4">
+            <p class="text-xs font-medium text-slate-400">Tools Hub v2.1</p>
+            <p class="mt-1 text-xs text-slate-500">Built for fast, focused workflows</p>
           </div>
         </div>
       </aside>
 
-      <!-- Main Content -->
-      <main class="relative w-full flex-1 overflow-y-auto scroll-smooth bg-slate-950">
-        <!-- Mobile Header (Visible only on small screens) -->
+      <main class="min-w-0 flex-1 bg-slate-950">
         <header
-          class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-800/50 bg-slate-950/80 px-4 py-3 backdrop-blur-md md:hidden"
+          class="sticky top-0 z-40 flex items-center justify-between border-b border-slate-800/80 bg-slate-950/95 px-4 py-3 backdrop-blur md:hidden"
         >
-          <a href="/" class="flex items-center gap-2">
+          <a
+            href="/"
+            class="flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
+          >
             <div
               class="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-blue-600 to-violet-600"
             >
               🛠️
             </div>
-            <span class="font-bold text-white">Tools Hub</span>
+            <span class="font-semibold tracking-tight text-white">Tools Hub</span>
           </a>
           <button
             id="mobile-menu-toggle"
-            class="rounded-lg p-2 text-slate-400 transition-colors hover:bg-white/5 hover:text-white"
+            class="rounded-lg border border-slate-700 p-2 text-slate-200 transition-colors hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
             aria-label="Toggle Menu"
+            aria-controls="sidebar-menu"
+            aria-expanded="false"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -191,10 +195,9 @@ const structuredData = JSON.stringify({
       </main>
     </div>
 
-    <!-- Overlay for mobile -->
     <div
       id="sidebar-overlay"
-      class="pointer-events-none fixed inset-0 z-40 bg-black/50 opacity-0 backdrop-blur-sm transition-opacity duration-300 md:hidden"
+      class="pointer-events-none fixed inset-0 z-40 bg-black/60 opacity-0 transition-opacity duration-200 md:hidden"
     >
     </div>
   </body>
@@ -223,20 +226,20 @@ const structuredData = JSON.stringify({
 
   .page-shell {
     width: 100%;
-    max-width: 80rem;
+    max-width: 110rem;
     margin-inline: auto;
-    padding: 1.25rem 1.25rem 1.5rem;
+    padding: 1rem 1rem 1.5rem;
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 768px) {
     .page-shell {
-      padding: 1.5rem 1.5rem 1.75rem;
+      padding: 1.25rem 1.5rem 1.75rem;
     }
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1280px) {
     .page-shell {
-      padding: 1.85rem 2rem 2rem;
+      padding: 1.5rem 2rem 2rem;
     }
   }
 
@@ -355,18 +358,20 @@ const structuredData = JSON.stringify({
   }
 
   // Sidebar Toggle Logic
-  const toggle = document.getElementById("mobile-menu-toggle");
+  const toggle = document.getElementById("mobile-menu-toggle") as HTMLButtonElement | null;
   const sidebar = document.getElementById("sidebar-menu");
   const overlay = document.getElementById("sidebar-overlay");
 
   function closeMenu() {
     sidebar?.classList.add("-translate-x-full");
     overlay?.classList.add("opacity-0", "pointer-events-none");
+    toggle?.setAttribute("aria-expanded", "false");
   }
 
   function openMenu() {
     sidebar?.classList.remove("-translate-x-full");
     overlay?.classList.remove("opacity-0", "pointer-events-none");
+    toggle?.setAttribute("aria-expanded", "true");
   }
 
   if (toggle) {
@@ -379,7 +384,6 @@ const structuredData = JSON.stringify({
 
   overlay?.addEventListener("click", closeMenu);
 
-  // Close menu on navigation (for SPA-like feel if View Transitions act up)
   document.querySelectorAll("nav a").forEach((link) => {
     link.addEventListener("click", () => {
       if (window.innerWidth < 768) {

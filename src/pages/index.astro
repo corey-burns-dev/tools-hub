@@ -1,48 +1,93 @@
 ---
 import ToolPage from "@/components/ui/ToolPage.astro";
+import { tools } from "@/config/tools";
 import Layout from "../layouts/Layout.astro";
+
+const highlightedTools = tools.slice(0, 6);
 ---
 
 <Layout title="Dashboard">
-  <ToolPage description="Your go-to collection of premium developer utilities and tools.">
-    <div class="flex flex-col items-center justify-center pt-20 pb-12">
-      <!-- Header -->
-      <div
-        class="animate-in fade-in slide-in-from-bottom-4 relative z-10 space-y-8 text-center duration-700"
-      >
-        <h1 class="text-5xl font-extrabold tracking-tighter text-white md:text-7xl">
-          DevTools Hub
-        </h1>
-        <p class="mx-auto max-w-2xl text-lg font-medium text-slate-400">
-          Professional-grade utilities for modern developer workflows.
+  <ToolPage
+    title="Workspace"
+    description="A focused collection of utilities for daily engineering tasks. Pick a tool from the sidebar or jump in from quick actions below."
+  >
+    <section class="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
+      <article class="ui-card">
+        <p class="text-xs font-semibold tracking-[0.12em] text-blue-300 uppercase">Tools Hub</p>
+        <h2 class="mt-2 text-2xl font-semibold tracking-tight text-white lg:text-3xl">
+          Productive tools without the clutter.
+        </h2>
+        <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+          Generate, convert, and validate data in one place. Layout and controls are optimized for
+          dense desktop workflows while remaining usable on smaller screens.
         </p>
 
-        <!-- New Tool Notification -->
-        <div class="mt-12 flex justify-center">
-          <a
-            href="/meme-generator"
-            class="group relative inline-flex items-center gap-3 rounded-full border border-blue-500/20 bg-blue-500/10 px-6 py-3 text-sm text-blue-300 shadow-lg shadow-blue-500/5 transition-all hover:scale-105 hover:border-blue-500/40 hover:bg-blue-500/20"
-          >
-            <span class="flex h-2 w-2">
-              <span
-                class="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-blue-400 opacity-75"
-              ></span>
-              <span class="relative inline-flex h-2 w-2 rounded-full bg-blue-500"></span>
-            </span>
-            <span class="text-[10px] font-bold tracking-widest uppercase">New Arrival:</span>
-            <span class="font-semibold">Meme Generator</span>
-            <svg
-              class="h-4 w-4 transition-transform group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+        <div class="mt-5 grid gap-3 sm:grid-cols-3">
+          <div class="rounded-lg border border-slate-800 bg-slate-950/70 px-3 py-2.5">
+            <p class="text-xs text-slate-400">Total tools</p>
+            <p class="mt-1 text-xl font-semibold text-white">{tools.length}</p>
+          </div>
+          <div class="rounded-lg border border-slate-800 bg-slate-950/70 px-3 py-2.5">
+            <p class="text-xs text-slate-400">Theme</p>
+            <p class="mt-1 text-xl font-semibold text-white">Dark-first</p>
+          </div>
+          <div class="rounded-lg border border-slate-800 bg-slate-950/70 px-3 py-2.5">
+            <p class="text-xs text-slate-400">Priority</p>
+            <p class="mt-1 text-xl font-semibold text-white">Accessibility</p>
+          </div>
+        </div>
+      </article>
+
+      <aside class="ui-card">
+        <h2 class="text-base font-semibold text-white">Quick actions</h2>
+        <ul class="mt-3 space-y-2">
+          <li>
+            <a
+              href="/password-generator"
+              class="block rounded-lg border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-slate-200 no-underline transition-colors hover:border-slate-500 hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
+              >Generate secure passwords</a
             >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"
-              ></path>
-            </svg>
-          </a>
+          </li>
+          <li>
+            <a
+              href="/json-csv"
+              class="block rounded-lg border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-slate-200 no-underline transition-colors hover:border-slate-500 hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
+              >Convert JSON and CSV</a
+            >
+          </li>
+          <li>
+            <a
+              href="/regex-master"
+              class="block rounded-lg border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-slate-200 no-underline transition-colors hover:border-slate-500 hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
+              >Test regular expressions</a
+            >
+          </li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="ui-card">
+      <div class="mb-4 flex items-end justify-between gap-4 border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-lg font-semibold text-white">Browse tools</h2>
+          <p class="mt-1 text-sm text-slate-400">Jump to frequently used utilities.</p>
         </div>
       </div>
-    </div>
+      <ul class="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+        {
+          highlightedTools.map((tool) => (
+            <li>
+              <a
+                href={tool.path}
+                class="flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2.5 text-sm text-slate-200 no-underline transition-colors hover:border-slate-500 hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
+              >
+                <span aria-hidden="true">{tool.icon}</span>
+                <span class="truncate">{tool.name}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </ToolPage>
 </Layout>
