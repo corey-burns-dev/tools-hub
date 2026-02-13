@@ -7,12 +7,12 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="URL Encoder/Decoder">
-  <ToolPage description="Encode, decode, and inspect query strings.">
-    <ToolGrid cols={2} class="gap-8">
+  <ToolPage description="Encode, decode, and inspect query strings." class="max-w-[90rem]">
+    <ToolGrid cols={2} class="gap-3 lg:grid-cols-[1fr_1fr]">
       <ToolCard title="Input" step="01.">
         <textarea
           id="url-input"
-          rows="10"
+          rows="8"
           placeholder="Paste a URL or query string..."
           class="resize-none">https://example.com/?q=hello world&color=blue%2Fgreen</textarea
         >
@@ -24,12 +24,12 @@ import Layout from "../layouts/Layout.astro";
         </div>
       </ToolCard>
 
-      <div class="space-y-6">
+      <div class="space-y-2">
         <ToolCard title="Output" step="02.">
           <div slot="header-actions">
             <Button id="copy-btn" variant="ghost" size="sm">Copy</Button>
           </div>
-          <textarea id="url-output" rows="7" readonly class="mt-0 bg-black/50"></textarea>
+          <textarea id="url-output" rows="6" readonly class="mt-0 bg-black/50"></textarea>
         </ToolCard>
 
         <ToolCard title="Query Params" step="03.">

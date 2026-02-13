@@ -8,51 +8,53 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Base64 Encoder/Decoder">
   <ToolPage description="Encode, decode, and inspect Base64 content.">
-    <ToolGrid cols={2} class="gap-8">
-      <ToolCard title="Input" step="01.">
-        <textarea
+    <ToolGrid cols={2} class="gap-3 md:max-h-[72vh] md:items-start">
+      <ToolCard title="Input" step="01." class="md:max-h-[70vh] md:flex md:flex-col">
+        <div class="flex min-h-0 flex-1 flex-col md:min-h-0">
+          <textarea
           id="plain-input"
-          rows="10"
+          rows="8"
           placeholder="Paste text here..."
-          class="resize-none font-mono text-sm"></textarea>
+          class="min-h-0 flex-1 resize-none font-mono text-sm md:min-h-[140px]"></textarea>
 
-        <div class="mt-5 flex flex-wrap gap-4">
-          <Button id="encode-btn" variant="primary"> Encode → </Button>
-          <Button id="decode-btn" variant="secondary"> ← Decode </Button>
-          <Button id="clear-btn" variant="ghost"> Clear </Button>
-        </div>
+          <div class="mt-4 flex flex-shrink-0 flex-wrap gap-4">
+            <Button id="encode-btn" variant="primary"> Encode → </Button>
+            <Button id="decode-btn" variant="secondary"> ← Decode </Button>
+            <Button id="clear-btn" variant="ghost"> Clear </Button>
+          </div>
 
-        <div class="mt-8 space-y-5">
-          <label class="flex items-center gap-3">
-            <input
-              id="url-safe"
-              type="checkbox"
-              class="h-4 w-4 rounded border-white/10 bg-black/20 text-blue-500 focus:ring-blue-500"
-            />
-            Use URL-safe Base64 (- and _ instead of + and /)
-          </label>
+          <div class="mt-3 flex-shrink-0 space-y-5">
+            <label class="flex items-center gap-3">
+              <input
+                id="url-safe"
+                type="checkbox"
+                class="h-4 w-4 rounded border-white/10 bg-black/20 text-indigo-500 focus:ring-indigo-500"
+              />
+              Use URL-safe Base64 (- and _ instead of + and /)
+            </label>
 
-          <div
-            class="rounded-xl border border-dashed border-white/10 bg-white/5 p-5 text-xs text-slate-400"
-          >
-            Tip: Drag a small file into the Base64 output area to encode it.
+            <div
+              class="rounded-xl border border-dashed border-white/10 bg-white/5 p-2.5 text-xs text-slate-400"
+            >
+              Tip: Drag a small file into the Base64 output area to encode it.
+            </div>
           </div>
         </div>
       </ToolCard>
 
-      <ToolCard title="Base64 Output" step="02." class="flex flex-col">
+      <ToolCard title="Base64 Output" step="02." class="flex flex-col md:max-h-[70vh]">
         <Button slot="header-actions" id="copy-btn" variant="ghost" size="sm"> Copy </Button>
-        <div class="flex flex-1 flex-col gap-5">
+        <div class="flex min-h-0 flex-1 flex-col gap-4">
           <textarea
             id="base64-output"
-            rows="12"
+            rows="8"
             placeholder="Base64 output will appear here"
-            class="mt-0 flex-1 resize-none bg-black/50 px-7 py-6 font-mono text-sm md:px-8 md:py-7"
+            class="mt-0 min-h-0 flex-1 resize-none bg-black/50 px-3 py-3 font-mono text-sm md:min-h-[140px] md:px-4 md:py-3"
           ></textarea>
 
           <div
             id="drop-zone"
-            class="flex items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 px-6 py-6 text-xs text-slate-400"
+            class="flex flex-shrink-0 items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/5 px-3 py-3 text-xs text-slate-400"
           >
             Drop a file here to encode it
           </div>
@@ -169,7 +171,7 @@ import Layout from "../layouts/Layout.astro";
 
 <style>
   .drag-active {
-    border-color: rgba(59, 130, 246, 0.6);
-    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(99, 102, 241, 0.6);
+    background: rgba(99, 102, 241, 0.1);
   }
 </style>

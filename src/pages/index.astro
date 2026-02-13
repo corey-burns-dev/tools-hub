@@ -1,93 +1,134 @@
 ---
-import ToolPage from "@/components/ui/ToolPage.astro";
-import { tools } from "@/config/tools";
+import { tools } from "../config/tools";
 import Layout from "../layouts/Layout.astro";
 
-const highlightedTools = tools.slice(0, 6);
+const categoryLabels: Record<string, string> = {
+  dev: "Developer Tools",
+  general: "Generators",
+  fun: "Fun & Games",
+  productivity: "Productivity",
+};
+
+const categoryColors: Record<string, { bg: string; text: string; border: string }> = {
+  dev: { bg: "bg-indigo-500/10", text: "text-indigo-400", border: "border-indigo-500/20" },
+  general: { bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/20" },
+  fun: { bg: "bg-amber-500/10", text: "text-amber-400", border: "border-amber-500/20" },
+  productivity: { bg: "bg-cyan-500/10", text: "text-cyan-400", border: "border-cyan-500/20" },
+  creative: { bg: "bg-fuchsia-500/10", text: "text-fuchsia-400", border: "border-fuchsia-500/20" },
+};
 ---
 
 <Layout title="Dashboard">
-  <ToolPage
-    title="Workspace"
-    description="A focused collection of utilities for daily engineering tasks. Pick a tool from the sidebar or jump in from quick actions below."
-  >
-    <section class="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
-      <article class="ui-card">
-        <p class="text-xs font-semibold tracking-[0.12em] text-blue-300 uppercase">Tools Hub</p>
-        <h2 class="mt-2 text-2xl font-semibold tracking-tight text-white lg:text-3xl">
-          Productive tools without the clutter.
-        </h2>
-        <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
-          Generate, convert, and validate data in one place. Layout and controls are optimized for
-          dense desktop workflows while remaining usable on smaller screens.
+  <div class="flex h-full flex-col gap-3 px-3 py-2 sm:px-4 lg:px-5">
+    <!-- Hero -->
+    <section class="relative flex flex-col items-center text-center" style="flex-shrink:0">
+      <!-- Glow -->
+      <div
+        class="pointer-events-none absolute -top-10 left-1/2 h-[200px] w-[400px] -translate-x-1/2 rounded-full opacity-40 blur-[80px]"
+        style="background: radial-gradient(circle, rgba(99,102,241,0.3) 0%, rgba(139,92,246,0.15) 40%, transparent 70%);"
+      >
+      </div>
+
+      <div class="relative z-10 space-y-1">
+        <h1
+          class="bg-gradient-to-b from-white via-white/90 to-slate-400 bg-clip-text text-3xl font-extrabold tracking-tighter text-transparent sm:text-4xl"
+        >
+          Tools Hub
+        </h1>
+        <p class="mx-auto max-w-lg text-sm font-medium text-slate-400">
+          Fast, browser-based utilities for developers and everyday workflows.
         </p>
-
-        <div class="mt-5 grid gap-3 sm:grid-cols-3">
-          <div class="rounded-lg border border-slate-800 bg-slate-950/70 px-3 py-2.5">
-            <p class="text-xs text-slate-400">Total tools</p>
-            <p class="mt-1 text-xl font-semibold text-white">{tools.length}</p>
-          </div>
-          <div class="rounded-lg border border-slate-800 bg-slate-950/70 px-3 py-2.5">
-            <p class="text-xs text-slate-400">Theme</p>
-            <p class="mt-1 text-xl font-semibold text-white">Dark-first</p>
-          </div>
-          <div class="rounded-lg border border-slate-800 bg-slate-950/70 px-3 py-2.5">
-            <p class="text-xs text-slate-400">Priority</p>
-            <p class="mt-1 text-xl font-semibold text-white">Accessibility</p>
-          </div>
-        </div>
-      </article>
-
-      <aside class="ui-card">
-        <h2 class="text-base font-semibold text-white">Quick actions</h2>
-        <ul class="mt-3 space-y-2">
-          <li>
-            <a
-              href="/password-generator"
-              class="block rounded-lg border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-slate-200 no-underline transition-colors hover:border-slate-500 hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
-              >Generate secure passwords</a
-            >
-          </li>
-          <li>
-            <a
-              href="/json-csv"
-              class="block rounded-lg border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-slate-200 no-underline transition-colors hover:border-slate-500 hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
-              >Convert JSON and CSV</a
-            >
-          </li>
-          <li>
-            <a
-              href="/regex-master"
-              class="block rounded-lg border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-slate-200 no-underline transition-colors hover:border-slate-500 hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
-              >Test regular expressions</a
-            >
-          </li>
-        </ul>
-      </aside>
+      </div>
     </section>
 
-    <section class="ui-card">
-      <div class="mb-4 flex items-end justify-between gap-4 border-b border-slate-800 pb-3">
-        <div>
-          <h2 class="text-lg font-semibold text-white">Browse tools</h2>
-          <p class="mt-1 text-sm text-slate-400">Jump to frequently used utilities.</p>
-        </div>
-      </div>
-      <ul class="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+    <!-- Tools Grid -->
+    <section class="min-h-0 flex-1 overflow-y-auto">
+      <div class="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {
-          highlightedTools.map((tool) => (
-            <li>
+          tools.map((tool) => {
+            const cat = categoryColors[tool.category] || categoryColors.dev;
+            return (
               <a
                 href={tool.path}
-                class="flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2.5 text-sm text-slate-200 no-underline transition-colors hover:border-slate-500 hover:bg-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
+                class="tool-card group"
               >
-                <span aria-hidden="true">{tool.icon}</span>
-                <span class="truncate">{tool.name}</span>
+                <div class="flex items-start gap-3">
+                  <div class="tool-card-icon">
+                    <span class="text-lg">{tool.icon}</span>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <h3 class="text-[0.8rem] font-semibold text-white/90 group-hover:text-white transition-colors">
+                      {tool.name}
+                    </h3>
+                    <p class="mt-0.5 text-[0.7rem] leading-relaxed text-slate-500 group-hover:text-slate-400 transition-colors">
+                      {tool.description}
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-2 flex items-center justify-between">
+                  <span
+                    class:list={[
+                      "inline-block rounded-full px-2 py-0.5 text-[9px] font-semibold tracking-wide border",
+                      cat.bg,
+                      cat.text,
+                      cat.border,
+                    ]}
+                  >
+                    {categoryLabels[tool.category] || tool.category}
+                  </span>
+                  <svg
+                    class="h-3.5 w-3.5 text-slate-600 transition-all group-hover:translate-x-0.5 group-hover:text-slate-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
               </a>
-            </li>
-          ))
+            );
+          })
         }
-      </ul>
+      </div>
     </section>
-  </ToolPage>
+  </div>
 </Layout>
+
+<style>
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.02);
+    text-decoration: none !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .tool-card:hover {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .tool-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+    transition: all 0.25s;
+  }
+
+  .tool-card:hover .tool-card-icon {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.15);
+  }
+</style>

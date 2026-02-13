@@ -8,36 +8,40 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="JSON ↔ CSV Converter">
   <ToolPage description="Convert arrays of objects between JSON and CSV.">
-    <ToolGrid cols={2} class="gap-8">
-      <ToolCard title="JSON Input" step="01.">
-        <textarea
+    <ToolGrid cols={2} class="gap-3 md:max-h-[72vh] md:items-start">
+      <ToolCard title="JSON Input" step="01." class="md:max-h-[70vh] md:flex md:flex-col">
+        <div class="flex min-h-0 flex-1 flex-col md:min-h-0">
+          <textarea
           id="json-input"
-          rows="14"
+          rows="10"
           placeholder='[
   {"name": "Nova", "role": "Engineer"},
   {"name": "Sol", "role": "Designer"}
 ]'
-          class="resize-none font-mono text-sm"></textarea>
-        <div class="mt-4 flex flex-wrap gap-2">
-          <Button id="json-to-csv" variant="primary"> JSON → CSV </Button>
-          <Button id="swap-btn" variant="secondary"> Swap </Button>
+          class="min-h-0 flex-1 resize-none font-mono text-sm md:min-h-[200px]"></textarea>
+          <div class="mt-4 flex flex-shrink-0 flex-wrap gap-2">
+            <Button id="json-to-csv" variant="primary"> JSON → CSV </Button>
+            <Button id="swap-btn" variant="secondary"> Swap </Button>
+          </div>
         </div>
       </ToolCard>
 
-      <ToolCard title="CSV Output" step="02.">
-        <textarea
+      <ToolCard title="CSV Output" step="02." class="md:max-h-[70vh] md:flex md:flex-col">
+        <div class="flex min-h-0 flex-1 flex-col md:min-h-0">
+          <textarea
           id="csv-output"
-          rows="14"
+          rows="10"
           placeholder="name,role"
-          class="resize-none bg-black/50 font-mono text-sm"></textarea>
-        <div class="mt-4 flex flex-wrap gap-2">
-          <Button id="csv-to-json" variant="secondary" size="sm">CSV → JSON</Button>
-          <Button id="clear-btn" variant="ghost" size="sm">Clear</Button>
+          class="min-h-0 flex-1 resize-none bg-black/50 font-mono text-sm md:min-h-[200px]"></textarea>
+          <div class="mt-4 flex flex-shrink-0 flex-wrap gap-2">
+            <Button id="csv-to-json" variant="secondary" size="sm">CSV → JSON</Button>
+            <Button id="clear-btn" variant="ghost" size="sm">Clear</Button>
+          </div>
         </div>
       </ToolCard>
     </ToolGrid>
 
-    <div class="mt-8 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-400">
+    <div class="mt-3 rounded-xl border border-white/10 bg-white/5 p-2 text-sm text-slate-400">
       Notes: JSON input must be an array of objects. CSV parsing supports quoted fields.
     </div>
   </ToolPage>

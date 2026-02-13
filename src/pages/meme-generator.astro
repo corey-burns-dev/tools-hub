@@ -1,234 +1,366 @@
 ---
 import Button from "@/components/ui/Button.astro";
-import ToolCard from "@/components/ui/ToolCard.astro";
-import ToolPage from "@/components/ui/ToolPage.astro";
 import memesData from "../data/memes.json";
 import Layout from "../layouts/Layout.astro";
-
-// Pre-serialize memes for client-side
-const memesJson = JSON.stringify(memesData);
 ---
 
 <Layout title="Meme Generator">
-  <ToolPage description="Create viral memes with ease using our interactive generator.">
+  <div class="meme-page">
     <div
       id="meme-generator-container"
-      class="grid grid-cols-1 items-start gap-8 lg:grid-cols-2"
-      data-memes={memesJson}
+      class="meme-layout"
+      data-memes={JSON.stringify(memesData)}
     >
-      <!-- Preview Area -->
-      <div class="order-2 lg:sticky lg:top-8">
-        <ToolCard title="Preview" step="02.">
-          <div slot="header-actions" class="flex gap-2">
-            <Button
-              id="toggle-edit-mode"
-              variant="secondary"
-              size="sm"
-              title="Toggle text editing on canvas"
-            >
-              ✏️ Edit Mode
-            </Button>
-            <Button id="download-btn" variant="primary" size="sm"> 💾 Save </Button>
+      <!-- Left: Controls Panel -->
+      <div class="controls-panel">
+        <!-- Unified Settings Card -->
+        <div class="controls-card">
+          <!-- Tab Navigation -->
+          <div class="tab-bar">
+            <button id="tab-image" class="meme-tab active">
+              Image Source
+            </button>
+            <button id="tab-text" class="meme-tab">
+              Text Boxes
+            </button>
           </div>
 
-          <div
-            id="canvas-wrapper"
-            class="relative flex aspect-square items-center justify-center rounded-xl bg-black/40 p-4 shadow-inner"
-          >
-            <canvas
-              id="meme-canvas"
-              class="max-h-full max-w-full cursor-default rounded-lg shadow-2xl transition-all"
-            ></canvas>
-            <div
-              id="edit-hint"
-              class="animate-in fade-in zoom-in absolute top-8 left-1/2 hidden -translate-x-1/2 transform rounded-full bg-blue-600 px-6 py-2 text-sm font-bold text-white shadow-xl duration-300"
-            >
-              Drag text to move/resize
-            </div>
-          </div>
-        </ToolCard>
-      </div>
-
-      <!-- Controls Area -->
-      <div class="order-1 space-y-8">
-        <!-- Image Source -->
-        <ToolCard title="Image Source" step="01.">
-          <div class="space-y-6">
-            <div>
-              <label
-                class="mb-3 block text-[10px] font-bold tracking-widest text-slate-500 uppercase"
-                >Upload Image</label
-              >
-              <input
-                type="file"
-                id="image-upload"
-                accept="image/*"
-                class="w-full text-xs text-slate-400 transition-all file:mr-4 file:rounded-full file:border-0 file:bg-blue-600 file:px-4 file:py-2 file:text-[10px] file:font-bold file:tracking-widest file:text-white file:uppercase hover:file:bg-blue-500 active:file:bg-blue-700"
-              />
-            </div>
-
-            <div class="border-t border-white/5 pt-6">
-              <div class="mb-4 flex items-center justify-between">
-                <span class="text-[10px] font-bold tracking-widest text-slate-500 uppercase"
-                  >Templates</span
-                >
-                <Button id="refresh-memes" variant="ghost" size="sm" class="h-7 text-[10px]">
-                  🔄 REFRESH
+          <!-- Tab Content Area -->
+          <div class="tab-body custom-scrollbar">
+            <!-- Image Source Tab -->
+            <div id="content-image" class="tab-content">
+              <div class="upload-row">
+                <input
+                  type="file"
+                  id="image-upload"
+                  accept="image/*"
+                  class="file-input"
+                />
+                <Button id="refresh-memes" variant="ghost" size="sm" class="refresh-btn">
+                  Refresh
                 </Button>
               </div>
 
-              <!-- Search Box -->
               <input
                 type="text"
                 id="meme-search"
-                placeholder="Search memes..."
-                class="mb-4 w-full"
+                placeholder="Search templates..."
+                class="search-input"
               />
 
               <!-- Loading State -->
-              <div id="memes-loading" class="py-12 text-center">
-                <div
-                  class="inline-block h-8 w-8 animate-spin rounded-full border-2 border-slate-700 border-t-blue-500"
-                >
-                </div>
-                <p class="mt-4 text-xs font-bold tracking-widest text-slate-500 uppercase">
-                  Loading memes...
-                </p>
+              <div id="memes-loading" class="loading-state">
+                <div class="spinner"></div>
+                <span>Loading...</span>
               </div>
 
               <!-- Memes Grid -->
-              <div
-                id="memes-grid"
-                class="custom-scrollbar grid hidden max-h-[360px] auto-cols-[160px] grid-flow-col grid-rows-2 gap-3 overflow-x-auto overflow-y-hidden scroll-smooth pr-2 pb-4"
-              >
-                <!-- Memes will be loaded here -->
+              <div style="display:none" id="memes-grid-wrapper">
+                <div class="memes-grid custom-scrollbar" id="memes-grid"></div>
               </div>
             </div>
-          </div>
-        </ToolCard>
 
-        <!-- Text Boxes Manager -->
-        <ToolCard title="Text Boxes" step="03.">
-          <div slot="header-actions" class="flex gap-2">
-            <Button id="reset-text-boxes" variant="ghost" size="sm" class="h-7 text-[10px]">
-              RESET
-            </Button>
-            <Button id="add-text-box" variant="primary" size="sm" class="h-7 text-[10px]">
-              + ADD TEXT
-            </Button>
-          </div>
-
-          <div
-            id="text-boxes-container"
-            class="space-y-4 rounded-xl border border-white/5 bg-black/20 p-5 shadow-inner"
-          >
-            <!-- Text boxes will be dynamically added here -->
-          </div>
-        </ToolCard>
-
-        <!-- Global Text Settings -->
-        <ToolCard title="Style Settings" step="04.">
-          <div class="space-y-6">
-            <div class="grid grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label class="text-[10px] font-bold tracking-widest text-slate-500 uppercase"
-                  >Font Size</label
-                >
-                <input
-                  type="range"
-                  id="global-font-size"
-                  min="20"
-                  max="100"
-                  value="40"
-                  class="w-full accent-blue-500"
-                />
-                <div class="flex justify-between font-mono text-[10px] text-slate-600">
-                  <span>20px</span>
-                  <span id="global-font-size-value" class="font-bold text-blue-400">40px</span>
-                  <span>100px</span>
+            <!-- Text Boxes Tab -->
+            <div id="content-text" class="tab-content hidden">
+              <div class="text-tab-header">
+                <span class="text-xs font-semibold text-slate-400">Text Boxes</span>
+                <div class="flex gap-1.5">
+                  <Button id="reset-text-boxes" variant="ghost" size="sm" class="h-6 text-[10px]">
+                    Reset
+                  </Button>
+                  <Button id="add-text-box" variant="primary" size="sm" class="h-6 text-[10px]">
+                    + Add
+                  </Button>
                 </div>
               </div>
-              <div class="space-y-2">
-                <label class="text-[10px] font-bold tracking-widest text-slate-500 uppercase"
-                  >Color</label
-                >
+              <div id="text-boxes-container" class="text-boxes-list"></div>
+            </div>
+          </div>
+
+          <!-- Style Settings - Always Visible -->
+          <div class="style-bar">
+            <div class="style-row">
+              <div class="style-control">
+                <label>Size</label>
+                <div class="range-group">
+                  <input
+                    type="range"
+                    id="global-font-size"
+                    min="20"
+                    max="100"
+                    value="40"
+                    class="compact-range"
+                  />
+                  <span id="global-font-size-value" class="range-val">40</span>
+                </div>
+              </div>
+              <div class="style-control">
+                <label>Outline</label>
+                <div class="range-group">
+                  <input
+                    type="range"
+                    id="global-stroke-width"
+                    min="0"
+                    max="10"
+                    value="3"
+                    class="compact-range"
+                  />
+                  <span id="global-stroke-width-value" class="range-val">3</span>
+                </div>
+              </div>
+              <div class="style-control color-control">
+                <label>Color</label>
                 <input
                   type="color"
                   id="global-text-color"
                   value="#ffffff"
-                  class="h-10 w-full cursor-pointer rounded-xl border border-white/10 bg-black/20 p-1"
+                  class="color-swatch"
                 />
               </div>
+              <button id="reset-positions" class="reset-pos-btn" title="Reset text positions">
+                Reset Pos
+              </button>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="space-y-2">
-              <label class="text-[10px] font-bold tracking-widest text-slate-500 uppercase"
-                >Outline</label
+      <!-- Right: Preview Panel -->
+      <div class="preview-panel">
+        <div class="preview-card">
+          <div class="preview-header">
+            <span class="preview-label">Preview</span>
+            <div class="preview-actions">
+              <Button
+                id="toggle-edit-mode"
+                variant="secondary"
+                size="sm"
+                title="Toggle drag to reposition text"
+                class="h-7 text-[10px]"
               >
-              <input
-                type="range"
-                id="global-stroke-width"
-                min="0"
-                max="10"
-                value="3"
-                class="w-full accent-blue-500"
-              />
-              <div class="flex justify-between font-mono text-[10px] text-slate-600">
-                <span>0px</span>
-                <span id="global-stroke-width-value" class="font-bold text-blue-400">3px</span>
-                <span>10px</span>
-              </div>
-            </div>
-
-            <div class="pt-2">
-              <Button id="reset-positions" variant="secondary" class="w-full">
-                🔄 Reset All Positions
+                Edit Mode
+              </Button>
+              <Button id="download-btn" variant="primary" size="sm" class="h-7 text-[10px]">
+                Save
               </Button>
             </div>
           </div>
-        </ToolCard>
+          <div id="canvas-wrapper" class="canvas-area">
+            <canvas
+              id="meme-canvas"
+              class="meme-canvas"
+            ></canvas>
+            <div
+              id="edit-hint"
+              class="edit-hint hidden"
+            >
+              Drag text to reposition
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </ToolPage>
+  </div>
 </Layout>
 
 <style>
-  .custom-scrollbar::-webkit-scrollbar {
-    height: 6px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(59, 130, 246, 0.3);
-    border-radius: 10px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(59, 130, 246, 0.5);
-  }
-
-  .meme-template {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    position: relative;
-    border-radius: 12px;
+  /* ─── Page layout ─── */
+  .meme-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0.5rem;
     overflow: hidden;
   }
 
+  .meme-layout {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 0.5rem;
+    height: 100%;
+    min-height: 0;
+  }
+
+  @media (max-width: 900px) {
+    .meme-layout {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+  }
+
+  /* ─── Controls Panel ─── */
+  .controls-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .controls-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.025);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+  }
+
+  /* ─── Tabs ─── */
+  .tab-bar {
+    display: flex;
+    gap: 1px;
+    padding: 0.375rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  .meme-tab {
+    flex: 1;
+    padding: 0.375rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.35);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .meme-tab:hover {
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .meme-tab.active {
+    color: white;
+    background: rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.25);
+  }
+
+  /* ─── Tab Content ─── */
+  .tab-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 0.5rem;
+  }
+
+  .tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .tab-content.hidden {
+    display: none;
+  }
+
+  /* ─── Image Source Tab ─── */
+  .upload-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .file-input {
+    flex: 1;
+    font-size: 0.6875rem;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .file-input::file-selector-button {
+    padding: 0.3rem 0.625rem;
+    border-radius: 999px;
+    border: none;
+    background: #6366f1;
+    color: white;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-right: 0.5rem;
+  }
+
+  .file-input::file-selector-button:hover {
+    background: #818cf8;
+  }
+
+  :global(.refresh-btn) {
+    flex-shrink: 0;
+    font-size: 0.625rem !important;
+  }
+
+  .search-input {
+    font-size: 0.75rem !important;
+    padding: 0.35rem 0.625rem !important;
+  }
+
+  .loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-top-color: #6366f1;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ─── Memes Grid ─── */
+  .memes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.375rem;
+    max-height: 100%;
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+
+  .meme-template {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
   .meme-template:hover {
-    transform: translateY(-4px);
-    border-color: rgba(59, 130, 246, 0.5);
-    box-shadow:
-      0 10px 15px -3px rgba(0, 0, 0, 0.3),
-      0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    border-color: rgba(99, 102, 241, 0.4);
+    transform: scale(1.03);
   }
 
   .meme-template.selected {
-    border-color: rgb(59, 130, 246);
-    box-shadow:
-      0 0 0 2px rgb(59, 130, 246),
-      0 10px 15px -3px rgba(59, 130, 246, 0.3);
+    border-color: #6366f1;
+    box-shadow: 0 0 0 1px #6366f1, 0 4px 12px rgba(99, 102, 241, 0.25);
   }
 
   .meme-template img {
@@ -242,33 +374,260 @@ const memesJson = JSON.stringify(memesData);
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-    padding: 12px 8px 6px;
-    font-size: 10px;
+    padding: 0.75rem 0.25rem 0.25rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+    font-size: 0.5625rem;
     font-weight: 700;
     color: white;
     text-align: center;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.2s;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
   }
 
-  .meme-template:hover .meme-name {
+  .meme-template:hover .meme-name,
+  .meme-template.selected .meme-name {
     opacity: 1;
   }
 
-  /* Target dynamically generated cards */
+  /* ─── Text Boxes Tab ─── */
+  .text-tab-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .text-boxes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  :global(.text-box-card) {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    transition: all 0.2s;
+  }
+
   :global(.text-box-card.active) {
-    border-color: rgba(59, 130, 246, 0.5) !important;
-    background: rgba(59, 130, 246, 0.05) !important;
+    border-color: rgba(99, 102, 241, 0.4) !important;
+    background: rgba(99, 102, 241, 0.06) !important;
+  }
+
+  /* ─── Style Bar (always visible) ─── */
+  .style-bar {
+    flex-shrink: 0;
+    padding: 0.5rem 0.625rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .style-row {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .style-control {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .style-control label {
+    font-size: 0.5625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.3);
+    margin: 0;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .range-group {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .compact-range {
+    flex: 1;
+    height: 3px !important;
+    min-width: 0;
+    padding: 0 !important;
+    border: none !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .range-val {
+    font-size: 0.625rem;
+    font-weight: 700;
+    font-family: monospace;
+    color: #818cf8;
+    min-width: 1.25rem;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .color-control {
+    flex: 0 0 auto;
+  }
+
+  .color-swatch {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: transparent !important;
+    padding: 1px !important;
+    cursor: pointer;
+  }
+
+  .reset-pos-btn {
+    flex-shrink: 0;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.5625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .reset-pos-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* ─── Preview Panel ─── */
+  .preview-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .preview-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.025);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+  }
+
+  .preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.625rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .preview-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: "Outfit", system-ui, sans-serif;
+  }
+
+  .preview-actions {
+    display: flex;
+    gap: 0.375rem;
+  }
+
+  .canvas-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    min-height: 0;
+    position: relative;
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .meme-canvas {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0.375rem;
+    cursor: default;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    transition: box-shadow 0.2s;
   }
 
   #meme-canvas.edit-mode {
     cursor: move;
     box-shadow:
-      0 0 0 2px rgb(59, 130, 246),
-      0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      0 0 0 2px #6366f1,
+      0 12px 32px rgba(0, 0, 0, 0.5);
+  }
+
+  .edit-hint {
+    position: absolute;
+    top: 0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(99, 102, 241, 0.9);
+    color: white;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: fadeInDown 0.3s ease;
+  }
+
+  .edit-hint.hidden {
+    display: none;
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  /* ─── Scrollbars ─── */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.25);
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.45);
   }
 </style>
 
@@ -281,6 +640,7 @@ const memesJson = JSON.stringify(memesData);
   const imageUpload = document.getElementById("image-upload") as HTMLInputElement;
   const downloadBtn = document.getElementById("download-btn");
   const memesGrid = document.getElementById("memes-grid");
+  const memesGridWrapper = document.getElementById("memes-grid-wrapper");
   const memesLoading = document.getElementById("memes-loading");
   const memeSearch = document.getElementById("meme-search") as HTMLInputElement;
   const refreshBtn = document.getElementById("refresh-memes");
@@ -290,6 +650,30 @@ const memesJson = JSON.stringify(memesData);
   const toggleEditModeBtn = document.getElementById("toggle-edit-mode") as HTMLButtonElement;
   const editHint = document.getElementById("edit-hint");
   const resetPositionsBtn = document.getElementById("reset-positions");
+
+  // Tab elements
+  const tabImage = document.getElementById("tab-image");
+  const tabText = document.getElementById("tab-text");
+  const contentImage = document.getElementById("content-image");
+  const contentText = document.getElementById("content-text");
+
+  // Tab switching logic
+  function switchTab(showImage: boolean) {
+    if (showImage) {
+      tabImage?.classList.add("active");
+      tabText?.classList.remove("active");
+      contentImage?.classList.remove("hidden");
+      contentText?.classList.add("hidden");
+    } else {
+      tabImage?.classList.remove("active");
+      tabText?.classList.add("active");
+      contentImage?.classList.add("hidden");
+      contentText?.classList.remove("hidden");
+    }
+  }
+
+  tabImage?.addEventListener("click", () => switchTab(true));
+  tabText?.addEventListener("click", () => switchTab(false));
 
   // Global settings
   const globalFontSizeInput = document.getElementById("global-font-size") as HTMLInputElement;
@@ -308,8 +692,8 @@ const memesJson = JSON.stringify(memesData);
   interface TextBox {
     id: number;
     text: string;
-    x: number; // Percentage (0-100)
-    y: number; // Percentage (0-100)
+    x: number;
+    y: number;
     fontSize?: number;
     color?: string;
     strokeWidth?: number;
@@ -474,22 +858,23 @@ const memesJson = JSON.stringify(memesData);
     textBoxesContainer.innerHTML = textBoxes
       .map(
         (box, index) => `
-        <div class="text-box-card bg-black/20 border border-white/5 rounded-xl p-4 transition-all" data-box-id="${box.id}">
-          <div class="flex items-center justify-between mb-3">
-            <label class="text-[10px] font-bold tracking-widest text-slate-500 uppercase">Text ${index + 1}</label>
+        <div class="text-box-card" data-box-id="${box.id}">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[10px] font-bold tracking-widest text-slate-500 uppercase">Text ${index + 1}</span>
             <button class="remove-text-box text-rose-400 hover:text-rose-300 text-[10px] font-bold uppercase transition-colors" data-box-id="${box.id}">
-              ✕ Delete
+              ✕
             </button>
           </div>
           <input
             type="text"
             class="text-box-input w-full uppercase"
+            style="font-size: 0.75rem; padding: 0.3rem 0.5rem;"
             placeholder="ENTER TEXT"
             data-box-id="${box.id}"
             value="${box.text}"
           />
-          <div class="mt-3 text-[10px] font-mono text-slate-600">
-            LOC: ${Math.round(box.x)}%, ${Math.round(box.y)}%
+          <div class="mt-1 text-[9px] font-mono text-slate-600">
+            ${Math.round(box.x)}%, ${Math.round(box.y)}%
           </div>
         </div>
       `
@@ -550,15 +935,15 @@ const memesJson = JSON.stringify(memesData);
   }
 
   function displayMemes(memes: any[]) {
-    if (!memesGrid) return;
-    memesLoading?.classList.add("hidden");
-    memesGrid?.classList.remove("hidden");
+    if (!memesGrid || !memesGridWrapper) return;
+    if (memesLoading) memesLoading.style.display = "none";
+    memesGridWrapper.style.display = "";
     const popularMemes = memes.slice(0, 100);
 
     memesGrid.innerHTML = popularMemes
       .map(
         (meme) => `
-        <div class="meme-template border border-white/5 h-40 w-full" data-url="${meme.localUrl || meme.url}" data-name="${meme.name}" data-id="${meme.id}">
+        <div class="meme-template" data-url="${meme.localUrl || meme.url}" data-name="${meme.name}" data-id="${meme.id}">
           <img src="${meme.localUrl || meme.url}" alt="${meme.name}" loading="lazy" />
           <div class="meme-name">${meme.name}</div>
         </div>
@@ -652,11 +1037,11 @@ const memesJson = JSON.stringify(memesData);
         const width = Math.max(metrics.width + 20, 100);
         const top = y - height / 2;
         const left = x - width / 2;
-        targetCtx.strokeStyle = draggedTextBox?.id === box.id ? "#3b82f6" : "rgba(255,255,255,0.4)";
+        targetCtx.strokeStyle = draggedTextBox?.id === box.id ? "#6366f1" : "rgba(255,255,255,0.4)";
         targetCtx.lineWidth = 2;
         targetCtx.setLineDash([5, 5]);
         targetCtx.strokeRect(left, top, width, height);
-        targetCtx.fillStyle = draggedTextBox?.id === box.id ? "#3b82f6" : "white";
+        targetCtx.fillStyle = draggedTextBox?.id === box.id ? "#6366f1" : "white";
         targetCtx.fillRect(left + width - 6, top + height - 6, 12, 12);
         targetCtx.restore();
       }
@@ -670,7 +1055,7 @@ const memesJson = JSON.stringify(memesData);
 
   toggleEditModeBtn?.addEventListener("click", () => {
     editMode = !editMode;
-    toggleEditModeBtn.classList.toggle("bg-blue-600", editMode);
+    toggleEditModeBtn.classList.toggle("bg-indigo-600", editMode);
     canvas.classList.toggle("edit-mode", editMode);
     editHint?.classList.toggle("hidden", !editMode);
     if (editMode) setTimeout(() => editHint?.classList.add("hidden"), 3000);
@@ -759,14 +1144,14 @@ const memesJson = JSON.stringify(memesData);
 
   globalFontSizeInput?.addEventListener("input", (e) => {
     const val = (e.target as HTMLInputElement).value;
-    if (globalFontSizeValue) globalFontSizeValue.textContent = val + "px";
+    if (globalFontSizeValue) globalFontSizeValue.textContent = val;
     textBoxes.forEach((b) => (b.fontSize = parseInt(val)));
     drawMeme();
   });
 
   globalStrokeWidthInput?.addEventListener("input", (e) => {
     const val = (e.target as HTMLInputElement).value;
-    if (globalStrokeWidthValue) globalStrokeWidthValue.textContent = val + "px";
+    if (globalStrokeWidthValue) globalStrokeWidthValue.textContent = val;
     textBoxes.forEach((b) => (b.strokeWidth = parseInt(val)));
     drawMeme();
   });

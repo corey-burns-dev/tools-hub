@@ -11,33 +11,28 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
 
 <Layout title="Ontario Lottery Generator">
   <ToolPage description="Generate lucky numbers for Ontario Lottery games.">
-    <div class="mx-auto w-full max-w-4xl space-y-8">
+    <div class="mx-auto flex w-full min-h-0 flex-1 flex-col max-w-4xl gap-3">
       <ToolCard title="Select Your Game" step="01.">
-        <!-- Game Capsules -->
-        <div class="mb-6 flex flex-wrap gap-3">
+        <label for="game-select" class="mb-2 block text-sm font-medium text-slate-400">
+          Game
+        </label>
+        <select
+          id="game-select"
+          class="mb-3 w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2.5 text-sm font-medium text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
+        >
           {
             games.map((game, index) => (
-              <button
-                type="button"
-                class:list={[
-                  "game-capsule",
-                  "rounded-full px-6 py-3 font-medium text-white transition-all duration-300",
-                  "border border-white/10 bg-black/20 shadow-lg hover:scale-105 hover:border-blue-500 hover:bg-white/10",
-                  "cursor-pointer active:scale-95",
-                  { selected: index === 0 },
-                ]}
-                data-game-id={game.id}
-              >
+              <option value={game.id} selected={index === 0}>
                 {game.name}
-              </button>
+              </option>
             ))
           }
-        </div>
+        </select>
 
         <!-- Keno Pick Count (only visible for Keno) -->
         <div
           id="keno-picks"
-          class="animate-in fade-in slide-in-from-top-2 mb-6 hidden duration-300"
+          class="animate-in fade-in slide-in-from-top-2 mb-2 hidden duration-300"
         >
           <label for="keno-count" class="mb-2 block text-sm font-medium text-slate-400"
             >Number of Picks (1-10)</label
@@ -48,13 +43,13 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
         <!-- Encore Checkbox -->
         <div
           id="encore-option"
-          class="animate-in fade-in slide-in-from-top-2 mb-6 hidden duration-300"
+          class="animate-in fade-in slide-in-from-top-2 mb-2 hidden duration-300"
         >
           <label class="group flex cursor-pointer items-center gap-3">
             <input
               type="checkbox"
               id="encore-checkbox"
-              class="h-5 w-5 cursor-pointer rounded bg-slate-800/50 text-blue-500 transition-all focus:ring-2 focus:ring-blue-500/50"
+              class="h-5 w-5 cursor-pointer rounded bg-slate-800/50 text-indigo-500 transition-all focus:ring-2 focus:ring-indigo-500/50"
             />
             <span
               class="text-sm font-medium text-slate-300 transition-colors group-hover:text-white"
@@ -65,7 +60,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
         </div>
 
         <div class="flex justify-center">
-          <Button id="generate-btn" variant="primary" class="h-14 w-full px-12 text-lg sm:w-auto">
+          <Button id="generate-btn" variant="primary" class="w-full px-6 py-3 sm:w-auto">
             Generate Numbers
           </Button>
         </div>
@@ -80,7 +75,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
           <div slot="header-actions">
             <Button id="copy-btn" variant="ghost" size="sm"> 📋 Copy </Button>
           </div>
-          <div id="results-content" class="space-y-6 pt-4"></div>
+          <div id="results-content" class="space-y-2 pt-4"></div>
         </ToolCard>
       </div>
     </div>
@@ -157,52 +152,32 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
     generateBtn.textContent = gameId === "poker_lotto" ? "Generate Cards" : "Generate Numbers";
   }
 
-  // Handle game capsule selection
-  document.querySelectorAll(".game-capsule").forEach((capsule) => {
-    capsule.addEventListener("click", (e) => {
-      e.preventDefault();
-      // Remove selected state from all capsules
-      document.querySelectorAll(".game-capsule").forEach((c) => {
-        c.classList.remove(
-          "selected",
-          "border-blue-500",
-          "bg-blue-500/10",
-          "shadow-lg",
-          "shadow-blue-500/20"
-        );
-        c.classList.add("border-white/10", "bg-black/20");
-      });
+  // Handle game select change
+  const gameSelect = document.getElementById("game-select");
+  function onGameChange() {
+    selectedGameId = gameSelect.value;
+    const selectedGame = games.find((g) => g.id === selectedGameId);
+    if (!selectedGame) return;
+    updateGenerateButtonLabel(selectedGame.id);
 
-      // Add selected state to clicked capsule
-      capsule.classList.remove("border-white/10", "bg-black/20");
-      capsule.classList.add(
-        "selected",
-        "border-blue-500",
-        "bg-blue-500/10",
-        "shadow-lg",
-        "shadow-blue-500/20"
-      );
+    if (selectedGame.id === "keno") {
+      kenoPicks.classList.remove("hidden");
+    } else {
+      kenoPicks.classList.add("hidden");
+    }
 
-      selectedGameId = capsule.dataset.gameId;
-      const selectedGame = games.find((g) => g.id === selectedGameId);
-      updateGenerateButtonLabel(selectedGame.id);
+    if (encoreCompatibleGames.includes(selectedGame.id)) {
+      encoreOption.classList.remove("hidden");
+    } else {
+      encoreOption.classList.add("hidden");
+      encoreCheckbox.checked = false;
+    }
+  }
 
-      // Show/hide Keno picks
-      if (selectedGame.id === "keno") {
-        kenoPicks.classList.remove("hidden");
-      } else {
-        kenoPicks.classList.add("hidden");
-      }
-
-      // Show/hide Encore option
-      if (encoreCompatibleGames.includes(selectedGame.id)) {
-        encoreOption.classList.remove("hidden");
-      } else {
-        encoreOption.classList.add("hidden");
-        encoreCheckbox.checked = false; // Uncheck if switching to incompatible game
-      }
-    });
-  });
+  if (gameSelect) {
+    gameSelect.addEventListener("change", onGameChange);
+    onGameChange();
+  }
 
   // Handle Enter key on input fields
   kenoCount.addEventListener("keypress", (e) => {
@@ -211,9 +186,6 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
       generateBtn.click();
     }
   });
-
-  // Initialize first game
-  document.querySelector(".game-capsule").click();
 
   // Generate random unique numbers
   function generateUniqueNumbers(count, max) {
@@ -251,7 +223,7 @@ const games = lotteryData.lotteries.filter((g) => g.id !== "encore");
     const balls = numbers
       .map(
         (num, i) =>
-          `<div class="lotto-reveal flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-blue-600/20 text-xl sm:text-2xl font-bold text-blue-400 border border-blue-500/30 shadow-lg shadow-blue-500/10" style="--reveal-delay:${staggerDelay + i * REVEAL_STEP_MS}ms;--reveal-duration:${REVEAL_DURATION_MS}ms">${num}</div>`
+          `<div class="lotto-reveal flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-indigo-600/20 text-xl sm:text-2xl font-bold text-indigo-400 border border-indigo-500/30 shadow-lg shadow-indigo-500/10" style="--reveal-delay:${staggerDelay + i * REVEAL_STEP_MS}ms;--reveal-duration:${REVEAL_DURATION_MS}ms">${num}</div>`
       )
       .join("");
 

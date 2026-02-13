@@ -6,11 +6,11 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Currency Converter">
   <ToolPage description="Real-time exchange rates at your fingertips.">
-    <div class="mx-auto w-full max-w-4xl space-y-8">
+    <div class="mx-auto flex w-full min-h-0 flex-1 flex-col max-w-4xl gap-3">
       <ToolCard title="Converter" step="01.">
-        <div class="grid gap-8 md:grid-cols-[1fr_auto_1fr] md:items-center">
+        <div class="grid gap-3 md:grid-cols-[1fr_auto_1fr] md:items-center">
           <!-- From Currency -->
-          <div class="space-y-4 rounded-xl border border-white/10 bg-black/20 p-6 shadow-inner">
+          <div class="space-y-2 rounded-xl border border-white/10 bg-black/20 p-3 shadow-inner">
             <label for="amount-from">Amount & Currency</label>
             <div class="flex gap-4">
               <input
@@ -45,7 +45,7 @@ import Layout from "../layouts/Layout.astro";
           <div class="flex justify-center">
             <button
               id="swap-btn"
-              class="group flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-2xl shadow-lg transition-all hover:scale-110 hover:border-blue-500/50 hover:bg-white/10 active:scale-95 md:rotate-90"
+              class="group flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-2xl shadow-lg transition-all hover:scale-110 hover:border-indigo-500/50 hover:bg-white/10 active:scale-95 md:rotate-90"
               title="Swap Currencies"
             >
               <span class="transition-transform duration-500 group-hover:rotate-180">⇄</span>
@@ -53,7 +53,7 @@ import Layout from "../layouts/Layout.astro";
           </div>
 
           <!-- To Currency -->
-          <div class="space-y-4 rounded-xl border border-white/10 bg-black/20 p-6 shadow-inner">
+          <div class="space-y-2 rounded-xl border border-white/10 bg-black/20 p-3 shadow-inner">
             <label for="amount-to">Converted To</label>
             <div class="flex gap-4">
               <input
@@ -61,7 +61,7 @@ import Layout from "../layouts/Layout.astro";
                 id="amount-to"
                 value="0.92"
                 readonly
-                class="w-full border-none bg-transparent p-0 text-2xl font-bold text-blue-400 focus:ring-0"
+                class="w-full border-none bg-transparent p-0 text-2xl font-bold text-indigo-400 focus:ring-0"
               />
               <select id="currency-to" class="w-auto px-4">
                 <option value="USD">🇺🇸 USD</option>
@@ -89,27 +89,27 @@ import Layout from "../layouts/Layout.astro";
       <ToolCard title="Popular Conversions">
         <div class="flex flex-wrap justify-center gap-3">
           <button
-            class="quick-pair rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-slate-300 transition-all hover:border-blue-500/30 hover:bg-white/10 hover:text-white"
+            class="quick-pair rounded-full border border-white/10 bg-white/5 px-3 py-3 text-sm font-medium text-slate-300 transition-all hover:border-indigo-500/30 hover:bg-white/10 hover:text-white"
             data-from="USD"
             data-to="EUR">USD → EUR</button
           >
           <button
-            class="quick-pair rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-slate-300 transition-all hover:border-blue-500/30 hover:bg-white/10 hover:text-white"
+            class="quick-pair rounded-full border border-white/10 bg-white/5 px-3 py-3 text-sm font-medium text-slate-300 transition-all hover:border-indigo-500/30 hover:bg-white/10 hover:text-white"
             data-from="EUR"
             data-to="USD">EUR → USD</button
           >
           <button
-            class="quick-pair rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-slate-300 transition-all hover:border-blue-500/30 hover:bg-white/10 hover:text-white"
+            class="quick-pair rounded-full border border-white/10 bg-white/5 px-3 py-3 text-sm font-medium text-slate-300 transition-all hover:border-indigo-500/30 hover:bg-white/10 hover:text-white"
             data-from="GBP"
             data-to="USD">GBP → USD</button
           >
           <button
-            class="quick-pair rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-slate-300 transition-all hover:border-blue-500/30 hover:bg-white/10 hover:text-white"
+            class="quick-pair rounded-full border border-white/10 bg-white/5 px-3 py-3 text-sm font-medium text-slate-300 transition-all hover:border-indigo-500/30 hover:bg-white/10 hover:text-white"
             data-from="USD"
             data-to="JPY">USD → JPY</button
           >
           <button
-            class="quick-pair rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-slate-300 transition-all hover:border-blue-500/30 hover:bg-white/10 hover:text-white"
+            class="quick-pair rounded-full border border-white/10 bg-white/5 px-3 py-3 text-sm font-medium text-slate-300 transition-all hover:border-indigo-500/30 hover:bg-white/10 hover:text-white"
             data-from="USD"
             data-to="CAD">USD → CAD</button
           >

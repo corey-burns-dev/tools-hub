@@ -8,11 +8,11 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Username Generator">
   <ToolPage description="Create unique, aesthetic, and professional identities in seconds.">
-    <ToolGrid cols={3} class="gap-8">
+    <ToolGrid cols={3} class="gap-3">
       <!-- Controls -->
       <div class="lg:col-span-1">
         <ToolCard title="Configuration" step="01.">
-          <div class="space-y-6">
+          <div class="space-y-2">
             <div class="space-y-2">
               <label for="base-word" class="block text-sm font-medium text-slate-400"
                 >Base Word (Optional)</label
@@ -52,7 +52,7 @@ import Layout from "../layouts/Layout.astro";
                   type="checkbox"
                   id="use-numbers"
                   checked
-                  class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500"
+                  class="h-4 w-4 rounded border-slate-600 bg-slate-800 text-indigo-500 focus:ring-indigo-500"
                 />
                 <span class="text-sm text-slate-300">Include Numbers</span>
               </label>
@@ -69,8 +69,8 @@ import Layout from "../layouts/Layout.astro";
       <div class="lg:col-span-2">
         <ToolCard title="Your Identities" step="02.">
           <div slot="header-actions">
-            <div
-              class="rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-[10px] font-bold tracking-tighter text-blue-400 uppercase"
+              <div
+              class="rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-[10px] font-bold tracking-tighter text-indigo-400 uppercase"
             >
               Click to copy
             </div>
@@ -78,13 +78,13 @@ import Layout from "../layouts/Layout.astro";
 
           <div
             id="results-grid"
-            class="grid min-h-[400px] grid-cols-1 content-start gap-3 sm:grid-cols-2"
+            class="grid min-h-0 grid-cols-1 content-start gap-3 sm:grid-cols-2"
           >
             <!-- Results will be injected here -->
             <div
-              class="flex h-full flex-col items-center justify-center py-20 text-slate-500 opacity-30 sm:col-span-2"
+              class="flex h-full flex-col items-center justify-center py-3 text-slate-500 opacity-30 sm:col-span-2"
             >
-              <div class="mb-4 text-5xl">👤</div>
+              <div class="mb-2 text-5xl">👤</div>
               <p class="text-xs font-bold tracking-widest uppercase">Ready to generate usernames</p>
             </div>
           </div>
@@ -330,12 +330,12 @@ import Layout from "../layouts/Layout.astro";
       // Remove active class from all (reset to secondary)
       categoryBtns.forEach((b) => {
         b.classList.remove(
-          "bg-blue-600",
+          "bg-indigo-600",
           "text-white",
-          "hover:bg-blue-500",
-          "active:bg-blue-700",
+          "hover:bg-indigo-500",
+          "active:bg-indigo-700",
           "shadow-lg",
-          "shadow-blue-500/20"
+          "shadow-indigo-500/20"
         );
         b.classList.add(
           "bg-white/5",
@@ -359,12 +359,12 @@ import Layout from "../layouts/Layout.astro";
         "backdrop-blur-sm"
       );
       btn.classList.add(
-        "bg-blue-600",
+        "bg-indigo-600",
         "text-white",
-        "hover:bg-blue-500",
-        "active:bg-blue-700",
+        "hover:bg-indigo-500",
+        "active:bg-indigo-700",
         "shadow-lg",
-        "shadow-blue-500/20"
+        "shadow-indigo-500/20"
       );
 
       currentCategory = btn.getAttribute("data-category") || "all";
@@ -383,12 +383,12 @@ import Layout from "../layouts/Layout.astro";
       names.forEach((name, index) => {
         const div = document.createElement("div");
         div.className =
-          "group flex items-center justify-between p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-blue-500/10 hover:border-blue-500/30 transition-all cursor-pointer animate-in fade-in zoom-in duration-300";
+          "group flex items-center justify-between p-2 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-indigo-500/10 hover:border-indigo-500/30 transition-all cursor-pointer animate-in fade-in zoom-in duration-300";
         div.style.animationDelay = `${index * 50}ms`;
 
         div.innerHTML = `
-          <span class="font-mono text-lg font-medium text-slate-200 group-hover:text-blue-300 transition-colors select-all">${name}</span>
-          <span class="opacity-0 group-hover:opacity-100 text-[10px] font-bold tracking-tighter text-blue-400 uppercase transition-opacity">Copy</span>
+          <span class="font-mono text-lg font-medium text-slate-200 group-hover:text-indigo-300 transition-colors select-all">${name}</span>
+          <span class="opacity-0 group-hover:opacity-100 text-[10px] font-bold tracking-tighter text-indigo-400 uppercase transition-opacity">Copy</span>
         `;
 
         div.onclick = () => {
